@@ -7,8 +7,8 @@ from rego_build_api.example_json import example_data2
 app = FastAPI()
 
 
-res = json(example_data2)
-print(res)
+# res = json(example_data2)
+# print(res)
 
 
 @app.post("/save")
