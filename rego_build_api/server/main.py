@@ -13,10 +13,11 @@ app = FastAPI()
 
 @app.post("/save")
 async def root(rego_rule: RequestObject):
-    response = write_to_file(rego_rule)
+    pass
+    # response = write_to_file(rego_rule)
 
-    response["state"] = rego_rule
-    return response
+    # response["state"] = rego_rule
+    # return response
 
 
 # activate the environment with
