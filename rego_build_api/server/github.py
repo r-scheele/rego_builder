@@ -11,7 +11,7 @@ COMMIT_MESSAGE = "comment from python script"
 
 def git_push():
     """
-    Push the changes to the remote repositoryß
+    Push the changes to the remote repository
     """
     try:
         repo = Repo(PATH_OF_GIT_REPO)
