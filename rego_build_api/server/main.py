@@ -8,7 +8,7 @@ app = FastAPI()
 
 
 res = json(example_data2)
-print(res)
+# print(res)
 
 
 @app.post("/save")
