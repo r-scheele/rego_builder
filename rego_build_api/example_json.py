@@ -16,7 +16,11 @@ example_data1 = {
             },
             {
                 "command": "input_prop_in",
-                "properties": ["company", "items", "name"],
+                "properties": {
+                    "input_property": "company",
+                    "datasource_name": "items",
+                    "datasource_loop_variable": "name",
+                },
             },
         ],
         [
@@ -49,65 +53,71 @@ example_data2 = {
         [
             {
                 "command": "input_prop_equals",
-                "properties": ["request_method", "GET"],
+                "properties": {
+                    "input_property": "request_path",
+                    "value": ["v1", "collections", "*"],
+                },
+            },
+            {
+                "command": "input_prop_in",
+                "properties": {
+                    "input_property": "company",
+                    "datasource_name": "items",
+                    "datasource_loop_variable": "name",
+                },
             },
             {
                 "command": "input_prop_equals",
-                "properties": ["request_path", [""]],
-            },
-        ],
-        [
-            {
-                "command": "input_prop_equals",
-                "properties": ["request_method", "GET"],
-            },
-            {
-                "command": "input_prop_equals",
-                "properties": ["request_path", ["static", "img"]],
-            },
-        ],
-        [
-            {
-                "command": "input_prop_equals",
-                "properties": ["request_method", "GET"],
-            },
-            {
-                "command": "input_prop_equals",
-                "properties": ["request_path", ["static", "css"]],
+                "properties": {
+                    "input_property": "request_method",
+                    "value": "GET",
+                },
             },
         ],
         [
             {
                 "command": "input_prop_equals",
-                "properties": ["request_method", "GET"],
+                "properties": {
+                    "input_property": "request_path",
+                    "value": ["v1", "collections"],
+                },
             },
             {
                 "command": "input_prop_equals",
-                "properties": ["request_path", ["collections"]],
+                "properties": {
+                    "input_property": "request_path",
+                    "value": ["v1", "collections", "lakes"],
+                },
             },
         ],
         [
             {
                 "command": "input_prop_equals",
-                "properties": ["request_method", "GET"],
+                "properties": {
+                    "input_property": "request_path",
+                    "value": ["v1", "collections", "*"],
+                },
             },
             {
                 "command": "input_prop_equals",
-                "properties": ["request_path", ["collections", "obs"]],
-            },
-            {
-                "command": "input_prop_equals",
-                "properties": ["company", "geobeyond"],
+                "properties": {
+                    "input_property": "company",
+                    "value": "geobeyond",
+                },
             },
             {
                 "command": "input_prop_in_as",
-                "properties": [
-                    "preferred_username",
-                    "items",
-                    "name",
-                    "groupname",
-                    "everyone",
-                ],
+                "properties": {
+                    "datasource_name": "items",
+                    "datasource_loop_variables": [
+                        "name",
+                        "everyone",
+                    ],
+                    "input_properties": [
+                        "preferred_username",
+                        "groupname",
+                    ],
+                },
             },
         ],
     ],
