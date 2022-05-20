@@ -17,7 +17,7 @@ def git_push(path: str):
     try:
         repo = Repo(path)
         repo.git.add(update=True)
-        repo.index.add(["/Users/youngestdev/Work/experiments/auth.rego"])
+        repo.index.add([f"{settings.GITHUB_PATH}auth.rego"])
         repo.index.commit(COMMIT_MESSAGE)
         origin = repo.remote(name="origin")
         origin.pull()
