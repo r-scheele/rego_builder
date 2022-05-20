@@ -15,11 +15,14 @@ def git_push(path: str):
     Push the changes to the remote repository
     """
     try:
+
         repo = Repo(path)
+        print("here second")
         repo.git.add(update=True)
         repo.index.add([f"{settings.GITHUB_PATH}auth.rego"])
         repo.index.commit(COMMIT_MESSAGE)
         origin = repo.remote(name="origin")
+
         origin.pull()
         origin.push()
     except Exception:
