@@ -14,15 +14,16 @@ def write_to_file(rule: RequestObject) -> dict:
     """
 
     # Initialize repository
-    initialize_repo(settings.GITHUB_PATH, settings.GITHUB_EMAIL, settings.GITHUB_USERNAME)
+    initialization_response = initialize_repo(settings.GITHUB_URL, settings.GITHUB_EMAIL, settings.GITHUB_USERNAME)
+    repo_path = initialization_response["repo_path"]
 
     # Create rego file.
-    with open(f"{settings.GITHUB_PATH}auth.rego", "w") as file:
+    with open(f"{repo_path}/auth.rego", "w") as file:
         result = initiate_rule + build_rego(rule.rules)
 
         file.write(result)
 
     # Push to GitHub
-    git_push(f"{settings.GITHUB_PATH}.git")
+    git_push(repo_path)
 
     return {"status": "success"}
