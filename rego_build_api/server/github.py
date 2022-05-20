@@ -3,25 +3,27 @@ from git import Repo, exc
 import requests as r
 
 ## You should have a local git repository and initialize the path
-access_token = "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"
+from rego_build_api.config.config import settings
 
-COMMIT_MESSAGE = "comment from python script"
+access_token = settings.GITHUB_ACCESS_TOKEN
+
+COMMIT_MESSAGE = "updates from from application"
 
 
-def git_push(path):
+def git_push(path: str):
     """
     Push the changes to the remote repository
     """
     try:
         repo = Repo(path)
         repo.git.add(update=True)
+        repo.index.add([f"{settings.GITHUB_PATH}auth.rego"])
         repo.index.commit(COMMIT_MESSAGE)
         origin = repo.remote(name="origin")
+        origin.pull()
         origin.push()
-
-        print("Pushed to remote repository")
-    except:
-        print("Some error occured while pushing the file to github")
+    except Exception:
+        raise Exception
 
 
 def initialize_repo(repo_url: str, email: str, name: str):
@@ -40,7 +42,7 @@ def initialize_repo(repo_url: str, email: str, name: str):
         except exc.GitCommandError:
             return {"status": "error"}
 
-    repo_name = repo_path.replace(".git", "").split("/")[-1]
+    repo_name = "experiments"
 
     # Check if the url is valid - The one in the request
     try:
@@ -60,8 +62,6 @@ def initialize_repo(repo_url: str, email: str, name: str):
                     "private": False,
                 },
             )
-            print(remote_repository.status_code)
             return {"status": "success", "url": repo_path}
     except exc.GitCommandError:
-        print("Some error occured while initializing the remote repository")
         return {"status": "error"}

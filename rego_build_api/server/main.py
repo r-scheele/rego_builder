@@ -8,11 +8,10 @@ app = FastAPI()
 
 
 res = json(example_data2)
-# print(res)
 
 
 @app.post("/save")
-async def write(rego_rule: RequestObject):
+async def write(rego_rule: RequestObject) -> dict:
     response = write_to_file(rego_rule)
 
     response["state"] = rego_rule
