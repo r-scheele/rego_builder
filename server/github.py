@@ -14,7 +14,8 @@ default_path = "/tmp/fastgeoapi"
 
 def initialize_repo(repo_url: str) -> dict:
     # Create the default path
-    os.mkdir(default_path)
+    if not os.path.exists(default_path):
+        os.mkdir(default_path)
 
     repo_name = repo_url.strip(".git").split("/")[-1]
     local_repo_path = f"{default_path}/{repo_name}"
@@ -23,7 +24,9 @@ def initialize_repo(repo_url: str) -> dict:
     if os.path.exists(local_repo_path):
         return {
             "status": "success",
-            "repo_path": default_path
+            "repo_path": default_path,
+            "repo_git_path": f"{local_repo_path}/.git"
+
         }
 
     os.mkdir(local_repo_path)
