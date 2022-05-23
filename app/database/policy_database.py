@@ -1,6 +1,6 @@
 from fastapi import HTTPException
 from tinydb import Query, TinyDB
-from app.schemas.rules import RequestObject, UpdateRequestObject
+from app.schemas.rules import RequestObject
 
 database = TinyDB('/tmp/fastgeoapi/database.json')
 store = Query()
