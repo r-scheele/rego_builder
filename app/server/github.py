@@ -3,7 +3,7 @@ import os
 import requests as r
 from git import Repo
 
-from config.config import settings
+from app.config.config import settings
 
 access_token = settings.GITHUB_ACCESS_TOKEN
 
@@ -24,7 +24,7 @@ def initialize_repo(repo_url: str) -> dict:
     if os.path.exists(local_repo_path):
         return {
             "status": "success",
-            "repo_path": default_path,
+            "repo_path": local_repo_path,
             "repo_git_path": f"{local_repo_path}/.git"
 
         }

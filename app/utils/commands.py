@@ -1,5 +1,6 @@
 import json
 
+
 def input_prop_equals(properties) -> str:
     """
     Allow if the 'key on the request' equals the 'value assigned' to it
@@ -37,7 +38,6 @@ def input_prop_in(properties) -> str:
 
 
 def input_prop_in_as(properties) -> str:
-
     """
     Allow if the 'key on the request' is present as a 'key in any of the objects' in the database(data)
     as a particular value

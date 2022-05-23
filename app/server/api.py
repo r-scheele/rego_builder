@@ -1,6 +1,7 @@
 from fastapi import FastAPI
-from schemas.rules import RequestObject
-from utils.write_rego import write_to_file
+
+from app.schemas.rules import RequestObject
+from app.utils.write_rego import write_to_file
 
 app = FastAPI()
 

@@ -1,7 +1,7 @@
-from schemas.rules import RequestObject
+from app.config.config import settings
+from app.schemas.rules import RequestObject
+from app.server.github import initialize_repo, git_push
 from .build_rego_file import build_rego
-from server.github import initialize_repo, git_push
-from config.config import settings
 
 initiate_rule = "package httpapi.authz\nimport input\ndefault allow = false\n\n\n\n"
 
