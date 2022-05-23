@@ -23,6 +23,7 @@ class RequestObject(BaseModel):
                             "properties": {
                                 "input_property": "request_path",
                                 "value": ["v1", "collections", "*"],
+                                "exceptional_value": "obs",
                             },
                         },
                         {
@@ -84,3 +85,15 @@ class RequestObject(BaseModel):
                 ],
             }
         }
+
+
+all_except = (
+    {
+        "command": "input_prop_equals",
+        "properties": {
+            "input_property": "request_path",
+            "value": ["v1", "collections", "*"],
+            "exceptional_value": "obs",
+        },
+    },
+)

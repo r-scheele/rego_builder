@@ -9,20 +9,27 @@ def input_prop_equals(properties) -> str:
     :param value: request value
     :return:
     """
-
-    if "*" in properties["value"]:
+    path_list = properties["value"]
+    if "*" in path_list and type(path_list) == list:
         result = ""
-        for index, path_variable in enumerate(properties["value"]):
+        for index, path_variable in enumerate(path_list):
             result += (
                 f'input.{properties["input_property"]}[{index}] == "{path_variable}" \n  '
                 if path_variable != "*"
                 else ""
             )
-        return result
-    else:
         return (
-            f"input.{properties['input_property']} == {json.dumps(properties['value'])}"
+            f"{result}"
+            + f'\ninput.{properties["input_property"]}[{len(path_list)}] != {properties["exceptional_value"]}'
+            if properties.get("exceptional_value")
+            else ""
         )
+    elif type(path_list) == str:
+        return f"input.{properties['input_property']} == {json.dumps(path_list)}"
+
+    else:
+        path_list.append("")
+        return f"input.{properties['input_property']} == {json.dumps(path_list)}"
 
 
 def input_prop_in(properties) -> str:

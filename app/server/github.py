@@ -62,6 +62,8 @@ def git_push(repo_path: str, git_path: str) -> None:
         if remotes[0].name != "origin":
             repo.create_remote("origin", target_url)
         origin = repo.remote(name="origin")
+
+        # git pull would fail if the remote repo is new, we should properly handle this
         origin.pull()
         origin.push()
     except Exception:
