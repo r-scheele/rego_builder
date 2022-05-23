@@ -1,6 +1,4 @@
 import json
-from typing import Tuple
-
 
 def input_prop_equals(properties) -> str:
     """
