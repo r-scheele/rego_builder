@@ -14,7 +14,7 @@ def input_prop_equals(properties) -> str:
         result = ""
         for index, path_variable in enumerate(properties["value"]):
             result += (
-                f"input.{properties['input_property']}[{index}] == '{path_variable}' \n  "
+                f'input.{properties["input_property"]}[{index}] == "{path_variable}" \n  '
                 if path_variable != "*"
                 else ""
             )
@@ -47,4 +47,4 @@ def input_prop_in_as(properties) -> str:
     :return:
     """
 
-    return f"some i \n  data.{properties['datasource_name']}[i].{properties['datasource_loop_variables'][0]} == input.{properties['input_properties'][0]} \n  data.{properties['datasource_name']}[i].{properties['datasource_loop_variables'][1]} == {properties['input_properties'][1]}"
+    return f"some i \n  data.{properties['datasource_name']}[i].{properties['datasource_loop_variables'][0]} == input.{properties['input_properties'][0]} \n  data.{properties['datasource_name']}[i].{properties['datasource_loop_variables'][1]} == input.{properties['input_properties'][1]}"
