@@ -12,6 +12,16 @@ This API is responsible for converting JSON variables to REGO which in turn is u
 $ poetry shell
 ```
 
+- Configure your environment variables:
+
+```dotenv
+BASE_PATH = /tmp/fastgeoapi
+DATABASE_PATH = /tmp/fastgeoapi/database.json
+GITHUB_ACCESS_TOKEN=`cat ~/.github_access_token`
+GITHUB_USERNAME=<your_github_username>
+GITHUB_URL=<your_github_url where the authorization code lives>
+```
+
 - Run the application from the entry point
 
 ```console
