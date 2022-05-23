@@ -25,8 +25,7 @@ def initialize_repo(repo_url: str) -> dict:
         return {
             "status": "success",
             "repo_path": local_repo_path,
-            "repo_git_path": f"{local_repo_path}/.git"
-
+            "repo_git_path": f"{local_repo_path}/.git",
         }
 
     os.mkdir(local_repo_path)
@@ -36,19 +35,13 @@ def initialize_repo(repo_url: str) -> dict:
     remote_url = f"https://api.github.com/repos/{settings.GITHUB_USERNAME}/{repo_name}"
     res = r.get(remote_url)
     if res.status_code != 200:
-        return {
-            "status_code": res.status_code,
-            "message": res.json()
-        }
+        return {"status_code": res.status_code, "message": res.json()}
 
     # Clone the repo to the server
     initialized_repo = Repo.clone_from(repo_url, local_repo_path)
     repo_git_path = initialized_repo.git_dir
 
-    return {
-        "repo_path": local_repo_path,
-        "repo_git_path": repo_git_path
-    }
+    return {"repo_path": local_repo_path, "repo_git_path": repo_git_path}
 
 
 def git_push(repo_path: str, git_path: str) -> None:
@@ -69,6 +62,8 @@ def git_push(repo_path: str, git_path: str) -> None:
         if remotes[0].name != "origin":
             repo.create_remote("origin", target_url)
         origin = repo.remote(name="origin")
+
+        # git pull would fail if the remote repo is new, we should properly handle this
         origin.pull()
         origin.push()
     except Exception:
