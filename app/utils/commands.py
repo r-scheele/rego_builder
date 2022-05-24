@@ -20,7 +20,7 @@ def input_prop_equals(properties) -> str:
             )
         return (
             f"{result}"
-            + f'\ninput.{properties["input_property"]}[{len(path_list)}] != {properties["exceptional_value"]}'
+            + f'\n  input.{properties["input_property"]}[{len(path_list)}] != "{properties["exceptional_value"]}"'
             if properties.get("exceptional_value")
             else ""
         )
