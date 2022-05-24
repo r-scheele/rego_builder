@@ -1,5 +1,6 @@
 import os
 
+import git.exc
 import requests as r
 from git import Repo
 
@@ -13,11 +14,7 @@ default_path = settings.BASE_PATH
 
 
 def initialize_repo(repo_url: str) -> dict:
-    # Create the default path
-    if not os.path.exists(default_path):
-        os.mkdir(default_path)
-
-    repo_name = repo_url.strip(".git").split("/")[-1]
+    repo_name = repo_url.removesuffix(".git").split("/")[-1]
     local_repo_path = f"{default_path}/{repo_name}"
 
     # Check if the repo already exists
@@ -48,10 +45,9 @@ def git_push(repo_path: str, git_path: str) -> None:
     """
     Push the changes to the remote repository
     """
-
     # Set target URL.
-    target_url = settings.GITHUB_URL
     try:
+        target_url = settings.GITHUB_URL
         repo = Repo(git_path)
         repo.git.add(update=True)
         repo.index.add([f"{repo_path}/auth.rego"])
@@ -62,9 +58,7 @@ def git_push(repo_path: str, git_path: str) -> None:
         if remotes[0].name != "origin":
             repo.create_remote("origin", target_url)
         origin = repo.remote(name="origin")
-
-        # git pull would fail if the remote repo is new, we should properly handle this
-        origin.pull()
+        origin.fetch()
         origin.push()
-    except Exception:
-        raise Exception
+    except git.GitCommandError:
+        raise git.GitCommandError
