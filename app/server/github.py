@@ -9,7 +9,7 @@ access_token = settings.GITHUB_ACCESS_TOKEN
 
 COMMIT_MESSAGE = "updates from from application"
 
-default_path = "/tmp/fastgeoapi"
+default_path = settings.BASE_PATH
 
 
 def initialize_repo(repo_url: str) -> dict:

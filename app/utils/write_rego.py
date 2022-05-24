@@ -1,3 +1,5 @@
+import os
+
 from app.config.config import settings
 from app.schemas.rules import RequestObject
 from app.server.github import initialize_repo, git_push
@@ -29,3 +31,21 @@ def write_to_file(rule: RequestObject) -> dict:
     git_push(repo_path, repo_git_path)
 
     return {"status": "success"}
+
+
+def delete_policy_file() -> bool:
+    initialization_response = initialize_repo(settings.GITHUB_URL)
+    repo_path = initialization_response["repo_path"]
+    repo_git_path = initialization_response["repo_git_path"]
+
+    file_path = f"{repo_path}/auth.rego"
+
+    if not os.path.isfile(file_path):
+        raise FileNotFoundError
+
+    file = open(file_path, "w")
+    file.close()
+
+    # Update GitHub
+    git_push(repo_path, repo_git_path)
+    return True
