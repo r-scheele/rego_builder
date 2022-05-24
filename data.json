@@ -1,99 +1,99 @@
 {
-    "result": {
-        "httpapi": {
-            "authz": {
-                "allow": false
-            }
-        },
-        "items": [
-            {
-                "groupname": "everyone",
-                "name": "mss.llll"
-            },
-            {
-                "groupname": "everyone",
-                "name": "PRD.LRT"
-            },
-            {
-                "groupname": "everyone",
-                "name": "FRN.SVT"
-            },
-            {
-                "groupname": "everyone",
-                "name": "guest"
-            },
-            {
-                "groupname": "everyone",
-                "name": "admin"
-            },
-            {
-                "groupname": "everyone",
-                "name": "user"
-            },
-            {
-                "groupname": "everyone",
-                "name": "STF.MRR"
-            },
-            {
-                "groupname": "everyone",
-                "name": "BRT.FNC"
-            },
-            {
-                "groupname": "GEOCITY_ADMINS",
-                "name": "STF.MRR"
-            },
-            {
-                "groupname": "everyone",
-                "name": "wso2.test"
-            },
-            {
-                "groupname": "everyone",
-                "name": "ndr.qtrn"
-            },
-            {
-                "groupname": "everyone",
-                "name": "QTR.NDR"
-            },
-            {
-                "groupname": "everyone",
-                "name": "MTT.SRA"
-            },
-            {
-                "groupname": "everyone",
-                "name": "CCC.RRT"
-            },
-            {
-                "groupname": "EDITOR_ATAC",
-                "name": "ndr.qtrn"
-            },
-            {
-                "groupname": "everyone",
-                "name": "RDL.RRT"
-            },
-            {
-                "groupname": "VIEWER",
-                "name": "ndr.qtrn"
-            },
-            {
-                "groupname": "VIEWER",
-                "name": "BRT.FNC"
-            },
-            {
-                "groupname": "VIEWER",
-                "name": "CCC.RRT"
-            },
-            {
-                "groupname": "VIEWER",
-                "name": "MTT.SRA"
-            },
-            {
-                "groupname": "VIEWER",
-                "name": "QTR.NDR"
-            },
-            {
-                "groupname": "VIEWER",
-                "name": "RDL.RRT"
-            }
-        ]
-    }
+  "result": {
+    "httpapi": {
+      "authz": {
+        "allow": false
+      }
+    },
+    "items": [
+      {
+        "groupname": "everyone",
+        "name": "mss.llll"
+      },
+      {
+        "groupname": "everyone",
+        "name": "PRD.LRT"
+      },
+      {
+        "groupname": "everyone",
+        "name": "FRN.SVT"
+      },
+      {
+        "groupname": "everyone",
+        "name": "guest"
+      },
+      {
+        "groupname": "everyone",
+        "name": "admin"
+      },
+      {
+        "groupname": "everyone",
+        "name": "user"
+      },
+      {
+        "groupname": "everyone",
+        "name": "STF.MRR"
+      },
+      {
+        "groupname": "everyone",
+        "name": "BRT.FNC"
+      },
+      {
+        "groupname": "GEOCITY_ADMINS",
+        "name": "STF.MRR"
+      },
+      {
+        "groupname": "everyone",
+        "name": "wso2.test"
+      },
+      {
+        "groupname": "everyone",
+        "name": "ndr.qtrn"
+      },
+      {
+        "groupname": "everyone",
+        "name": "QTR.NDR"
+      },
+      {
+        "groupname": "everyone",
+        "name": "MTT.SRA"
+      },
+      {
+        "groupname": "everyone",
+        "name": "CCC.RRT"
+      },
+      {
+        "groupname": "EDITOR_ATAC",
+        "name": "ndr.qtrn"
+      },
+      {
+        "groupname": "everyone",
+        "name": "RDL.RRT"
+      },
+      {
+        "groupname": "VIEWER",
+        "name": "ndr.qtrn"
+      },
+      {
+        "groupname": "VIEWER",
+        "name": "BRT.FNC"
+      },
+      {
+        "groupname": "VIEWER",
+        "name": "CCC.RRT"
+      },
+      {
+        "groupname": "VIEWER",
+        "name": "MTT.SRA"
+      },
+      {
+        "groupname": "VIEWER",
+        "name": "QTR.NDR"
+      },
+      {
+        "groupname": "VIEWER",
+        "name": "RDL.RRT"
+      }
+    ]
+  }
 }
