@@ -1,8 +1,14 @@
-from fastapi import FastAPI, HTTPException
-
-from app.database.policy_database import add_policy, update_policy, exists, get_policy, delete_policy
-from app.schemas.rules import RequestObject, UpdateRequestObject
-from app.utils.write_rego import write_to_file, delete_policy_file
+from app.database.policy_database import add_policy
+from app.database.policy_database import delete_policy
+from app.database.policy_database import exists
+from app.database.policy_database import get_policy
+from app.database.policy_database import update_policy
+from app.schemas.rules import RequestObject
+from app.schemas.rules import UpdateRequestObject
+from app.utils.write_rego import delete_policy_file
+from app.utils.write_rego import write_to_file
+from fastapi import FastAPI
+from fastapi import HTTPException
 
 app = FastAPI()
 
@@ -13,10 +19,7 @@ async def write_policy(rego_rule: RequestObject) -> dict:
     response = write_to_file(rego_rule)
 
     response["state"] = rego_rule
-    return {
-        "status": 200,
-        "message": "Policy created successfully"
-    }
+    return {"status": 200, "message": "Policy created successfully"}
 
 
 @app.get("/policy/{policy}")
@@ -28,10 +31,7 @@ async def retrieve_policy(policy: str) -> dict:
 @app.put("/policy/{policy}")
 async def modify_policy(policy: str, rego_rule: UpdateRequestObject) -> dict:
     if not exists(policy):
-        raise HTTPException(
-            status_code=404,
-            detail="Policy not found"
-        )
+        raise HTTPException(status_code=404, detail="Policy not found")
 
     # Clean out fields which weren't updated.
     rego_rule = {k: v for k, v in rego_rule.dict().items() if v is not None}
@@ -45,10 +45,7 @@ async def modify_policy(policy: str, rego_rule: UpdateRequestObject) -> dict:
     # Rewrite rego file and update GitHub
     write_to_file(RequestObject(**updated_policy))
 
-    return {
-        "status": 200,
-        "message": "Updated successfully"
-    }
+    return {"status": 200, "message": "Updated successfully"}
 
 
 @app.delete("/policy/{policy}")
@@ -59,7 +56,4 @@ async def remove_policy(policy: str) -> dict:
     # Delete file from path
     delete_policy_file()
 
-    return {
-        "status": 200,
-        "message": "Policy deleted successfully."
-    }
+    return {"status": 200, "message": "Policy deleted successfully."}

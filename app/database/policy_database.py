@@ -1,8 +1,8 @@
-from fastapi import HTTPException
-from tinydb import Query, TinyDB
-
 from app.config.config import settings
 from app.schemas.rules import RequestObject
+from fastapi import HTTPException
+from tinydb import Query
+from tinydb import TinyDB
 
 database = TinyDB(settings.DATABASE_PATH)
 store = Query()
@@ -15,10 +15,7 @@ def get_policy(policy_name: str) -> dict:
 
 def add_policy(policy: RequestObject) -> None:
     if get_policy(policy.name):
-        raise HTTPException(
-            status_code=409,
-            detail="Policy with supplied name exists."
-        )
+        raise HTTPException(status_code=409, detail="Policy with supplied name exists.")
     database.insert(policy.dict())
 
 
