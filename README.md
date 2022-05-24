@@ -9,7 +9,7 @@ This API is responsible for converting JSON variables to REGO which in turn is u
 - Create a virtual environment and install the application dependencies:
 
 ```console
-$ poetry shell
+$ poetry shell && poetry install
 ```
 
 - Configure your environment variables:
@@ -116,8 +116,8 @@ default allow = false
 
 
 allow {
-  input.request_path[0] == 'v1'
-  input.request_path[1] == 'collections'
+  input.request_path[0] == "v1"
+  input.request_path[1] == "collections"
 
   input.company == data.items[i].name
   input.request_method == "GET"
@@ -129,12 +129,12 @@ allow {
 }
 
 allow {
-  input.request_path[0] == 'v1'
-  input.request_path[1] == 'collections'
+  input.request_path[0] == "v1"
+  input.request_path[1] == "collections"
 
   input.company == "geobeyond"
   some i
   data.items[i].name == input.preferred_username
-  data.items[i].everyone == groupname
+  data.items[i].everyone == input.groupname
 }
 ```
