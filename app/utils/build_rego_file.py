@@ -16,6 +16,11 @@ def build_rego(data) -> str:
         for command in rule:
             func = commands_map[command["command"]]
             output += "  " + func(command["properties"]) + "\n"
+
+        if "full_access" in command["command"]:
+            output += "}\n\n"
+            continue
+
         output += "}\n\n"
 
     return output
