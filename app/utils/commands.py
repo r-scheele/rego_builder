@@ -20,7 +20,7 @@ def input_prop_equals(properties) -> str:
             )
         return (
             f"{result}"
-            + f'\ninput.{properties["input_property"]}[{len(path_list)}] != {properties["exceptional_value"]}'
+            + f'\n  input.{properties["input_property"]}[{len(path_list)}] != "{properties["exceptional_value"]}"'
             if properties.get("exceptional_value")
             else ""
         )
@@ -55,3 +55,12 @@ def input_prop_in_as(properties) -> str:
     """
 
     return f"some i \n  data.{properties['datasource_name']}[i].{properties['datasource_loop_variables'][0]} == input.{properties['input_properties'][0]} \n  data.{properties['datasource_name']}[i].{properties['datasource_loop_variables'][1]} == input.{properties['input_properties'][1]}"
+
+
+def allow_full_access(properties) -> str:
+    """
+    Allow full access to the API
+
+    :return:
+    """
+    return f"input.{properties['input_property']} == {properties['value']}"

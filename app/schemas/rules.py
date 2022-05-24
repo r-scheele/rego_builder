@@ -85,6 +85,15 @@ class RequestObject(BaseModel):
                             },
                         },
                     ],
+                    [
+                        {
+                            "command": "allow_full_access",
+                            "properties": {
+                                "input_property": "groupname",
+                                "value": "EDITOR_ATAC",
+                            },
+                        }
+                    ],
                 ],
             }
         }
@@ -162,6 +171,15 @@ class UpdateRequestObject(BaseModel):
                                 "input_properties": ["preferred_username", "groupname"],
                             },
                         },
+                    ],
+                    [
+                        {
+                            "command": "allow_full_access",
+                            "properties": {
+                                "input_property": "groupname",
+                                "value": "EDITOR_ATAC",
+                            },
+                        }
                     ],
                 ],
             }
