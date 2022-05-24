@@ -162,7 +162,7 @@ class UpdateRequestObject(BaseModel):
                     ],
                     [
                         {
-                            "command": "input_prop_equals",
+                            "command": "allow_full_access",
                             "properties": {
                                 "input_property": "groupname",
                                 "value": "EDITOR_ATAC",
