@@ -30,7 +30,7 @@ def input_prop_equals(properties) -> str:
         )
     elif type(paths) == str:
         # Logic that handles equality checks e.g input.company == "geobeyond"
-        return f"input.{properties['input_property']} == {paths}"
+        return f'input.{properties["input_property"]} == "{paths}"'
 
     else:
         # Logic that handles a unique path input.request_path == ["v1", "collections", "obs", ""]
@@ -71,4 +71,4 @@ def allow_full_access(properties) -> str:
         input.preferred_username == "admin"
     }
     """
-    return f"input.{properties['input_property']} == {properties['value']}"
+    return f"input.{properties['input_property']} == " + f'"{properties["value"]}"'
