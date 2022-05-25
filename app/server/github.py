@@ -1,8 +1,6 @@
 import os
 
 import git.exc
-import requests as r
-from fastapi import HTTPException
 from git import Repo
 
 from app.config.config import settings
@@ -27,6 +25,7 @@ class GitHubOperations:
         """
         # Check if the repo already exists
         if os.path.exists(self.local_repo_path):
+            self.repo_git_path = f"{self.local_repo_path}/.git"
             return
 
         os.mkdir(self.local_repo_path)
