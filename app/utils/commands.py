@@ -9,27 +9,33 @@ def input_prop_equals(properties) -> str:
     :param value: request value
     :return:
     """
-    path_list = properties["value"]
-    if "*" in path_list and type(path_list) == list:
+    paths = properties["value"]
+    if "*" in paths and type(paths) == list:
+        # Allows all the paths, except the base path, and the exempted path variable
         result = ""
-        for index, path_variable in enumerate(path_list):
+        for index, path_variable in enumerate(paths):
+
+            # Logic that handles the wildcard flag
             result += (
                 f'input.{properties["input_property"]}[{index}] == "{path_variable}" \n  '
                 if path_variable != "*"
                 else ""
             )
         return (
+            # Logic that handles the exempted path variable input.request_path[index] != "obs"
             f"{result}"
-            + f'\n  input.{properties["input_property"]}[{len(path_list)}] != "{properties["exceptional_value"]}"'
+            + f'\n  input.{properties["input_property"]}[{len(paths)}] != "{properties["exceptional_value"]}"'
             if properties.get("exceptional_value")
             else ""
         )
-    elif type(path_list) == str:
-        return f"input.{properties['input_property']} == {json.dumps(path_list)}"
+    elif type(paths) == str:
+        # Logic that handles equality checks e.g input.company == "geobeyond"
+        return f"input.{properties['input_property']} == {paths}"
 
     else:
-        path_list.append("")
-        return f"input.{properties['input_property']} == {json.dumps(path_list)}"
+        # Logic that handles a unique path input.request_path == ["v1", "collections", "obs", ""]
+        paths.append("")
+        return f"input.{properties['input_property']} == {json.dumps(paths)}"
 
 
 def input_prop_in(properties) -> str:
@@ -40,7 +46,7 @@ def input_prop_in(properties) -> str:
     :param value: request value
     :return:
     """
-
+    # Single check in the database
     return f"input.{properties['input_property']} == data.{properties['datasource_name']}[i].{properties['datasource_loop_variable']}"
 
 
@@ -53,14 +59,16 @@ def input_prop_in_as(properties) -> str:
     :param value: request value
     :return:
     """
-
+    # Multiple checks in the database
     return f"some i \n  data.{properties['datasource_name']}[i].{properties['datasource_loop_variables'][0]} == input.{properties['input_properties'][0]} \n  data.{properties['datasource_name']}[i].{properties['datasource_loop_variables'][1]} == input.{properties['input_properties'][1]}"
 
 
 def allow_full_access(properties) -> str:
     """
-    Allow full access to the API
+    Allow full access to the API, if a property is present on the request
 
-    :return:
+    :return: allow {
+        input.preferred_username == "admin"
+    }
     """
     return f"input.{properties['input_property']} == {properties['value']}"
