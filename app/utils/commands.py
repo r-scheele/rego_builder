@@ -30,7 +30,7 @@ def input_prop_equals(properties) -> str:
         )
     elif type(paths) == str:
         # Logic that handles equality checks e.g input.company == "geobeyond"
-        return f"input.{properties['input_property']} == {paths}"
+        return f'input.{properties["input_property"]} == "{paths}"'
 
     else:
         # Logic that handles a unique path input.request_path == ["v1", "collections", "obs", ""]
