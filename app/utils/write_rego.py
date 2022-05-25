@@ -2,10 +2,11 @@ import os
 
 from app.config.config import settings
 from app.schemas.rules import RequestObject
-from app.server.github import git_push
-from app.server.github import initialize_repo
+from app.server.github import GitHubOperations
 
 from .build_rego_file import build_rego
+
+github = GitHubOperations(settings.GITHUB_URL)
 
 initiate_rule = "package httpapi.authz\nimport input\ndefault allow = false\n\n\n\n"
 
@@ -18,29 +19,22 @@ def write_to_file(rule: RequestObject) -> dict:
     """
 
     # Initialize repository
-    initialization_response = initialize_repo(settings.GITHUB_URL)
-
-    repo_path = initialization_response["repo_path"]
-    repo_git_path = initialization_response["repo_git_path"]
+    github.initialize()
 
     # Create rego file.
-    with open(f"{repo_path}/auth.rego", "w") as file:
+    with open(f"{github.local_repo_path}/auth.rego", "w") as file:
         result = initiate_rule + build_rego(rule.rules)
 
         file.write(result)
 
     # Push to GitHub
-    git_push(repo_path, repo_git_path)
+    github.push()
 
     return {"status": "success"}
 
 
 def delete_policy_file() -> bool:
-    initialization_response = initialize_repo(settings.GITHUB_URL)
-    repo_path = initialization_response["repo_path"]
-    repo_git_path = initialization_response["repo_git_path"]
-
-    file_path = f"{repo_path}/auth.rego"
+    file_path = f"{github.local_repo_path}/auth.rego"
 
     if not os.path.isfile(file_path):
         raise FileNotFoundError
@@ -49,5 +43,5 @@ def delete_policy_file() -> bool:
     file.close()
 
     # Update GitHub
-    git_push(repo_path, repo_git_path)
+    github.push()
     return True
