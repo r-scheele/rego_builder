@@ -71,4 +71,4 @@ def allow_full_access(properties) -> str:
         input.preferred_username == "admin"
     }
     """
-    return f"input.{properties['input_property']} == {properties['value']}"
+    return f"input.{properties['input_property']} == " + f'"{properties["value"]}"'
