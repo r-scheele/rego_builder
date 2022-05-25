@@ -17,12 +17,14 @@ def write_to_file(rule: RequestObject) -> dict:
     :param rule: rules
     :return: response dict to show the status of the request
     """
+    # Define file path
+    file_path = f"{github.local_repo_path}/auth.rego"
 
     # Initialize repository
     github.initialize()
 
     # Create rego file.
-    with open(f"{github.local_repo_path}/auth.rego", "w") as file:
+    with open(file_path, "w") as file:
         result = initiate_rule + build_rego(rule.rules)
 
         file.write(result)
