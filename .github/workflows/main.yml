@@ -1,0 +1,54 @@
+
+# This workflow will install Python dependencies, lint using Black, run tests using Pytest 
+name: fastapi-github-actions-test
+
+on: 
+  #Trigger the workflow on a push/pull_requests event to the main branch only
+  push: 
+    branches: [main]
+  pull_requests:
+    branches: [main]
+
+# A workflow job running sequentially
+jobs:
+  build:
+    # runs-on: defines The workflow runner
+    runs-on: ubuntu-latest 
+    # steps: defines a series of tasks executed by the Job
+    steps:
+    - uses: actions/checkout@v2
+    - run: |   # To fetch all history for all tags and branches
+        git fetch --prune --unshallow  
+
+    #Task for setting up Python 3.10 using actions/setup-python@v2 Github action
+    - name: Set up Python
+      uses: actions/setup-python@v2.3.0
+      with:
+        python-version: "3.10"
+
+
+    - name: Upgrade pip
+      run: |
+        pip install --constraint=.github/workflows/constraints.txt pip
+        pip --version
+
+
+    - name: Upgrade pip in virtual environments
+      shell: python
+      run: |
+        import os
+        import pip
+        with open(os.environ["GITHUB_ENV"], mode="a") as io:
+            print(f"VIRTUALENV_PIP={pip.__version__}", file=io)
+
+    - name: Install Poetry
+      run: |
+        pipx install --pip-args=--constraint=.github/workflows/constraints.txt poetry
+        poetry --version
+
+
+    - name: Lint with black
+      run: |
+        # Code formatting with black, check every python file in the app directory 
+        black app
+        black --check app
