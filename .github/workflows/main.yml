@@ -49,6 +49,6 @@ jobs:
 
     - name: Lint with black
       run: |
-        # Code formatting with black, check every python file in the app directory 
+        # Code formatting with black, check every python file in the app directory.
         black app
         black --check app
