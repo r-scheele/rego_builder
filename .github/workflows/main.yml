@@ -1,12 +1,12 @@
 
 # This workflow will install Python dependencies, lint using Black, run tests using Pytest 
-name: fastapi-github-actions-test
+name: rego_builder github workflow
 
 on: 
   #Trigger the workflow on a push/pull_requests event to the main branch only
   push: 
     branches: [main]
-  pull_requests:
+  pull_request:
     branches: [main]
 
 # A workflow job running sequentially
