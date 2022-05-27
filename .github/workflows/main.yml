@@ -1,0 +1,42 @@
+
+# This workflow will install Python dependencies, lint using Black, run tests using Pytest 
+name: rego_builder github workflow
+
+on: 
+  #Trigger the workflow on a push/pull_requests event to the main branch only
+  push: 
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# A workflow job running sequentially
+jobs:
+  build:
+    # runs-on: defines The workflow runner
+    runs-on: ubuntu-latest 
+    # steps: defines a series of tasks executed by the Job
+    defaults:
+      run:
+        working-directory: ./
+    steps:
+    #Task for setting up Python 3.10 using actions/setup-python@v2 Github action
+    - name: Set up Python
+      uses: actions/setup-python@v2.3.0
+      with:
+        python-version: "3.10"
+
+
+
+    - name: Upgrade pip in virtual environments
+      shell: python
+      run: |
+        import os
+        import pip
+        with open(os.environ["GITHUB_ENV"], mode="a") as io:
+            print(f"VIRTUALENV_PIP={pip.__version__}", file=io)
+
+
+    - name: Format code with Black
+      uses: rickstaa/action-black@v1
+      with:
+        black_args: ". --check"

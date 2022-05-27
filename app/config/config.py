@@ -6,6 +6,7 @@ from pydantic import BaseSettings
 class Settings(BaseSettings):
     BASE_PATH: Optional[str] = ""
     DATABASE_PATH: Optional[str] = ""
+    TEST_DATABASE_PATH: Optional[str] = ""
     GITHUB_ACCESS_TOKEN: Optional[str] = ""
     GITHUB_USERNAME: Optional[str] = ""
     GITHUB_URL: Optional[str] = ""

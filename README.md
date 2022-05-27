@@ -11,6 +11,11 @@ This API is responsible for converting JSON variables to REGO which in turn is u
 ```console
 $ poetry shell && poetry install
 ```
+### Test the github actions workflow with the following command:
+
+```console
+act --container-architecture linux/amd64
+```
 
 - Configure your environment variables:
 

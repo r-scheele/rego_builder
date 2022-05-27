@@ -4,28 +4,31 @@ from fastapi import HTTPException
 from tinydb import Query
 from tinydb import TinyDB
 
-database = TinyDB(settings.DATABASE_PATH)
-store = Query()
+
+class PolicyDatabase:
+    def __init__(self, database_url: str):
+        self.database = TinyDB(database_url)
+        self.store = Query()
+
+    def get_policy(self, policy_name: str) -> dict:
+        return self.database.get(self.store.name == policy_name)
+
+    def add_policy(self, policy: RequestObject) -> None:
+        if self.get_policy(policy.name):
+            raise HTTPException(
+                status_code=409, detail="Policy with supplied name exists."
+            )
+        self.database.insert(policy.dict())
+
+    def update_policy(self, policy_name: str, policy: dict) -> None:
+        self.database.update(policy, self.store.name == policy_name)
+
+    def exists(self, policy_name: str) -> bool:
+        return self.database.contains(self.store.name == policy_name)
+
+    def delete_policy(self, policy_name: str) -> None:
+        self.database.remove(self.store.name == policy_name)
 
 
-def get_policy(policy_name: str) -> dict:
-    policy = database.get(store.name == policy_name)
-    return policy
-
-
-def add_policy(policy: RequestObject) -> None:
-    if get_policy(policy.name):
-        raise HTTPException(status_code=409, detail="Policy with supplied name exists.")
-    database.insert(policy.dict())
-
-
-def update_policy(policy_name: str, policy: dict) -> None:
-    database.update(policy, store.name == policy_name)
-
-
-def exists(policy_name: str) -> bool:
-    return database.contains(store.name == policy_name)
-
-
-def delete_policy(policy_name: str) -> None:
-    database.remove(store.name == policy_name)
+def get_db():
+    return PolicyDatabase(settings.DATABASE_PATH)
