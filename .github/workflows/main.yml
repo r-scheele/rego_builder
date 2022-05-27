@@ -35,11 +35,6 @@ jobs:
         with open(os.environ["GITHUB_ENV"], mode="a") as io:
             print(f"VIRTUALENV_PIP={pip.__version__}", file=io)
 
-    - name: Install Poetry
-      run: |
-        pip install poetry
-        poetry --version
-
 
     - name: Format code with Black
       uses: rickstaa/action-black@v1

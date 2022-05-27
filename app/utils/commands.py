@@ -24,7 +24,7 @@ def input_prop_equals(properties) -> str:
         return (
             # Logic that handles the exempted path variable input.request_path[index] != "obs"
             f"{result}"
-            + f'\n  input.{properties["input_property"]}[{len(paths)}] != "{properties["exceptional_value"]}"'
+            + f'\n  input.{properties["input_property"]}[{len(paths)-1}] != "{properties["exceptional_value"]}"'
             if properties.get("exceptional_value")
             else ""
         )
