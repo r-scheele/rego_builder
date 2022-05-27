@@ -5,7 +5,6 @@ from app.schemas.rules import RequestObject
 from app.server.github import GitHubOperations
 
 from .build_rego_file import build_rego
-from .validate_rego import validate_policy
 
 github = GitHubOperations(settings.GITHUB_URL)
 
@@ -26,10 +25,7 @@ def write_to_file(rule: RequestObject) -> dict:
 
     result = initiate_rule + build_rego(rule.rules)
 
-    res = True  # TODO: Validate rego file
-    # res = validate_policy(result)
-
-    if res:
+    if result:
         with open(file_path, "w") as file:
             file.write(result)
         # Update GitHub
