@@ -13,7 +13,7 @@ app = FastAPI()
 database = PolicyDatabase(settings.DATABASE_PATH)
 
 
-@app.post("/policy/")
+@app.post("/policies/")
 async def write_policy(rego_rule: RequestObject, database=Depends(get_db)) -> dict:
 
     response = write_to_file(rego_rule)
@@ -26,27 +26,27 @@ async def write_policy(rego_rule: RequestObject, database=Depends(get_db)) -> di
         raise HTTPException(status_code=400, detail=response["message"])
 
 
-@app.get("/policy/{policy}")
-async def retrieve_policy(policy: str, database=Depends(get_db)) -> dict:
-    stored_policy = database.get_policy(policy)
+@app.get("/policies/{policy_id}")
+async def retrieve_policy(policy_id: str, database=Depends(get_db)) -> dict:
+    stored_policy = database.get_policy(policy_id)
     return stored_policy
 
 
-@app.put("/policy/{policy}")
+@app.put("/policies/{policy_id}")
 async def modify_policy(
-    policy: str, rego_rule: UpdateRequestObject, database=Depends(get_db)
+    policy_id: str, rego_rule: UpdateRequestObject, database=Depends(get_db)
 ) -> dict:
-    if not database.exists(policy):
+    if not database.exists(policy_id):
         raise HTTPException(status_code=404, detail="Policy not found")
 
     # Clean out fields which weren't updated.
     rego_rule = {k: v for k, v in rego_rule.dict().items() if v is not None}
 
     # Update database
-    database.update_policy(policy, rego_rule)
+    database.update_policy(policy_id, rego_rule)
 
     # Retrieve updated policy
-    updated_policy = database.get_policy(policy)
+    updated_policy = database.get_policy(policy_id)
 
     # Rewrite rego file and update GitHub
     write_to_file(RequestObject(**updated_policy))
@@ -54,10 +54,10 @@ async def modify_policy(
     return {"status": 200, "message": "Updated successfully"}
 
 
-@app.delete("/policy/{policy}")
-async def remove_policy(policy: str, database=Depends(get_db)) -> dict:
+@app.delete("/policies/{policy_id}")
+async def remove_policy(policy_id: str, database=Depends(get_db)) -> dict:
     # Remove policy from database
-    database.delete_policy(policy)
+    database.delete_policy(policy_id)
 
     # Delete file from path
     delete_policy_file()
