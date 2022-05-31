@@ -23,16 +23,16 @@ def write_to_file(rule: RequestObject) -> dict:
     # Initialize repository
     github.initialize()
 
-    # Create rego file.
-    with open(file_path, "w") as file:
-        result = initiate_rule + build_rego(rule.rules)
+    result = initiate_rule + build_rego(rule.rules)
 
-        file.write(result)
+    if result:
+        with open(file_path, "w") as file:
+            file.write(result)
+        # Update GitHub
+        github.push()
+        return {"status": "success", "message": "Policy successfully written to file"}
 
-    # Push to GitHub
-    github.push()
-
-    return {"status": "success"}
+    return {"status": "error", "message": "Policy is invalid"}
 
 
 def delete_policy_file() -> bool:

@@ -24,13 +24,13 @@ def input_prop_equals(properties) -> str:
         return (
             # Logic that handles the exempted path variable input.request_path[index] != "obs"
             f"{result}"
-            + f'\n  input.{properties["input_property"]}[{len(paths)}] != "{properties["exceptional_value"]}"'
+            + f'\n  input.{properties["input_property"]}[{len(paths)-1}] != "{properties["exceptional_value"]}"'
             if properties.get("exceptional_value")
             else ""
         )
     elif type(paths) == str:
         # Logic that handles equality checks e.g input.company == "geobeyond"
-        return f"input.{properties['input_property']} == {paths}"
+        return f'input.{properties["input_property"]} == "{paths}"'
 
     else:
         # Logic that handles a unique path input.request_path == ["v1", "collections", "obs", ""]
@@ -71,4 +71,4 @@ def allow_full_access(properties) -> str:
         input.preferred_username == "admin"
     }
     """
-    return f"input.{properties['input_property']} == {properties['value']}"
+    return f"input.{properties['input_property']} == " + f'"{properties["value"]}"'

@@ -50,23 +50,7 @@ class RequestObject(BaseModel):
                             "command": "input_prop_equals",
                             "properties": {
                                 "input_property": "request_path",
-                                "value": ["v1", "collections"],
-                            },
-                        },
-                        {
-                            "command": "input_prop_equals",
-                            "properties": {
-                                "input_property": "request_path",
-                                "value": ["v1", "collections", "lakes"],
-                            },
-                        },
-                    ],
-                    [
-                        {
-                            "command": "input_prop_equals",
-                            "properties": {
-                                "input_property": "request_path",
-                                "value": ["v1", "collections", "*"],
+                                "value": ["v1", "collections", "obs", "*"],
                             },
                         },
                         {
@@ -93,6 +77,38 @@ class RequestObject(BaseModel):
                                 "value": "EDITOR_ATAC",
                             },
                         }
+                    ],
+                    [
+                        {
+                            "command": "input_prop_equals",
+                            "properties": {
+                                "input_property": "groupname",
+                                "value": ["v1", "collections", "test-data"],
+                            },
+                        },
+                        {
+                            "command": "allow_full_access",
+                            "properties": {
+                                "input_property": "name",
+                                "value": "admin",
+                            },
+                        },
+                    ],
+                    [
+                        {
+                            "command": "input_prop_equals",
+                            "properties": {
+                                "input_property": "request_path",
+                                "value": ["v1", "collections", "lakes"],
+                            },
+                        },
+                        {
+                            "command": "allow_full_access",
+                            "properties": {
+                                "input_property": "groupname",
+                                "value": "admin",
+                            },
+                        },
                     ],
                 ],
             }
