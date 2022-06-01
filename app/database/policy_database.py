@@ -16,7 +16,7 @@ class PolicyDatabase:
     def add_policy(self, policy: RequestObject) -> None:
         if self.get_policy(policy["name"]):
             raise HTTPException(
-                status_code=409, detail="Policy with supplied name exists."
+                status_code=409, detail="Rules with the same name already exist"
             )
         self.database.insert(policy)
 

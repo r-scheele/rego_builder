@@ -24,18 +24,21 @@ def write_to_file(rule, operation: str = "write") -> dict:
 
     rule = {key: value for key, value in rule.items()}
 
-    # read the file
-    with open(file_path, "r") as file:
-        data = file.read() if operation == "write" else rule["old_state"]
-        result = (
-            data + build_rego(rule["rules"])
-            if data
-            else initiate_rule + build_rego(rule["rules"])
-        )
+    # check if the file exists
+    if os.path.exists(file_path):
+        # read the file
+        with open(file_path, "r") as file:
+            data = file.read() if operation == "write" else rule["old_state"]
+    else:
+        # create the file
+        with open(file_path, "w") as file:
+            data = initiate_rule
 
-        if result:
-            with open(file_path, "w") as file:
-                file.write(result)
+    result = data + build_rego(rule["rules"])
+
+    if result:
+        with open(file_path, "w") as file:
+            file.write(result)
             # Update GitHub
             github.push()
             return {
