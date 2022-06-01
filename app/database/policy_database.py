@@ -14,11 +14,11 @@ class PolicyDatabase:
         return self.database.get(self.store.name == policy_name)
 
     def add_policy(self, policy: RequestObject) -> None:
-        if self.get_policy(policy.name):
+        if self.get_policy(policy["name"]):
             raise HTTPException(
                 status_code=409, detail="Policy with supplied name exists."
             )
-        self.database.insert(policy.dict())
+        self.database.insert(policy)
 
     def update_policy(self, policy_name: str, policy: dict) -> None:
         self.database.update(policy, self.store.name == policy_name)

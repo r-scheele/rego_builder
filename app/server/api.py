@@ -16,12 +16,18 @@ database = PolicyDatabase(settings.DATABASE_PATH)
 @app.post("/policies/")
 async def write_policy(rego_rule: RequestObject, database=Depends(get_db)) -> dict:
 
-    response = write_to_file(rego_rule)
+    rego_rule = rego_rule.dict()
+    response = write_to_file(rego_rule, operation="write")
 
     if response["status"] == "success":
+        rego_rule["old_state"] = response["old_state"]
         database.add_policy(rego_rule)
         response["state"] = rego_rule
-        return {"status": 200, "message": "Policy created successfully"}
+        return {
+            "status": 200,
+            "message": "Policy created successfully",
+            "state": rego_rule,
+        }
     else:
         raise HTTPException(status_code=400, detail=response["message"])
 
@@ -49,7 +55,10 @@ async def modify_policy(
     updated_policy = database.get_policy(policy_id)
 
     # Rewrite rego file and update GitHub
-    write_to_file(RequestObject(**updated_policy))
+    write_to_file(
+        updated_policy,
+        operation="update",
+    )
 
     return {"status": 200, "message": "Updated successfully"}
 
