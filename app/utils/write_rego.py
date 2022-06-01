@@ -1,5 +1,4 @@
 import os
-
 from app.config.config import settings
 from app.schemas.rules import RequestObject
 from app.server.github import GitHubOperations
@@ -11,7 +10,7 @@ github = GitHubOperations(settings.GITHUB_URL)
 initiate_rule = "package httpapi.authz\nimport input\ndefault allow = false\n\n\n\n"
 
 
-def write_to_file(rule: RequestObject) -> dict:
+def write_to_file(rule, operation: str = "write") -> dict:
     """
     Write the rego file to the local git repository
     :param rule: rules
@@ -23,14 +22,27 @@ def write_to_file(rule: RequestObject) -> dict:
     # Initialize repository
     github.initialize()
 
-    result = initiate_rule + build_rego(rule.rules)
+    rule = {key: value for key, value in rule.items()}
 
-    if result:
-        with open(file_path, "w") as file:
-            file.write(result)
-        # Update GitHub
-        github.push()
-        return {"status": "success", "message": "Policy successfully written to file"}
+    # read the file
+    with open(file_path, "r") as file:
+        data = file.read() if operation == "write" else rule["old_state"]
+        result = (
+            data + build_rego(rule["rules"])
+            if data
+            else initiate_rule + build_rego(rule["rules"])
+        )
+
+        if result:
+            with open(file_path, "w") as file:
+                file.write(result)
+            # Update GitHub
+            github.push()
+            return {
+                "status": "success",
+                "message": "Policy successfully written to file",
+                "old_state": data,
+            }
 
     return {"status": "error", "message": "Policy is invalid"}
 
