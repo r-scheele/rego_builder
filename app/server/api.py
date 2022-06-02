@@ -18,18 +18,13 @@ async def write_policy(rego_rule: RequestObject, database=Depends(get_db)) -> di
 
     rego_rule = rego_rule.dict()
     database.add_policy(rego_rule)
-    response = write_to_file(rego_rule, operation="write")
+    write_to_file(rego_rule, operation="write")
 
-    if response["status"] == "success":
-        rego_rule["old_state"] = response["old_state"]
-        response["state"] = rego_rule
-        return {
-            "status": 200,
-            "message": "Policy created successfully",
-            "state": rego_rule,
-        }
-    else:
-        raise HTTPException(status_code=400, detail=response["message"])
+    return {
+        "status": 200,
+        "message": "Policy created successfully",
+        "state": rego_rule,
+    }
 
 
 @app.get("/policies/{policy_id}")

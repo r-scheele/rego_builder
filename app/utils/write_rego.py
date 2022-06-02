@@ -39,11 +39,6 @@ def write_to_file(rule, operation: str = "write") -> dict:
         file.write(result)
     # Update GitHub
     github.push()
-    return {
-        "status": "success",
-        "message": "Policy successfully written to file",
-        "old_state": old_rule,
-    }
 
 
 def delete_policy_file() -> bool:
