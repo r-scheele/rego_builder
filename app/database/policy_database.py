@@ -19,6 +19,7 @@ class PolicyDatabase:
                 status_code=409, detail="Rules with the same name already exist"
             )
         self.database.insert(policy)
+        return policy
 
     def update_policy(self, policy_name: str, policy: dict) -> None:
         self.database.update(policy, self.store.name == policy_name)

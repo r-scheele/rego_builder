@@ -17,11 +17,11 @@ database = PolicyDatabase(settings.DATABASE_PATH)
 async def write_policy(rego_rule: RequestObject, database=Depends(get_db)) -> dict:
 
     rego_rule = rego_rule.dict()
+    database.add_policy(rego_rule)
     response = write_to_file(rego_rule, operation="write")
 
     if response["status"] == "success":
         rego_rule["old_state"] = response["old_state"]
-        database.add_policy(rego_rule)
         response["state"] = rego_rule
         return {
             "status": 200,

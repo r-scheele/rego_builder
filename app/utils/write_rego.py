@@ -26,28 +26,24 @@ def write_to_file(rule, operation: str = "write") -> dict:
 
     # check if the file exists
     if os.path.exists(file_path):
-        # read the file
         with open(file_path, "r") as file:
-            data = file.read() if operation == "write" else rule["old_state"]
+            data = file.read()
+            old_rule = data if operation == "write" and data else initiate_rule
+
     else:
-        # create the file
-        with open(file_path, "w") as file:
-            data = initiate_rule
+        # write the file
+        old_rule = initiate_rule
+    result = old_rule + build_rego(rule["rules"])
 
-    result = data + build_rego(rule["rules"])
-
-    if result:
-        with open(file_path, "w") as file:
-            file.write(result)
-            # Update GitHub
-            github.push()
-            return {
-                "status": "success",
-                "message": "Policy successfully written to file",
-                "old_state": data,
-            }
-
-    return {"status": "error", "message": "Policy is invalid"}
+    with open(file_path, "w") as file:
+        file.write(result)
+    # Update GitHub
+    github.push()
+    return {
+        "status": "success",
+        "message": "Policy successfully written to file",
+        "old_state": old_rule,
+    }
 
 
 def delete_policy_file() -> bool:
