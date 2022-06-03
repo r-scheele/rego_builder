@@ -1,3 +1,5 @@
+from starlette.middleware.cors import CORSMiddleware
+
 from app.database.policy_database import PolicyDatabase, get_db
 
 from app.config.config import settings
@@ -9,6 +11,18 @@ from fastapi import FastAPI, Depends, HTTPException
 from fastapi import HTTPException
 
 app = FastAPI()
+
+origins = [
+    "https://vxqxlt.csb.app/"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 database = PolicyDatabase(settings.DATABASE_PATH)
 
