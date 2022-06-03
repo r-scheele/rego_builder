@@ -50,7 +50,7 @@ class GitHubOperations:
             if remotes[0].name != "origin":
                 repo.create_remote("origin", target_url)
             origin = repo.remote(name="origin")
-            origin.pull()
+            origin.fetch()
             origin.push()
         except git.GitCommandError:
             raise git.GitCommandError

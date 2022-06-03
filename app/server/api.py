@@ -20,11 +20,7 @@ async def write_policy(rego_rule: RequestObject, database=Depends(get_db)) -> di
     database.add_policy(rego_rule)
     write_to_file(rego_rule, operation="write")
 
-    return {
-        "status": 200,
-        "message": "Policy created successfully",
-        "state": rego_rule,
-    }
+    return {"status": 200}
 
 
 @app.get("/policies/{policy_id}")

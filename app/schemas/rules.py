@@ -65,7 +65,10 @@ class RequestObject(BaseModel):
                             "properties": {
                                 "datasource_name": "items",
                                 "datasource_loop_variables": ["name", "groupname"],
-                                "input_properties": ["preferred_username", "groupname"],
+                                "data_input_properties": [
+                                    "preferred_username",
+                                    "groupname",
+                                ],
                             },
                         },
                     ],
@@ -184,7 +187,10 @@ class UpdateRequestObject(BaseModel):
                             "properties": {
                                 "datasource_name": "items",
                                 "datasource_loop_variables": ["name", "everyone"],
-                                "input_properties": ["preferred_username", "groupname"],
+                                "data_input_properties": [
+                                    "preferred_username",
+                                    "groupname",
+                                ],
                             },
                         },
                     ],
