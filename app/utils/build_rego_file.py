@@ -8,10 +8,7 @@ def build_rego(data) -> str:
     :return: long rego string to write to file
     """
     output = ""
-
-    rules = [[line.dict() for line in rule] for rule in data]
-
-    for rule in rules:
+    for rule in data:
         output += "allow {\n"
         for command in rule:
             func = commands_map[command["command"]]
