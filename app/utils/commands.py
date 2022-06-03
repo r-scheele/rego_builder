@@ -60,7 +60,7 @@ def input_prop_in_as(properties) -> str:
     :return:
     """
     # Multiple checks in the database
-    return f"some i \n  data.{properties['datasource_name']}[i].{properties['datasource_loop_variables'][0]} == input.{properties['input_properties'][0]} \n  data.{properties['datasource_name']}[i].{properties['datasource_loop_variables'][1]} == input.{properties['input_properties'][1]}"
+    return f"some i \n  data.{properties['datasource_name']}[i].{properties['datasource_loop_variables'][0]} == input.{properties['data_input_properties'][0]} \n  data.{properties['datasource_name']}[i].{properties['datasource_loop_variables'][1]} == input.{properties['data_input_properties'][1]}"
 
 
 def allow_full_access(properties) -> str:
