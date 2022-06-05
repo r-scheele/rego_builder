@@ -14,7 +14,8 @@ default_path = settings.BASE_PATH
 
 class GitHubOperations:
     def __init__(self, repo_url: str):
-        self.repo_url = repo_url
+        self.repo_url = repo_url.lstrip("https://")
+        self.complete_repo_url = f"https://{settings.GITHUB_USERNAME}:{settings.GITHUB_ACCESS_TOKEN}@{self.repo_url}"
         self.repo_name = repo_url.removesuffix(".git").split("/")[-1]
         self.local_repo_path = f"{default_path}/{self.repo_name}"
         self.repo_git_path = ""
@@ -31,7 +32,7 @@ class GitHubOperations:
         os.mkdir(self.local_repo_path)
 
         # Clone the repo to the server
-        initialized_repo = Repo.clone_from(self.repo_url, self.local_repo_path)
+        initialized_repo = Repo.clone_from(self.complete_repo_url, self.local_repo_path)
         self.repo_git_path = initialized_repo.git_dir
 
     def push(self):
