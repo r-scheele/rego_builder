@@ -1,16 +1,24 @@
-from app.database.policy_database import PolicyDatabase, get_db
-
+from fastapi import Depends, FastAPI, HTTPException
+from starlette.responses import RedirectResponse
 from app.config.config import settings
-from app.schemas.rules import RequestObject
-from app.schemas.rules import UpdateRequestObject
-from app.utils.write_rego import delete_policy_file
-from app.utils.write_rego import write_to_file
-from fastapi import FastAPI, Depends, HTTPException
-from fastapi import HTTPException
+from app.database.policy_database import PolicyDatabase, get_db
+from app.schemas.rules import RequestObject, UpdateRequestObject
+from app.utils.write_rego import delete_policy_file, write_to_file
+import os
+from app.server.login import router as auth_router
+
+default_path = settings.BASE_PATH
+
+
+def init_dir() -> None:
+    if not os.path.exists(default_path):
+        os.mkdir(default_path)
+
+
+init_dir()
 
 app = FastAPI()
-
-database = PolicyDatabase(settings.DATABASE_PATH)
+app.include_router(auth_router)
 
 
 @app.post("/policies/")

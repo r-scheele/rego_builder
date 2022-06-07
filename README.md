@@ -30,7 +30,7 @@ GITHUB_URL=<your_github_url where the authorization code lives>
 - Run the application from the entry point
 
 ```console
-$ python main.py
+$ export PYTHONPATH=$PWD && python app/main.py
 ```
 
 Open [localhost:8000/docs](localhost:8000/docs) for API Documentation

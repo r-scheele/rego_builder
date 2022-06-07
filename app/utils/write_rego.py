@@ -1,6 +1,6 @@
 import os
+
 from app.config.config import settings
-from app.schemas.rules import RequestObject
 from app.server.github import GitHubOperations
 
 from .build_rego_file import build_rego

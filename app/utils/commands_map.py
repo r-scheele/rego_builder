@@ -1,8 +1,8 @@
 from .commands import (
+    allow_full_access,
     input_prop_equals,
     input_prop_in,
     input_prop_in_as,
-    allow_full_access,
 )
 
 commands_map = {

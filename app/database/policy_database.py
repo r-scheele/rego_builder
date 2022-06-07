@@ -1,8 +1,8 @@
-from app.config.config import settings
-from app.schemas.rules import RequestObject
 from fastapi import HTTPException
-from tinydb import Query
-from tinydb import TinyDB
+from tinydb import Query, TinyDB
+
+from app.config.config import settings
+from app.schemas.rules import RequestObject, UpdateRequestObject
 
 
 class PolicyDatabase:
