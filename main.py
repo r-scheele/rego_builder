@@ -1,5 +1,7 @@
 import os
+
 import uvicorn
+
 from app.config.config import settings
 
 default_path = settings.BASE_PATH
