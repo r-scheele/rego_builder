@@ -15,7 +15,7 @@ default_path = settings.BASE_PATH
 class GitHubOperations:
     def __init__(self, repo_url: str):
         self.repo_url = repo_url.lstrip("https://")
-        self.complete_repo_url = f"https://{settings.GITHUB_USERNAME}:{settings.GITHUB_ACCESS_TOKEN}@{self.repo_url}"
+        self.complete_repo_url = f"https://{settings.GITHUB_ACCESS_TOKEN}@{self.repo_url}"
         self.repo_name = repo_url.removesuffix(".git").split("/")[-1]
         self.local_repo_path = f"{default_path}/{self.repo_name}"
         self.repo_git_path = ""
@@ -40,7 +40,7 @@ class GitHubOperations:
         Push the changes to the remote repository
         """
         try:
-            target_url = settings.GITHUB_URL
+            target_url = self.complete_repo_url
             repo = Repo(self.repo_git_path)
             repo.git.add(update=True)
             repo.index.add([f"{self.local_repo_path}/auth.rego"])
@@ -53,5 +53,5 @@ class GitHubOperations:
             origin = repo.remote(name="origin")
             origin.fetch()
             origin.push()
-        except git.GitCommandError:
-            raise git.GitCommandError
+        except Exception:
+            raise Exception
