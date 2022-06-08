@@ -12,6 +12,8 @@ class Settings(BaseSettings):
     GITHUB_URL: Optional[str] = ""
     CLIENT_ID: Optional[str] = ""
     CLIENT_SECRET: Optional[str] = ""
+    SECRET_KEY: Optional[str] = ""
+    ALGORITHM: Optional[str] = ""
 
     class Config:
         env_file = ".env"

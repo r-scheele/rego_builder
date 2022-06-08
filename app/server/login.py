@@ -3,7 +3,7 @@ import json
 import requests as r
 from fastapi import APIRouter
 from starlette.responses import RedirectResponse
-
+from jose import jwt
 from app.config.config import settings
 
 router = APIRouter()
@@ -32,4 +32,5 @@ def get_token(code: str):
             "code": code,
         },
     )
-    return json.loads(res.text)
+    result = json.loads(res.text)["access_token"]
+    return {"acess_token": result}

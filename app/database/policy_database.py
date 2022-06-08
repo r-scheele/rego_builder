@@ -30,6 +30,9 @@ class PolicyDatabase:
     def delete_policy(self, policy_name: str) -> None:
         self.database.remove(self.store.name == policy_name)
 
+    def get_policies(self) -> list:
+        return self.database.all()
+
 
 def get_db():
     return PolicyDatabase(settings.DATABASE_PATH)

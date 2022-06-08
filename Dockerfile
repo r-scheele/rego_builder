@@ -1,13 +1,15 @@
-FROM python:3.10
+FROM python:3.10 as python-base
 
-WORKDIR /app
 
-ADD . .
+RUN mkdir rego_builder
+WORKDIR /rego_builder
+COPY /app rego_builder/app
+COPY pyproject.toml /rego_builder
+COPY /main.py /rego_builder/main.py 
 
-RUN pip install -r requirements.txt
+RUN pip3 install poetry
+RUN poetry config virtualenvs.create false
+RUN poetry install --no-dev
 
-EXPOSE 8080
-
-COPY . /app
-
+RUN export PYTHONPATH=${PWD} 
 CMD ["python3", "main.py"]
