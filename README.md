@@ -35,7 +35,7 @@ $ python3 main.py
 
 - Run the application from the docker image
 ```console
-$ docker run rego_builder_web
+$ docker run rscheele3214/rego_builder
 ```
 
 Open [localhost:8000/docs](localhost:8000/docs) for API Documentation
