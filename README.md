@@ -30,7 +30,12 @@ GITHUB_URL=<your_github_url where the authorization code lives>
 - Run the application from the entry point
 
 ```console
-$ export PYTHONPATH=$PWD && python app/main.py
+$ python3 main.py
+```
+
+- Run the application from the docker image
+```console
+$ docker run rego_builder_web
 ```
 
 Open [localhost:8000/docs](localhost:8000/docs) for API Documentation

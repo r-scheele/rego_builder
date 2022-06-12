@@ -85,6 +85,8 @@ async def modify_policy(
 async def remove_policy(
     policy_id: str, database=Depends(get_db), dependencies=Depends(JWTBearer())
 ) -> dict:
+    if not database.exists(policy_id):
+        raise HTTPException(status_code=404, detail="Policy not found")
     # Remove policy from database
     database.delete_policy(policy_id)
 
