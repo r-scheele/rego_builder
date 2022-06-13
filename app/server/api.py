@@ -13,13 +13,6 @@ from app.utils.write_rego import delete_policy_file, write_to_file
 default_path = settings.BASE_PATH
 
 
-def init_dir() -> None:
-    if not os.path.exists(default_path):
-        os.mkdir(default_path)
-
-
-init_dir()
-
 app = FastAPI(swagger_ui_parameters={"syntaxHighlight.theme": "obsidian"})
 app.include_router(auth_router)
 
