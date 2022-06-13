@@ -1,13 +1,10 @@
-from jose import jwt
-from app.config.config import settings
-import requests as r
-
-
 import json
+
 import requests as r
 from fastapi import APIRouter
-from starlette.responses import RedirectResponse
 from jose import jwt
+from starlette.responses import RedirectResponse
+
 from app.config.config import settings
 
 router = APIRouter()
