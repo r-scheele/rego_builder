@@ -6,8 +6,8 @@ from starlette.responses import RedirectResponse
 from app.config.config import settings
 from app.database.policy_database import PolicyDatabase, get_db
 from app.schemas.rules import RequestObject, UpdateRequestObject
-from app.server.authenticate import router as auth_router
-from app.server.authorize import JWTBearer
+from app.server.auth.authenticate import router as auth_router
+from app.server.auth.authorize import JWTBearer
 from app.utils.write_rego import delete_policy_file, write_to_file
 
 default_path = settings.BASE_PATH
