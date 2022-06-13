@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     CLIENT_SECRET: Optional[str] = ""
     SECRET_KEY: Optional[str] = ""
     ALGORITHM: Optional[str] = ""
+    ENVIRONMENT: Optional[str] = "production"
 
     class Config:
         env_file = ".env"

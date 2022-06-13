@@ -38,6 +38,16 @@ $ python3 main.py
 $ docker run rscheele3214/rego_builder
 ```
 
+- Run the application from the docker image - development mode
+```console
+$ docker-compose -f docker-compose.dev.yml up -d
+```
+
+- Stop the running container
+```console
+docker-compose -f docker-compose.dev.yml down
+```
+
 Open [localhost:8000/docs](localhost:8000/docs) for API Documentation
 
 ## Example
