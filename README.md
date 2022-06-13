@@ -25,6 +25,11 @@ DATABASE_PATH = /tmp/fastgeoapi/database.json
 GITHUB_ACCESS_TOKEN=`cat ~/.github_access_token`
 GITHUB_USERNAME=<your_github_username>
 GITHUB_URL=<your_github_url where the authorization code lives>
+CLIENT_ID=<your_github_client_id>
+CLIENT_SECRET=<your_github_client_secret>
+SECRET_KEY=<your_secret_key>
+ALGORITHM=<your_algorithm e.g HS256>
+ENVIRONMENT=<your_environment e.g. production|development>
 ```
 
 - Run the application from the entry point
@@ -35,10 +40,10 @@ $ python3 main.py
 
 - Run the application from the docker image
 ```console
-$ docker run rscheele3214/rego_builder
+$ docker pull rscheele3214/rego_builder
 ```
 
-- Run the application from the docker image - development mode
+- Build the docker image, and run the application
 ```console
 $ docker-compose -f docker-compose.dev.yml up -d
 ```
