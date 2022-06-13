@@ -6,8 +6,6 @@ from app.config.config import settings
 
 default_path = settings.BASE_PATH
 
-print(settings.ENVIRONMENT)
-
 
 def init_dir() -> None:
     if not os.path.exists(default_path):
