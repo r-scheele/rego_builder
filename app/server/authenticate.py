@@ -23,7 +23,7 @@ def authorize():
 
 
 @router.get("/token")
-def get_token(code: str):
+def get_token(code: str) -> dict:
     res = r.post(
         url="https://github.com/login/oauth/access_token",
         headers={"Accept": "application/json"},
@@ -39,7 +39,7 @@ def get_token(code: str):
     return {"acess_token": access_token, "expires_in": expires_in}
 
 
-def verify_token(acess_token: str):
+def verify_token(acess_token: str) -> dict:
 
     """
     Authenticate a user.

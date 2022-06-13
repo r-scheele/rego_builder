@@ -27,7 +27,7 @@ app.include_router(auth_router)
 @app.get("/policies")
 async def get_policies(
     database: PolicyDatabase = Depends(get_db), dependencies=Depends(JWTBearer())
-):
+) -> list:
     return database.get_policies()
 
 
