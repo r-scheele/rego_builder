@@ -36,10 +36,10 @@ def get_token(code: str) -> dict:
     res = json.loads(res.text)
     access_token, expires_in = res["access_token"], res["expires_in"]
 
-    return {"acess_token": access_token, "expires_in": expires_in}
+    return {"access_token": access_token, "expires_in": expires_in}
 
 
-def verify_token(acess_token: str) -> dict:
+def verify_token(access_token: str) -> dict:
 
     """
     Authenticate a user.
@@ -47,7 +47,7 @@ def verify_token(acess_token: str) -> dict:
 
     # Send request to the GitHub API to check if the user is valid.
     url = "https://api.github.com/user"
-    headers = {"Authorization": f"token {acess_token}"}
+    headers = {"Authorization": f"token {access_token}"}
     res = r.get(url, headers=headers)
     # If the user is valid, return the user's information.
     if res.status_code == 200:
