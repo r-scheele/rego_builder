@@ -51,6 +51,9 @@ def verify_token(access_token: str) -> dict:
     res = r.get(url, headers=headers)
     # If the user is valid, return the user's information.
     if res.status_code == 200:
-        return res.json()
+        return {
+            "access_token": access_token,
+            "user": res.json()
+        }
     # If the user is not valid, return an error message.
     return {"error": "Invalid token."}
