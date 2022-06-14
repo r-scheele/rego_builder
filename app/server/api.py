@@ -16,7 +16,10 @@ default_path = settings.BASE_PATH
 
 app = FastAPI(swagger_ui_parameters={"syntaxHighlight.theme": "obsidian"})
 
-origins = ["*"]
+
+origins = [
+    "*"
+]
 
 app.add_middleware(
     CORSMiddleware,
