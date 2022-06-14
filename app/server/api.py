@@ -1,14 +1,20 @@
-from fastapi import FastAPI, Depends
-from fastapi import HTTPException
+import os
+
+from fastapi import Depends, FastAPI, HTTPException
+from starlette.responses import RedirectResponse
 from starlette.middleware.cors import CORSMiddleware
 
-from app.database.policy_database import get_db
-from app.schemas.rules import RequestObject
-from app.schemas.rules import UpdateRequestObject
-from app.utils.write_rego import delete_policy_file
-from app.utils.write_rego import write_to_file
+from app.config.config import settings
+from app.database.policy_database import PolicyDatabase, get_db
+from app.schemas.rules import RequestObject, UpdateRequestObject
+from app.server.auth.authenticate import router as auth_router
+from app.server.auth.authorize import JWTBearer
+from app.utils.write_rego import delete_policy_file, write_to_file
 
-app = FastAPI()
+default_path = settings.BASE_PATH
+
+
+app = FastAPI(swagger_ui_parameters={"syntaxHighlight.theme": "obsidian"})
 
 origins = [
     "*"
@@ -23,8 +29,23 @@ app.add_middleware(
 )
 
 
+app.include_router(auth_router)
+
+
+@app.get("/policies")
+async def get_policies(
+    database: PolicyDatabase = Depends(get_db), dependencies=Depends(JWTBearer())
+) -> list:
+    return database.get_policies()
+
+
 @app.post("/policies/")
-async def write_policy(rego_rule: RequestObject, database=Depends(get_db)) -> dict:
+async def write_policy(
+    rego_rule: RequestObject,
+    database=Depends(get_db),
+    dependencies=Depends(JWTBearer()),
+) -> dict:
+    # We can add the authentication here or
     rego_rule = rego_rule.dict()
     database.add_policy(rego_rule)
     write_to_file(rego_rule, operation="write")
@@ -33,14 +54,19 @@ async def write_policy(rego_rule: RequestObject, database=Depends(get_db)) -> di
 
 
 @app.get("/policies/{policy_id}")
-async def retrieve_policy(policy_id: str, database=Depends(get_db)) -> dict:
+async def retrieve_policy(
+    policy_id: str, database=Depends(get_db), dependencies=Depends(JWTBearer())
+) -> dict:
     stored_policy = database.get_policy(policy_id)
     return stored_policy
 
 
 @app.put("/policies/{policy_id}")
 async def modify_policy(
-        policy_id: str, rego_rule: UpdateRequestObject, database=Depends(get_db)
+    policy_id: str,
+    rego_rule: UpdateRequestObject,
+    database=Depends(get_db),
+    dependencies=Depends(JWTBearer()),
 ) -> dict:
     if not database.exists(policy_id):
         raise HTTPException(status_code=404, detail="Policy not found")
@@ -64,7 +90,11 @@ async def modify_policy(
 
 
 @app.delete("/policies/{policy_id}")
-async def remove_policy(policy_id: str, database=Depends(get_db)) -> dict:
+async def remove_policy(
+    policy_id: str, database=Depends(get_db), dependencies=Depends(JWTBearer())
+) -> dict:
+    if not database.exists(policy_id):
+        raise HTTPException(status_code=404, detail="Policy not found")
     # Remove policy from database
     database.delete_policy(policy_id)
 

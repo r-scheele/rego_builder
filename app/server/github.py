@@ -35,7 +35,7 @@ class GitHubOperations:
         initialized_repo = Repo.clone_from(self.complete_repo_url, self.local_repo_path)
         self.repo_git_path = initialized_repo.git_dir
 
-    def push(self):
+    def push(self) -> None:
         """
         Push the changes to the remote repository
         """
