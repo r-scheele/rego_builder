@@ -101,14 +101,7 @@ class RequestObject(BaseModel):
                                 "input_property": "request_path",
                                 "value": ["v1", "collections", "lakes"],
                             },
-                        },
-                        {
-                            "command": "allow_full_access",
-                            "properties": {
-                                "input_property": "groupname",
-                                "value": "admin",
-                            },
-                        },
+                        }
                     ],
                 ],
             }
