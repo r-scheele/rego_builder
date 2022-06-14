@@ -1,0 +1,12 @@
+fastapi
+uvicorn 
+pydantic
+GitPython 
+python-dotenv
+tinydb 
+nox 
+OPA-python-client 
+pytest 
+requests 
+black
+isort 
