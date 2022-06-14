@@ -2,6 +2,7 @@ import os
 
 from fastapi import Depends, FastAPI, HTTPException
 from starlette.responses import RedirectResponse
+from starlette.middleware.cors import CORSMiddleware
 
 from app.config.config import settings
 from app.database.policy_database import PolicyDatabase, get_db
@@ -14,6 +15,18 @@ default_path = settings.BASE_PATH
 
 
 app = FastAPI(swagger_ui_parameters={"syntaxHighlight.theme": "obsidian"})
+
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
 app.include_router(auth_router)
 
 
@@ -31,7 +44,6 @@ async def write_policy(
     dependencies=Depends(JWTBearer()),
 ) -> dict:
     # We can add the authentication here or
-
     rego_rule = rego_rule.dict()
     database.add_policy(rego_rule)
     write_to_file(rego_rule, operation="write")
