@@ -26,6 +26,8 @@ class PolicyDatabase:
 
     def exists(self, policy_name: str, owner: str) -> bool:
         doc = self.database.get(self.store.name == policy_name and self.store.owner == owner)
+        if not doc:
+            return False
         return doc["name"] == policy_name
 
     def delete_policy(self, policy_name: str, owner: str) -> None:
