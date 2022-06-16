@@ -1,23 +1,26 @@
-# Rego Policy Manager API
+# Open Policy API Manager
 
-## Description
-
-This API is responsible for converting JSON variables to REGO which in turn is used in application policy management.
+This API application is responsible for converting JSON variables to REGO which in turn is used in open policy API management.
 
 ## Installation
 
-- Create a virtual environment and install the application dependencies:
+The API application can be installed and run from any of the following methods:
+
+### From GitHub
+
+Start by cloning the repo:
+
+```console
+$ git clone https://github.com/r-scheele/rego_builder
+```
+
+Next, create a virtual environment and install the application dependencies:
 
 ```console
 $ poetry shell && poetry install
 ```
-### Test the github actions workflow with the following command:
 
-```console
-act --container-architecture linux/amd64
-```
-
-- Configure your environment variables:
+Next, Configure your environment variables:
 
 ```dotenv
 BASE_PATH = /tmp/fastgeoapi
@@ -27,8 +30,6 @@ GITHUB_USERNAME=<your_github_username>
 GITHUB_URL=<your_github_url where the authorization code lives>
 CLIENT_ID=<your_github_client_id>
 CLIENT_SECRET=<your_github_client_secret>
-SECRET_KEY=<your_secret_key>
-ALGORITHM=<your_algorithm e.g HS256>
 ENVIRONMENT=<your_environment e.g. production|development>
 ```
 
@@ -38,22 +39,17 @@ ENVIRONMENT=<your_environment e.g. production|development>
 $ python3 main.py
 ```
 
-- Run the application from the docker image
-```console
-$ docker pull rscheele3214/rego_builder
-```
+Open [localhost:8000/docs](localhost:8000/docs) for API Documentation.
 
-- Build the docker image, and run the application
+### Deploying from docker-compose
+
+Configure your environment variables as instructed in the section above, then start your container:
+
 ```console
 $ docker-compose -f docker-compose.dev.yml up -d
 ```
 
-- Stop the running container
-```console
-docker-compose -f docker-compose.dev.yml down
-```
-
-Open [localhost:8000/docs](localhost:8000/docs) for API Documentation
+Open [localhost:8000/docs](localhost:8000/docs) for API Documentation.
 
 ## Example
 
@@ -162,4 +158,12 @@ allow {
   data.items[i].name == input.preferred_username
   data.items[i].everyone == input.groupname
 }
+```
+
+## Test
+
+Test the GitHub actions workflow with the following command:
+
+```console
+act --container-architecture linux/amd64
 ```

@@ -1,11 +1,8 @@
 import os
 
-import git.exc
 from git import Repo
 
 from app.config.config import settings
-
-access_token = settings.GITHUB_ACCESS_TOKEN
 
 COMMIT_MESSAGE = "updates from from application"
 
@@ -13,9 +10,10 @@ default_path = settings.BASE_PATH
 
 
 class GitHubOperations:
-    def __init__(self, repo_url: str):
+    def __init__(self, repo_url: str, access_token: str = settings.GITHUB_ACCESS_TOKEN) -> None:
+        self.access_token = access_token
         self.repo_url = repo_url.lstrip("https://")
-        self.complete_repo_url = f"https://{settings.GITHUB_ACCESS_TOKEN}@{self.repo_url}"
+        self.complete_repo_url = f"https://{self.access_token}@{self.repo_url}"
         self.repo_name = repo_url.removesuffix(".git").split("/")[-1]
         self.local_repo_path = f"{default_path}/{self.repo_name}"
         self.repo_git_path = ""
