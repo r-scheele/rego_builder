@@ -11,6 +11,7 @@ class Rule(BaseModel):
 class RequestObject(BaseModel):
     name: str
     rules: List[List[Rule]]
+    owner: Optional[str] = ""
 
     class Config:
         schema_extra = {
