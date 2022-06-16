@@ -11,8 +11,9 @@ Table of Contents
   * [Features](#features)
   * [How the policy manager works](#architecture)
   * [Installation](#installation)
+  * [How the traslation from JSON to REGO is done](#translation)
   * [Usage](#usage)
-    1. [Input_props_equals](#input_props_equals)
+    1. [Input_props_equals](#1-input_props_equals)
          * [Handling * as the wildcard flag](#Handling-'*'-as-the-wildcard-flag)
          * [Allowing all path parameter after a path section, except one](#Handling-'*'-as-the-wildcard-flag)
          * [ Handling equality check between a particular property on the request object and a valueHandling * as the wildcard flag](#Handling-'*'-as-the-wildcard-flag)
@@ -66,9 +67,35 @@ View the Architecture in the browser [Here](https://www.figma.com/file/684S7kO4d
    ```
 
 
+How the translation from JSON to REGO works?
+============
+The REGO policies are created by a set of functions that serves as the translation logic, They're called commands. Each of these commands is responsible for writing specific REGO rule to a `.rego` file. However, the JSON to REGO conversion must follow certain conditions as defined by a pydantic model for effectiveness. The following is an example of how a rule is defined:
+
+   ```json     
+   {
+      "command": "input_prop_equals",
+      "properties": {
+         "input_property": "request_method",
+         "value": "GET"
+      }
+   }
+   ```
+In this case, The command key represents the operation to be performed and the properties key represents the properties that are being used in the operation.
+`input_prop_equals` is the command in example, which initiates the appropriate operation, on the properties object.
+The above rule translates to an equality check between the input_property and the value. <br />
+The REGO equivalent of the above rule object is: <br />
+   `input.request_method == "GET"`
+
+### As of now, the API supports the following commands:
+1. input_prop_equals
+2. input_prop_in
+3. input_prop_in_as
+4. allow_full_access
+
+
 Usage
 ============
-### Detailed explanation of commands with examples: what they are and how to use them.
+### Detailed explanation of commands with examples: 
 
 
 ## 1. Input_props_equals
