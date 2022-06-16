@@ -11,7 +11,11 @@ class PolicyDatabase:
         self.store = Query()
 
     def get_policy(self, policy_name: str, owner: str) -> dict:
-        return self.database.get(self.store.name == policy_name and self.store.owner == owner)
+        policies = self.database.search(self.store.owner == owner)
+        for policy in policies:
+            if policy["name"] == policy_name:
+                return policy
+        return {}
 
     def add_policy(self, policy: dict, owner: str) -> dict:
         if self.exists(policy["name"], owner):
