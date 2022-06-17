@@ -11,6 +11,7 @@ class Rule(BaseModel):
 class RequestObject(BaseModel):
     name: str
     rules: List[List[Rule]]
+    owner: Optional[str] = ""
 
     class Config:
         schema_extra = {
@@ -101,7 +102,14 @@ class RequestObject(BaseModel):
                                 "input_property": "request_path",
                                 "value": ["v1", "collections", "lakes"],
                             },
-                        }
+                        },
+                        {
+                            "command": "allow_full_access",
+                            "properties": {
+                                "input_property": "groupname",
+                                "value": "admin",
+                            },
+                        },
                     ],
                 ],
             }
