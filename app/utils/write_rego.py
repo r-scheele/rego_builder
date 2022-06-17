@@ -1,4 +1,5 @@
 import os
+from functools import lru_cache
 
 from app.config.config import settings
 from app.server.github import GitHubOperations
@@ -7,10 +8,11 @@ from .build_rego_file import build_rego
 initiate_rule = "package httpapi.authz\nimport input\ndefault allow = false\n\n\n\n"
 
 
+@lru_cache(maxsize=1)
 class WriteRego:
     def __init__(self, access_token: str) -> None:
         self.access_token = access_token
-        self.github = GitHubOperations(settings.GITHUB_URL, access_token)
+        self.github = GitHubOperations(settings.GITHUB_URL, self.access_token)
 
     def write_to_file(self, rule: dict, operation: str = "write") -> None:
         """
@@ -46,7 +48,7 @@ class WriteRego:
     def delete_policy_file(self) -> bool:
         file_path = f"{self.github.local_repo_path}/auth.rego"
 
-        if not os.path.isfile(file_path):
+        if not os.path.exists(file_path):
             raise FileNotFoundError
 
         file = open(file_path, "w")
