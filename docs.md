@@ -21,6 +21,7 @@ Table of Contents
       2. [Input_props_in](#input_props_in)
       3. [Input_props_in_as](#input_props_in_as)
       4. [allow_full_access](#allow_full_access)
+   * [API CRUD operations](#api-crud-operations)
 
 
 
@@ -241,3 +242,155 @@ Usage
    ```
 
 
+   API CRUD Operations
+   ============
+
+   The API is designed to support all CRUD operations that makes interaction with the policies easy. The following routes are currently defined:
+
+ ###  - POST `/policies/`  🗝
+Using the JSON defined from the frontend, this route is used to build a new policy. The response will be a REGO file written and pushed to github as a newly established remote repository, with the request body conforming to a specified syntax described by the pydantic model `Policy`. <br />
+```py3
+class Policy:
+    name: str
+    rules: List[List[Rule]]
+```
+Rule Object: <br />
+```py3
+class Rule(BaseModel):
+    command: str
+    properties: Dict[str, Union[str, List[str], Dict[str, Union[str, List[str]]]]]
+```
+
+Each Rule object forms a specific rule in a Allow block, and a list of Rules forms a Allow block. <br />
+```py3
+List[Rule] == Allow {
+   ...
+}
+```
+A typical request body which will contain multiple allow blocks in the REGO rule would be: <br />
+   ```json
+   {
+   "name": "Example2",
+   "rules": [
+      [
+         {
+         "command": "input_prop_equals",
+         "properties": {
+            "input_property": "request_path",
+            "value": [
+               "v1",
+               "collections",
+               "*"
+            ],
+            "exceptional_value": "obs"
+         }
+         },
+         {
+         "command": "input_prop_in",
+         "properties": {
+            "input_property": "company",
+            "datasource_name": "items",
+            "datasource_loop_variable": "name"
+         }
+         },
+         {
+         "command": "input_prop_equals",
+         "properties": {
+            "input_property": "request_method",
+            "value": "GET"
+         }
+         }
+      ],
+      [
+         {
+         "command": "input_prop_equals",
+         "properties": {
+            "input_property": "request_path",
+            "value": [
+               "v1",
+               "collections",
+               "obs",
+               "*"
+            ]
+         }
+         },
+         {
+         "command": "input_prop_equals",
+         "properties": {
+            "input_property": "company",
+            "value": "geobeyond"
+         }
+         },
+         {
+         "command": "input_prop_in_as",
+         "properties": {
+            "datasource_name": "items",
+            "datasource_loop_variables": [
+               "name",
+               "groupname"
+            ],
+            "data_input_properties": [
+               "preferred_username",
+               "groupname"
+            ]
+         }
+         }
+      ],
+      [
+         {
+         "command": "allow_full_access",
+         "properties": {
+            "input_property": "groupname",
+            "value": "EDITOR_ATAC"
+         }
+         }
+      ],
+      [
+         {
+         "command": "input_prop_equals",
+         "properties": {
+            "input_property": "groupname",
+            "value": [
+               "v1",
+               "collections",
+               "test-data"
+            ]
+         }
+         },
+         {
+         "command": "allow_full_access",
+         "properties": {
+            "input_property": "name",
+            "value": "admin"
+         }
+         }
+      ],
+      [
+         {
+         "command": "input_prop_equals",
+         "properties": {
+            "input_property": "request_path",
+            "value": [
+               "v1",
+               "collections",
+               "lakes" ]
+            }
+         }
+      ]
+   ]}
+
+   ```
+ ###  - GET `/policies/` 🗝
+This route is used to get all policies that have been created. The response will be a list of all policies that have been created by a certain user, and contains all the associating rules with the policy <br />
+
+```py3
+List[Policy]   
+   ```
+
+   ###  - GET PUT DELETE `/policies/{policy_name}` 🗝
+   GET - This request method is used to get a specific policy by name. The response will be a policy object conforming to the pydantic model `Policy`. <br />
+   PUT - This request method is used to update a specific policy by name. The response will be a policy object conforming to the pydantic model `Policy`. <br />
+   DELETE - This request method is used to delete a specific policy by name
+
+
+   
