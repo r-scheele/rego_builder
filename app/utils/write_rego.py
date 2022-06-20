@@ -1,5 +1,4 @@
 import os
-from functools import lru_cache
 
 from app.config.config import settings
 from app.server.github import GitHubOperations
@@ -8,7 +7,6 @@ from .build_rego_file import build_rego
 initiate_rule = "package httpapi.authz\nimport input\ndefault allow = false\n\n\n\n"
 
 
-@lru_cache(maxsize=1)
 class WriteRego:
     def __init__(self, access_token: str) -> None:
         self.access_token = access_token

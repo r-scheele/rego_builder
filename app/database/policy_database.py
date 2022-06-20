@@ -22,8 +22,7 @@ class PolicyDatabase:
         self.database.insert(policy)
         return policy
 
-    # Not working properly atm. TODO
-    def update_policy(self, policy_name: str, policy: dict, owner: dict) -> None:
+    def update_policy(self, policy_name: str, policy: dict, owner: str) -> None:
         self.database.update(policy, (self.store.name == policy_name) & (self.store.owner == owner))
 
     def exists(self, policy_name: str, owner: str) -> bool:
