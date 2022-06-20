@@ -11,9 +11,8 @@ class PolicyDatabase:
         self.store = Query()
 
     def get_policy(self, policy_name: str, owner: str) -> dict:
-        return self.database.get(
-            self.store.name == policy_name and self.store.owner == owner
-        )
+        return self.database.get(self.store.name == policy_name and self.store.owner == owner)
+
 
     def add_policy(self, policy: dict, owner: str) -> dict:
         if self.exists(policy["name"], owner):
@@ -38,6 +37,7 @@ class PolicyDatabase:
         self.database.remove(
             self.store.name == policy_name and self.store.owner == owner
         )
+
 
     def get_policies(self, owner: str) -> list:
         return self.database.search(self.store.owner == owner)

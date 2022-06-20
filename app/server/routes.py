@@ -13,16 +13,19 @@ router = APIRouter()
 
 @router.get("/policies")
 async def get_policies(
-    database: PolicyDatabase = Depends(get_db), dependencies=Depends(TokenBearer())
+
+
+        database: PolicyDatabase = Depends(get_db), dependencies=Depends(TokenBearer())
 ) -> list:
     return database.get_policies(dependencies["login"])
 
 
 @router.post("/policies/")
 async def write_policy(
-    rego_rule: RequestObject,
-    database=Depends(get_db),
-    dependencies=Depends(TokenBearer()),
+
+        rego_rule: RequestObject,
+        database=Depends(get_db),
+        dependencies=Depends(TokenBearer()),
 ) -> dict:
     rego_rule.owner = dependencies["login"]
     rego_rule = rego_rule.dict()
@@ -35,20 +38,29 @@ async def write_policy(
 
 @router.get("/policies/{policy_id}")
 async def retrieve_policy(
+
     policy_id: str, database=Depends(get_db), dependencies=Depends(TokenBearer())
+) -> dict:
+
+        policy_id: str, database=Depends(get_db), dependencies=Depends(TokenBearer())
 ) -> dict:
     stored_policy = database.get_policy(policy_id, dependencies["login"])
     if not stored_policy:
-        raise HTTPException(status_code=404, detail="Policy does not exist")
+        raise HTTPException(
+            status_code=404,
+            detail="Policy does not exist"
+        )
+
     return stored_policy
 
 
 @router.put("/policies/{policy_id}")
 async def modify_policy(
-    policy_id: str,
-    rego_rule: UpdateRequestObject,
-    database=Depends(get_db),
-    dependencies=Depends(TokenBearer()),
+
+        policy_id: str,
+        rego_rule: UpdateRequestObject,
+        database=Depends(get_db),
+        dependencies=Depends(TokenBearer()),
 ) -> dict:
     if not database.exists(policy_id, dependencies["login"]):
         raise HTTPException(status_code=404, detail="Policy not found")
@@ -73,7 +85,9 @@ async def modify_policy(
 
 @router.delete("/policies/{policy_id}")
 async def remove_policy(
-    policy_id: str, database=Depends(get_db), dependencies=Depends(TokenBearer())
+
+        policy_id: str, database=Depends(get_db), dependencies=Depends(TokenBearer())
+
 ) -> dict:
     if not database.exists(policy_id):
         raise HTTPException(status_code=404, detail="Policy not found")
