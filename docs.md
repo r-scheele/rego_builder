@@ -469,7 +469,7 @@ An example request body is: <br />
    DELETE - This request method is used to delete a specific policy by name
    Example response body: <br />
    ```json
-   {"status": 200, "message": "Policy deleted successfully."}  
+   {"status": 200, "message": "Policy deleted successfully"}  
    ```
 
 
