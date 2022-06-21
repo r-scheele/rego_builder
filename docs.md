@@ -358,14 +358,119 @@ An example request body is: <br />
       ]}
 
    ```
- ###  - GET `/policies/` 🗝
-This route is used to get all policies that have been created. The response will be a list of all policies that have been created by a certain user, and contains all the associating rules with the policy <br />
 
+   An example response body is: <br />
+   ```json
+   {"status": 200, "message": "Policy created successfully"}
+   ```
+   ###  - GET `/policies/` 🗝
+   This route is used to get all policies that have been created. The response will be a list of all policies that have been created by a certain user, and contains all the associating rules with the policy <br />
+
+   An example response body is: <br />
+   ```json
+   [
+      {
+         "name": "Example",
+         "rules": [
+            [
+               {
+               "command": "input_prop_equals",
+               "properties": {
+                  "input_property": "request_path",
+                  "value": [
+                     "v1",
+                     "collections",
+                     "*"
+                  ],
+                  "exceptional_value": "obs"
+               }
+               },
+               {
+                  "command": "input_prop_in",
+                  "properties": {
+                     "input_property": "company",
+                     "datasource_name": "items",
+                     "datasource_loop_variable": "name"
+                  }
+               },
+               {
+                  "command": "input_prop_equals",
+                  "properties": {
+                     "input_property": "request_method",
+                     "value": "GET"
+                  }
+               }
+            ],
+            [
+               {
+               "command": "allow_full_access",
+               "properties": {
+                  "input_property": "groupname",
+                  "value": "EDITOR_ATAC"
+               }
+            }
+         ]
+      }
+   ]
+   ```
 
    ###  - GET PUT DELETE `/policies/{policy_name}` 🗝
    GET - This request method is used to get a specific policy by name. The response will be a policy object conforming to the pydantic model `Policy`. <br />
+   Example response body: <br />
+   ```json
+   {
+      "name": "Example",
+      "rules": [
+         [
+            {
+               "command": "input_prop_equals",
+               "properties": {
+                  "input_property": "request_path",
+                  "value": [
+                     "v1",
+                     "collections",
+                     "*"
+                  ],
+                  "exceptional_value": "obs"
+            }
+            },
+            {
+               "command": "input_prop_in",
+               "properties": {
+                  "input_property": "company",
+                  "datasource_name": "items",
+                  "datasource_loop_variable": "name"
+               }
+            },
+            {
+               "command": "input_prop_equals",
+               "properties": {
+                  "input_property": "request_method",
+                  "value": "GET"
+               }
+            }
+         ],
+         [
+               {
+               "command": "allow_full_access",
+               "properties": {
+                  "input_property": "groupname",
+                  "value": "EDITOR_ATAC"
+               }
+            }
+         ]
+      ]}
+   ```
    PUT - This request method is used to update a specific policy by name. The response will be a policy object conforming to the pydantic model `Policy`. <br />
+   Example response body: <br />
+   ```json
+   {"status": 200, "message": "Updated successfully"}
+   ```
    DELETE - This request method is used to delete a specific policy by name
+   Example response body: <br />
+   ```json
+   {"status": 200, "message": "Policy deleted successfully."}  
+   ```
 
 
    
