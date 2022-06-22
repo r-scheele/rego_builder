@@ -10,8 +10,9 @@ default_path = settings.BASE_PATH
 
 
 class GitHubOperations:
-
-    def __init__(self, repo_url: str, access_token: str = settings.GITHUB_ACCESS_TOKEN) -> None:
+    def __init__(
+        self, repo_url: str, access_token: str = settings.GITHUB_ACCESS_TOKEN
+    ) -> None:
         self.access_token = access_token
         self.repo_url = repo_url.lstrip("https://")
         self.complete_repo_url = f"https://{self.access_token}@{self.repo_url}"

@@ -76,12 +76,16 @@ async def modify_policy(
 async def remove_policy(
     policy_id: str, database=Depends(get_db), dependencies=Depends(TokenBearer())
 ) -> dict:
-    if not database.exists(policy_id):
+    user = dependencies["login"]
+    if not database.exists(policy_id, user):
         raise HTTPException(status_code=404, detail="Policy not found")
+
     # Remove policy from database
-    database.delete_policy(policy_id, dependencies["login"])
+    database.delete_policy(policy_id, user)
+
+    policies = database.get_policies(owner=user)
 
     # Delete file from path
-    WriteRego(dependencies["token"]).delete_policy_file()
+    WriteRego(dependencies["token"]).delete_policy(policies)
 
     return {"status": 200, "message": "Policy deleted successfully."}

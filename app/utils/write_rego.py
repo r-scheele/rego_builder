@@ -43,15 +43,15 @@ class WriteRego:
         # Update GitHub
         self.github.push()
 
-    def delete_policy_file(self) -> bool:
+    def delete_policy(self, policies) -> bool:
         file_path = f"{self.github.local_repo_path}/auth.rego"
 
         if not os.path.isfile(file_path):
             raise FileNotFoundError
 
-        file = open(file_path, "w")
-        file.close()
+        # build the new file
+        print(policies)
 
-        # Update GitHub
-        self.github.push()
+        # # Update GitHub
+        # self.github.push()
         return True
