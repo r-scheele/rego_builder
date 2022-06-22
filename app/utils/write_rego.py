@@ -39,6 +39,5 @@ class WriteRego:
 
         if not os.path.exists(file_path):
             raise FileNotFoundError
-
         self.write_to_file(policies)
         return True
