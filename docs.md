@@ -303,19 +303,16 @@ The REGO equivalent of the above rule object is: <br />
 
 
 
-   API CRUD Operations
+   Create new policy
    ============
-
-   The API is designed to support all CRUD operations that makes interaction with the policies easy. The following routes are currently defined:
-
- ###  - POST `/policies/`  🗝
+ ### POST `/policies/`  🗝
 Using the JSON defined from the frontend, this route is used to build a new policy. The response will be a REGO file written and pushed to github as a newly established remote repository, with the request body conforming to a specified syntax described by the pydantic model `Policy`. <br />
 
 An example request body is: <br />
 
    ```json
    {
-      "name": "Example2",
+      "name": "Example",
       "rules": [
          [
             {
@@ -363,6 +360,9 @@ An example request body is: <br />
    ```json
    {"status": 200, "message": "Policy created successfully"}
    ```
+
+   Retrieve all the existing policies
+   ============
    ###  - GET `/policies/` 🗝
    This route is used to get all policies that have been created. The response will be a list of all policies that have been created by a certain user, and contains all the associating rules with the policy <br />
 
@@ -414,6 +414,8 @@ An example request body is: <br />
    ]
    ```
 
+   Retrieve existing policy by name
+   ============
    ###  - GET PUT DELETE `/policies/{policy_name}` 🗝
    GET - This request method is used to get a specific policy by name. The response will be a policy object conforming to the pydantic model `Policy`. <br />
    Example response body: <br />
@@ -461,11 +463,16 @@ An example request body is: <br />
          ]
       ]}
    ```
+   Update existing policy by name
+   ============
    PUT - This request method is used to update a specific policy by name. The response will be a policy object conforming to the pydantic model `Policy`. <br />
    Example response body: <br />
    ```json
    {"status": 200, "message": "Updated successfully"}
    ```
+
+   Delete existing policy by name
+   ============
    DELETE - This request method is used to delete a specific policy by name
    Example response body: <br />
    ```json
