@@ -25,10 +25,17 @@ async def write_policy(
     dependencies=Depends(TokenBearer()),
 ) -> dict:
     rego_rule.owner = dependencies["login"]
-    rego_rule = rego_rule.dict()
+    policy = rego_rule.dict()
 
-    database.add_policy(rego_rule, dependencies["login"])
-    WriteRego(dependencies["token"]).write_to_file(rego_rule, operation="write")
+    if database.exists(rego_rule.name, dependencies["login"]):
+        raise HTTPException(status_code=409, detail="Policy already exists")
+
+    policies = database.get_policies(dependencies["login"])
+    policies.append(policy)
+
+    # Write the policy to the database after successful push
+    WriteRego(dependencies["token"]).write_to_file(policies)
+    database.add_policy(policy, dependencies["login"])
 
     return {"status": 200, "message": "Policy created successfully"}
 
@@ -63,11 +70,11 @@ async def modify_policy(
     # Retrieve updated policy
     updated_policy = database.get_policy(policy_id, dependencies["login"])
 
+    policies = database.get_policies(dependencies["login"])
+    policies.append(updated_policy)
+
     # Rewrite rego file and update GitHub
-    WriteRego(dependencies["token"]).write_to_file(
-        updated_policy,
-        operation="update",
-    )
+    WriteRego(dependencies["token"]).write_to_file(policies)
 
     return {"status": 200, "message": "Updated successfully"}
 
@@ -76,16 +83,15 @@ async def modify_policy(
 async def remove_policy(
     policy_id: str, database=Depends(get_db), dependencies=Depends(TokenBearer())
 ) -> dict:
-    user = dependencies["login"]
-    if not database.exists(policy_id, user):
+    if not database.exists(policy_id, dependencies["login"]):
         raise HTTPException(status_code=404, detail="Policy not found")
 
+    user = dependencies["login"]
     # Remove policy from database
     database.delete_policy(policy_id, user)
 
+    # Update the policy in the rego file
     policies = database.get_policies(owner=user)
-
-    # Delete file from path
     WriteRego(dependencies["token"]).delete_policy(policies)
 
     return {"status": 200, "message": "Policy deleted successfully."}

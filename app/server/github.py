@@ -1,4 +1,5 @@
 import os
+from functools import lru_cache
 
 from git import Repo
 
@@ -9,6 +10,7 @@ COMMIT_MESSAGE = "updates from from application"
 default_path = settings.BASE_PATH
 
 
+@lru_cache(maxsize=1)
 class GitHubOperations:
     def __init__(
         self, repo_url: str, access_token: str = settings.GITHUB_ACCESS_TOKEN

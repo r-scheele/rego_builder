@@ -2,7 +2,6 @@ from fastapi import HTTPException
 from tinydb import Query, TinyDB
 
 from app.config.config import settings
-from app.schemas.rules import RequestObject, UpdateRequestObject
 
 
 class PolicyDatabase:
@@ -11,9 +10,12 @@ class PolicyDatabase:
         self.store = Query()
 
     def get_policy(self, policy_name: str, owner: str) -> dict:
-        return self.database.get(
-            self.store.name == policy_name and self.store.owner == owner
+        policy = self.database.get(
+            (self.store.name == policy_name) & (self.store.owner == owner)
         )
+        if policy:
+            return policy
+        return {}
 
     def add_policy(self, policy: dict, owner: str) -> dict:
 
@@ -24,19 +26,22 @@ class PolicyDatabase:
         self.database.insert(policy)
         return policy
 
-    def update_policy(self, policy_name: str, policy: dict, owner: dict) -> None:
+    def update_policy(self, policy_name: str, policy: dict, owner: str) -> None:
         self.database.update(
-            policy, self.store.name == policy_name and self.store.owner == owner
+            policy, (self.store.name == policy_name) & (self.store.owner == owner)
         )
 
     def exists(self, policy_name: str, owner: str) -> bool:
-        return self.database.contains(
-            self.store.name == policy_name and self.store.owner == owner
+        doc = self.database.get(
+            (self.store.name == policy_name) & (self.store.owner == owner)
         )
+        if not doc:
+            return False
+        return doc["name"] == policy_name
 
     def delete_policy(self, policy_name: str, owner: str) -> None:
         self.database.remove(
-            self.store.name == policy_name and self.store.owner == owner
+            (self.store.name == policy_name) & (self.store.owner == owner)
         )
 
     def get_policies(self, owner: str) -> list:
