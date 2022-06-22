@@ -145,9 +145,9 @@ Usage
 ============
 ### Detailed explanation of commands with examples: 
 This section contains detailed explanations of the commands and examples of how to use them. 
-## 1. Input_props_equals
+### Input_props_equals
    This command has different logic to handle series of equality checks.
-  ### - Handling '*' as the wildcard flag: <br /> 
+  - Handling '*' as the wildcard flag: <br /> 
 
    This logic handles all the paths after a particular section. if `/collections/` is supplied as the option, all the routes after it will be allowed e.g allow `/collections/obs/`, allow `/collections/test-data/obs/`, allow `/collections/obs/` etc. <br /> 
 
@@ -166,7 +166,7 @@ This section contains detailed explanations of the commands and examples of how 
    The REGO equivalent of the above rule object is: <br />
    `input.request_path[0] == "v1" && input.request_path[1] == "collections"`
 
-   ### - Allowing all path parameter after a path section, except one: <br /> 
+   - Allowing all path parameter after a path section, except one: <br /> 
 
    This logic handles cases where a particular path parameter is to be exempted, the command matches all other parameters aside the exempted one. e.g allow `/collections/obs/`, allow `/collections/test-data/obs/`, allow `/collections/obs/`. deny `/collections/lakes/`. <br /> 
 
@@ -187,7 +187,7 @@ This section contains detailed explanations of the commands and examples of how 
    The REGO equivalent of the above rule object is: <br />
    `input.request_path[0] == "v1" && input.request_path[1] == "collections" && input.request_path[2] != "obs"`
 
-   ### -  Handling equality check between a particular property on the request object and a value: <br />
+   -  Handling equality check between a particular property on the request object and a value: <br />
    This logic handles cases where a particular property on the input object is to be checked for equality against a value. 
    Example:
 
@@ -207,7 +207,7 @@ This section contains detailed explanations of the commands and examples of how 
 
 
 
- ### -  Allow access to a particular path: <br />
+ -  Allow access to a particular path: <br />
  This logic handles cases where a specific path is to granted access, if certain property is present on the input object.
 
    Example:
@@ -236,7 +236,7 @@ The REGO equivalent of the above rule object is: <br />
   input.request_path == ["v1", "collections", "lakes", ""] && input.groupname == "admin"
 }` 
 
-   ## 2. Input_props_in
+   ### 2. Input_props_in
    This logic checks if a particular property on the input object is present in a list of values from the database. <br />
 
    Example:
@@ -256,7 +256,7 @@ The REGO equivalent of the above rule object is: <br />
    The REGO equivalent of the above rule object is: <br />
    `input.company == data.items[i].name`
 
-   ## 3. Input_props_in_as
+   ### 3. Input_props_in_as
    This logic checks if the value of two properties on the input object is present on one object in the database <br />
 
    Example:
@@ -280,7 +280,7 @@ The REGO equivalent of the above rule object is: <br />
 
 
 
-## 4. allow_full_access
+### 4. allow_full_access
    This logic allows full access to the resources defined. if the value of the property on the input object has a particular value<br />
 
    Example:
