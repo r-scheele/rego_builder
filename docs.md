@@ -94,9 +94,10 @@ $ python3 main.py
    ```
 
 
-How the translation from JSON to REGO works?
+Translation from JSON to REGO.
 ============
-The REGO policies are created by a set of functions that serves as the translation logic, They're called commands. Each of these commands is responsible for writing specific REGO rule to a `.rego` file. However, the JSON to REGO conversion must follow certain conditions as defined by a pydantic model for effectiveness. The following is how a rule is defined. The  Policy objectn which is the request body, as well as the Rule object are pydantic models.
+The REGO policies are created by a set of functions called **commands** that serves as the translation logic. Each of these commands is responsible for writing a specific REGO rule to a `.rego` file. However, the JSON to REGO conversion must follow certain conditions as defined by a pydantic model for effectiveness. 
+The following is how a rule is defined. The  Policy object which is the request body, as well as the Rule object is pydantic models.
 
 ```py3
 class Policy:
@@ -110,7 +111,7 @@ class Rule(BaseModel):
     properties: Dict[str, Union[str, List[str], Dict[str, Union[str, List[str]]]]]
 ```
 
-A rule is defined by two keys: command and properties. The command key holds one of the recognized commands and the properties key, holds another dictionary containing the input to the command function e.g `input_property` and `value`. in special cases, the datasource_item items are also included in the properties key.
+A rule is defined by two keys: command and properties. The command key holds one of the recognized commands and the properties key, holds another dictionary containing the input to the command function e.g `input_property` and `value`. in special cases, the `datasource_item` items are also included in the properties key.
 
    ```json     
    {
@@ -121,12 +122,14 @@ A rule is defined by two keys: command and properties. The command key holds one
       }
    }
    ```
-In this case, The command key represents the operation to be performed and the properties key represents the properties that are being used in the operation.
+In the example above, the command key represents the operation to be performed and the properties key represents the properties that are being used in the operation.
 
-`input_prop_equals` is the command in example, which initiates the appropriate operation, on the properties object.
-The above rule translates to an equality check between the input_property and the value. <br />
+`input_prop_equals` is the command in the example that initiates the appropriate operation, on the properties object.
+The above rule translates to an equality check between the input property `input_property` and the value `value`. <br /> <br />
 The REGO equivalent of the above rule object is: <br />
+```rego
    `input.request_method == "GET"`
+```
 
 Each Rule object forms a specific rule in a Allow block, and a list of Rules forms a Allow block. <br />
 ```py3
@@ -135,17 +138,13 @@ List[Rule] == Allow {
 }
 ```
 
-
-
 The API supports the following commands; input_prop_equals, input_prop_in, input_prop_in_as, allow_full_access.
-
-
 
 Usage
 ============
 ### Detailed explanation of commands with examples: 
 This section contains detailed explanations of the commands and examples of how to use them. 
-### Input_props_equals
+### input_props_equals
    This command has different logic to handle series of equality checks.
   - Handling '*' as the wildcard flag: <br /> 
 
@@ -164,8 +163,10 @@ This section contains detailed explanations of the commands and examples of how 
    In the json above, the `value` key holds an asterik in the values section, to indicate that the endpoint x is allowed to do y.
 
    The REGO equivalent of the above rule object is: <br />
-   `input.request_path[0] == "v1" && input.request_path[1] == "collections"`
-
+   ```rego
+    input.request_path[0] == "v1"
+    input.request_path[1] == "collections"
+   ```
    - Allowing all path parameter after a path section, except one: <br /> 
 
    This logic handles cases where a particular path parameter is to be exempted, the command matches all other parameters aside the exempted one. e.g allow `/collections/obs/`, allow `/collections/test-data/obs/`, allow `/collections/obs/`. deny `/collections/lakes/`. <br /> 
@@ -185,7 +186,11 @@ This section contains detailed explanations of the commands and examples of how 
    In the json above, the `value` key holds an asterik in the values section, to indicate that the endpoint x is allowed to do y. The `exceptional_value` key holds the value of the path parameter that is to be exempted.
 
    The REGO equivalent of the above rule object is: <br />
-   `input.request_path[0] == "v1" && input.request_path[1] == "collections" && input.request_path[2] != "obs"`
+   ```rego
+      input.request_path[0] == "v1"
+      input.request_path[1] == "collections"
+      input.request_path[2] != "obs"
+   ```
 
    -  Handling equality check between a particular property on the request object and a value: <br />
    This logic handles cases where a particular property on the input object is to be checked for equality against a value. 
@@ -203,7 +208,9 @@ This section contains detailed explanations of the commands and examples of how 
    In the json above, the `value` key holds the value that is to be checked for equality, while the `input_property` key holds the property that is to be checked in the input object.
 
    The REGO equivalent of the above rule object is: <br />
-   `input.company == "Geobeyond srl"`
+   ```rego
+      input.company == "Geobeyond srl"
+   ```
 
 
 
@@ -229,14 +236,16 @@ This section contains detailed explanations of the commands and examples of how 
       }
    ]
    ```
-In the json above, the list of objects indicate a very speciall `allow` block, that combines two commands. The `input_property` key holds the property that is to be va;idated before the request to that path is passed. 
+In the JSON above, the list of objects indicates a very special `allow` block, that combines two commands. The `input_property` key holds the property that is to be validated before the request to that path is passed. 
 
 The REGO equivalent of the above rule object is: <br />
-   `allow {
-  input.request_path == ["v1", "collections", "lakes", ""] && input.groupname == "admin"
-}` 
-
-   ### 2. Input_props_in
+```rego
+allow {
+   input.request_path == ["v1", "collections", "lakes", ""]
+   input.groupname == "admin"
+}
+```
+   ### input_props_in
    This logic checks if a particular property on the input object is present in a list of values from the database. <br />
 
    Example:
@@ -253,10 +262,13 @@ The REGO equivalent of the above rule object is: <br />
    ```
    In the json above, the `input_property` key holds the property that is to be validated before the request to that path is passed. The `datasource_name` key holds the name of the datasource(a list) from the database. The `datasource_loop_variable` key holds the name of the key on each object in the datasource.
 
-   The REGO equivalent of the above rule object is: <br />
-   `input.company == data.items[i].name`
+   The rego rules combine data from the database with the input object, to work out certain conditions. The datasource is the list of values from the database, and the datasource_loop_variable is the name of the key on each object in the datasource.
 
-   ### 3. Input_props_in_as
+   The REGO equivalent of the above rule object is: <br />
+   ```rego
+   `input.company == data.items[i].name`
+   ```
+   ### input_props_in_as
    This logic checks if the value of two properties on the input object is present on one object in the database <br />
 
    Example:
@@ -274,14 +286,15 @@ The REGO equivalent of the above rule object is: <br />
    In the json above, the resulting REGO code loops over the datasource twice, checking for equality between the values of the input properties, and the values of the datasource loop variables.
 
    The REGO equivalent of the above rule object is: <br />
-         `some i` <br />
-         `data.items[i].name == input.preferred_username` <br />
-         `data.items[i].everyone == input.groupname` <br /> 
+   ```rego
+      some i
+      data.items[i].name == input.preferred_username
+      data.items[i].everyone == input.groupname
+   ```
 
 
-
-### 4. allow_full_access
-   This logic allows full access to the resources defined. if the value of the property on the input object has a particular value<br />
+### allow_full_access
+   This logic allows full access to the resources defined. If the value of the property on the input object has a particular value<br />
 
    Example:
    ```json
@@ -295,18 +308,20 @@ The REGO equivalent of the above rule object is: <br />
       }
    ]
    ```
-   In the json above, the result is an allow block, that allows access to the resources defined, if the value of the property on the input object has a particular value.
+   In the JSON above, the result is an allow block that allows access to the resources defined if the value of the property on the input object has a particular value.
 
-   `allow { ` <br />
-      `input.groupname == "EDITOR_ATAC"` <br />
-   `}` <br />
+   ```rego
+   allow {
+      input.groupname == "EDITOR_ATAC"
+   }
+   ```
 
 
 
-   Create new policy
-   ============
- ### POST `/policies/`  🗝
-Using the JSON defined from the frontend, this route is used to build a new policy. The response will be a REGO file written and pushed to github as a newly established remote repository, with the request body conforming to a specified syntax described by the pydantic model `Policy`. <br />
+
+POST `/policies/`  Create new policy
+============
+Using the JSON defined from the frontend, this route is used to build a new policy. The response will be a REGO file written and pushed to GitHub as a newly established remote repository, with the request body conforming to a specified syntax described by the pydantic model `Policy`. <br />
 
 An example request body is: <br />
 
@@ -361,9 +376,10 @@ An example request body is: <br />
    {"status": 200, "message": "Policy created successfully"}
    ```
 
-   Retrieve all the existing policies
+
+
+   GET `/policies/` Read all policies  
    ============
-   ###  - GET `/policies/` 🗝
    This route is used to get all policies that have been created. The response will be a list of all policies that have been created by a certain user, and contains all the associating rules with the policy <br />
 
    An example response body is: <br />
@@ -414,10 +430,10 @@ An example request body is: <br />
    ]
    ```
 
-   Retrieve existing policy by name
+
+   GET `/policies/{policy_name}` 
    ============
-   ###  - GET PUT DELETE `/policies/{policy_name}` 🗝
-   GET - This request method is used to get a specific policy by name. The response will be a policy object conforming to the pydantic model `Policy`. <br />
+   This request method is used to get a specific policy by name. The response will be a policy object conforming to the pydantic model `Policy`. <br />
    Example response body: <br />
    ```json
    {
@@ -463,17 +479,17 @@ An example request body is: <br />
          ]
       ]}
    ```
-   Update existing policy by name
+   PUT `/policies/{policy_name}` Update existing policy by name
    ============
-   PUT - This request method is used to update a specific policy by name. The response will be a policy object conforming to the pydantic model `Policy`. <br />
+   This request method is used to update a specific policy by name. The response will be a policy object conforming to the pydantic model `Policy`. <br />
    Example response body: <br />
    ```json
    {"status": 200, "message": "Updated successfully"}
    ```
 
-   Delete existing policy by name
+   DELETE `/policies/policy_name}` Delete existing policy by name
    ============
-   DELETE - This request method is used to delete a specific policy by name
+   This request method is used to delete a specific policy by name
    Example response body: <br />
    ```json
    {"status": 200, "message": "Policy deleted successfully"}  
