@@ -213,8 +213,6 @@ The REGO equivalent of the above rule object is: <br />
 input.company == "Geobeyond srl"
 ```
 
-
-
 -  Allow access to a particular path: <br />
 This logic handles cases where a specific path is to granted access, if certain property is present on the input object.
 
