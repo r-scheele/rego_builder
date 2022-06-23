@@ -26,7 +26,9 @@ class TokenBearer(HTTPBearer):
         else:
             raise HTTPException(status_code=403, detail="Invalid authorization code.")
 
+
     def verify_token(self, token: str) -> tuple[bool, Any] | tuple[bool, dict[str, str]]:
+
         """
         Authenticate a user.
         """
@@ -36,10 +38,9 @@ class TokenBearer(HTTPBearer):
         res = r.get(url, headers=headers)
         # If the user is valid, return the user's information.
         if res.status_code == 200:
-            response = {
-                "token": token,
-                "login": res.json()["login"]
-            }
+
+            response = {"token": token, "login": res.json()["login"]}
+
             return True, response
         # If the user is not valid, return an error message.
         return False, {"error": "Invalid token."}

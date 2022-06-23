@@ -7,9 +7,7 @@ from app.server.routes import router
 
 app = FastAPI(swagger_ui_parameters={"syntaxHighlight.theme": "obsidian"})
 
-origins = [
-    "*"
-]
+origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
@@ -22,3 +20,4 @@ app.add_middleware(
 
 app.include_router(auth_router)
 app.include_router(router)
+

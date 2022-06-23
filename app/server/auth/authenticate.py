@@ -22,7 +22,8 @@ def authorize():
 
 
 @router.get("/token")
-def get_token(code: str, client_id: str, client_secret: str) -> dict:
+def get_token(code: str) -> dict:
+    client_id, client_secret = settings.CLIENT_ID, settings.CLIENT_SECRET
     res = r.post(
         url="https://github.com/login/oauth/access_token",
         headers={"Accept": "application/json"},
@@ -34,5 +35,4 @@ def get_token(code: str, client_id: str, client_secret: str) -> dict:
     )
     res = json.loads(res.text)
     access_token, expires_in = res["access_token"], res["expires_in"]
-
     return {"access_token": access_token, "expires_in": expires_in}

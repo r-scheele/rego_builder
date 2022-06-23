@@ -12,7 +12,7 @@ class WriteRego:
         self.access_token = access_token
         self.github = GitHubOperations(settings.GITHUB_URL, self.access_token)
 
-    def write_to_file(self, rule: dict, operation: str = "write") -> None:
+    def write_to_file(self, policies: list) -> None:
         """
         Write the rego file to the local git repository
         :param rule: rules
@@ -25,33 +25,19 @@ class WriteRego:
         # Initialize repository
         self.github.initialize()
 
-        rule = {key: value for key, value in rule.items()}
-
-        # check if the file exists
-        if os.path.exists(file_path):
-            with open(file_path, "r") as file:
-                data = file.read()
-                old_rule = data if operation == "write" and data else initiate_rule
-
-        else:
-            # write the file
-            old_rule = initiate_rule
-        result = old_rule + build_rego(rule["rules"])
+        result = initiate_rule
+        for policy in policies:
+            result += build_rego(policy["rules"])
 
         with open(file_path, "w") as file:
             file.write(result)
         # Update GitHub
         self.github.push()
 
-    def delete_policy_file(self) -> bool:
+    def delete_policy(self, policies: list) -> bool:
         file_path = f"{self.github.local_repo_path}/auth.rego"
 
         if not os.path.exists(file_path):
             raise FileNotFoundError
-
-        file = open(file_path, "w")
-        file.close()
-
-        # Update GitHub
-        self.github.push()
+        self.write_to_file(policies)
         return True
