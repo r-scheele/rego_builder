@@ -315,9 +315,6 @@ allow {
 }
 ```
 
-
-
-
 POST `/policies/`  Create new policy
 ============
 The POST route takes a request body containing the rules defined according to the schema. It is then, used to build a new policy. The response will be a REGO file written and pushed to GitHub as a newly established remote repository, with the request body conforming to a specified syntax described by the pydantic model `Policy`. <br />
