@@ -1,5 +1,5 @@
 from fastapi import Depends, HTTPException, APIRouter
-
+import requests as r
 from app.config.config import settings
 from app.database.policy_database import PolicyDatabase, get_db
 from app.schemas.rules import RequestObject, UpdateRequestObject
@@ -95,3 +95,13 @@ async def remove_policy(
     WriteRego(dependencies["token"]).delete_policy(policies)
 
     return {"status": 200, "message": "Policy deleted successfully."}
+
+
+@router.get("/data")
+async def get_data(dependencies=Depends(TokenBearer())) -> dict:
+    res = r.get(url=settings.OPAL_SERVER_DATA_URL)
+    if res.status_code != 200:
+        raise HTTPException(
+            status_code=res.status_code, detail="Could not retrieve data"
+        )
+    return res.json()
