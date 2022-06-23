@@ -283,7 +283,8 @@ Example:
    }
 }
 ```
-In the json above, the resulting REGO code loops over the datasource twice, checking for equality between the values of the input properties, and the values of the datasource loop variables.
+
+In the JSON above, the resulting REGO code loops over the datasource twice, checking for equality between the values of the input properties, and the values of the datasource loop variables.
 
 The REGO equivalent of the above rule object is: <br />
 ```rego
