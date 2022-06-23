@@ -266,6 +266,7 @@ The REGO equivalent of the above rule object is: <br />
 ```rego
 input.company == data.items[i].name
 ```
+
 ### input_props_in_as
 This logic checks if the value of two properties on the input object is present on one object in the database <br />
 
