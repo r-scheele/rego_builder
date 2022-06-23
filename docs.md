@@ -243,7 +243,6 @@ allow {
    input.request_path == ["v1", "collections", "lakes", ""]
    input.groupname == "admin"
 }
-```
 ### input_props_in
 This logic checks if a particular property on the input object is present in a list of values from the database. <br />
 
