@@ -176,12 +176,12 @@ Example:
 
 ```json
 {
-"command": "input_prop_equals",
-"properties": {
-   "input_property": "request_path",
-   "value": ["v1", "collections", "*"],
-   "exceptional_value": "obs",
-},
+   "command": "input_prop_equals",
+   "properties": {
+      "input_property": "request_path",
+      "value": ["v1", "collections", "*"],
+      "exceptional_value": "obs",
+   },
 }
 ```
 In the json above, the `value` key holds an asterik in the values section, to indicate that the endpoint x is allowed to do y. The `exceptional_value` key holds the value of the path parameter that is to be exempted.
@@ -199,11 +199,11 @@ Example:
 
 ```json
 {
-      "command": "input_prop_equals",
-      "properties": {
-         "input_property": "company",
-         "value": "Geobeyond srl"
-   }
+   "command": "input_prop_equals",
+   "properties": {
+      "input_property": "company",
+      "value": "Geobeyond srl"
+}
 }
 ```
 In the json above, the `value` key holds the value that is to be checked for equality, while the `input_property` key holds the property that is to be checked in the input object.
@@ -242,8 +242,8 @@ In the JSON above, the list of objects indicates a very special `allow` block, t
 The REGO equivalent of the above rule object is: <br />
 ```rego
 allow {
-input.request_path == ["v1", "collections", "lakes", ""]
-input.groupname == "admin"
+   input.request_path == ["v1", "collections", "lakes", ""]
+   input.groupname == "admin"
 }
 ```
 ### input_props_in
@@ -267,7 +267,7 @@ The rego rules combine data from the database with the input object, to work out
 
 The REGO equivalent of the above rule object is: <br />
 ```rego
-`input.company == data.items[i].name
+input.company == data.items[i].name
 ```
 ### input_props_in_as
 This logic checks if the value of two properties on the input object is present on one object in the database <br />
