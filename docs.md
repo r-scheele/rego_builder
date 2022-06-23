@@ -203,7 +203,7 @@ Example:
    "properties": {
       "input_property": "company",
       "value": "Geobeyond srl"
-}
+  }
 }
 ```
 In the json above, the `value` key holds the value that is to be checked for equality, while the `input_property` key holds the property that is to be checked in the input object.
