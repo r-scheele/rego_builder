@@ -5,6 +5,6 @@ COPY /pyproject.toml /rego_builder
 
 RUN pip3 install poetry
 RUN poetry config virtualenvs.create false
-RUN poetry install --no-dev
+RUN poetry install 
 COPY . .
 CMD ["python3", "main.py"]

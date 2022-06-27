@@ -1,14 +1,17 @@
 from fastapi import Depends, HTTPException, APIRouter
-import requests as r
+
 from app.config.config import settings
 from app.database.policy_database import PolicyDatabase, get_db
 from app.schemas.rules import RequestObject, UpdateRequestObject
 from app.server.auth.authorize import TokenBearer
 from app.utils.write_rego import WriteRego
+from app.database.datasource_database import Database
+
 
 default_path = settings.BASE_PATH
 
 router = APIRouter()
+database = Database()
 
 
 @router.get("/policies")
@@ -99,9 +102,6 @@ async def remove_policy(
 
 @router.get("/data")
 async def get_data(dependencies=Depends(TokenBearer())) -> dict:
-    res = r.get(url=settings.OPAL_SERVER_DATA_URL)
-    if res.status_code != 200:
-        raise HTTPException(
-            status_code=res.status_code, detail="Could not retrieve data"
-        )
-    return res.json()
+    schema_name = "geostore"
+    sql = f"select u.name, g.groupname from {schema_name}.gs_usergroup_members r join {schema_name}.gs_usergroup g on r.group_id = g.id join {schema_name}.gs_user u on r.user_id = u.id;"
+    return {"users": database.get_data(sql=sql)}
