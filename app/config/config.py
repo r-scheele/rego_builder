@@ -17,6 +17,13 @@ class Settings(BaseSettings):
     OPAL_SERVER_DATA_URL: Optional[str] = ""
     ENVIRONMENT: Optional[str] = "production"
 
+    # POSTGRES CONNECTION
+    HOST: Optional[str] = ""
+    PORT: Optional[int] = ""
+    DB_USER: Optional[str] = ""
+    PASSWORD: Optional[str] = ""
+    DATABASE: Optional[str] = ""
+
     class Config:
         env_file = ".env"
 

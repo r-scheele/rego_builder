@@ -20,7 +20,7 @@ SET row_security = off;
 -- Name: geostore; Type: SCHEMA; Schema: -; Owner: geostore
 --
 
--- CREATE USER geostore with password 'geostore';
+CREATE USER geostore with password 'geostore';
 
 CREATE SCHEMA geostore;
 
