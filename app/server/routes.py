@@ -101,7 +101,7 @@ async def remove_policy(
 
 
 @router.get("/data")
-async def get_data(dependencies=Depends(TokenBearer())) -> dict:
+async def get_data() -> dict:
     schema_name = "geostore"
     sql = f"select u.name, g.groupname from {schema_name}.gs_usergroup_members r join {schema_name}.gs_usergroup g on r.group_id = g.id join {schema_name}.gs_user u on r.user_id = u.id;"
     return {"users": database.get_data(sql=sql)}

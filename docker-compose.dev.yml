@@ -1,17 +1,6 @@
 version: "3"
 
 services:
-  datasource:
-      image: postgres:alpine
-      restart: always
-      environment:
-        - POSTGRES_DB=datasource
-        - POSTGRES_USER=postgres
-        - POSTGRES_PASSWORD=postgres
-      ports:
-        - '5432:5432'
-      volumes:
-        - ./sql/data/postgres:/var/lib/postgresql/data
   web:
     build: .
     ports:
@@ -20,3 +9,15 @@ services:
       - .:/rego_builder:ro
     env_file:
       - .env
+  datasource:
+      image: postgres:alpine
+      environment:
+        - POSTGRES_DB=datasource
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=postgres
+      ports:
+        - '5433:5432'
+      volumes:
+        - ./sql/data/postgres:/var/lib/postgresql/data
+        
+ 
