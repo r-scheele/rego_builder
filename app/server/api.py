@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from app.server.auth.authenticate import router as auth_router
-from app.server.routes import router
-
+from app.server.routes import router as api_router
+from app.database.datasource_database import router as datasource_router
 
 app = FastAPI(swagger_ui_parameters={"syntaxHighlight.theme": "obsidian"})
 
@@ -19,4 +19,5 @@ app.add_middleware(
 
 
 app.include_router(auth_router)
-app.include_router(router)
+app.include_router(api_router)
+app.include_router(datasource_router)

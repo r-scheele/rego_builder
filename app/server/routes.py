@@ -5,13 +5,11 @@ from app.database.policy_database import PolicyDatabase, get_db
 from app.schemas.rules import RequestObject, UpdateRequestObject
 from app.server.auth.authorize import TokenBearer
 from app.utils.write_rego import WriteRego
-from app.database.datasource_database import Database
 
 
 default_path = settings.BASE_PATH
 
 router = APIRouter()
-database = Database()
 
 
 @router.get("/policies")
@@ -98,10 +96,3 @@ async def remove_policy(
     WriteRego(dependencies["token"]).delete_policy(policies)
 
     return {"status": 200, "message": "Policy deleted successfully."}
-
-
-@router.get("/data")
-async def get_data() -> dict:
-    schema_name = "geostore"
-    sql = f"select u.name, g.groupname from {schema_name}.gs_usergroup_members r join {schema_name}.gs_usergroup g on r.group_id = g.id join {schema_name}.gs_user u on r.user_id = u.id;"
-    return {"users": database.get_data(sql=sql)}

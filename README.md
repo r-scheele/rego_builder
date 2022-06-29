@@ -39,6 +39,18 @@ DATABASE=datasource
 Run the application from the entry point <br />
 
 Create a postgres database, called datasource <br />
+  
+  ```console
+  $ psql -U postgres
+  postgres=# CREATE DATABASE datasource
+    WITH
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'C'
+    LC_CTYPE = 'C'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1;
+  ```
 
 Run the application entry point:
 

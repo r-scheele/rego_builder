@@ -1,3 +1,4 @@
+from fastapi import Depends, HTTPException, APIRouter
 import psycopg2 as pg
 from psycopg2.errors import (
     DuplicateSchema,
@@ -10,6 +11,7 @@ import sqlparse
 import os, sys
 from pathlib import Path
 from app.config.config import settings
+from app.server.auth.authorize import TokenBearer
 
 
 ROOT_DIR = Path(__file__).parent.parent.parent
@@ -74,3 +76,14 @@ class Database:
         cur = self.conn.cursor()
         cur.execute(sql)
         return cur.fetchall()
+
+
+database = Database()
+router = APIRouter()
+
+
+@router.get("/data")
+async def get_data(dependencies=Depends(TokenBearer())) -> dict:
+    schema_name = "geostore"
+    sql = f"select u.name, g.groupname from {schema_name}.gs_usergroup_members r join {schema_name}.gs_usergroup g on r.group_id = g.id join {schema_name}.gs_user u on r.user_id = u.id;"
+    return {"users": database.get_data(sql=sql)}
