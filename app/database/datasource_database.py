@@ -16,7 +16,9 @@ from app.server.auth.authorize import TokenBearer
 
 ROOT_DIR = Path(__file__).parent.parent.parent
 file_path = os.path.join(ROOT_DIR, "sql", "create_tables.sql")
-f = os.path.join(ROOT_DIR, "sql", "test.sql")
+
+schema_name = "geostore"
+GET_DATA_SQL_COMAND = f"select u.name, g.groupname from {schema_name}.gs_usergroup_members r join {schema_name}.gs_usergroup g on r.group_id = g.id join {schema_name}.gs_user u on r.user_id = u.id;"
 
 
 class Database:
@@ -28,6 +30,7 @@ class Database:
         """
         Connect to database and return connection
         """
+
         try:
             conn = pg.connect(
                 database=settings.DATABASE,
@@ -35,7 +38,6 @@ class Database:
                 password=settings.PASSWORD,
             )
             conn.autocommit = True
-
             return conn
         except pg.OperationalError as e:
             sys.exit(1)
@@ -52,25 +54,21 @@ class Database:
         Create tables in database
         """
 
-        if not self.role_exists("geostore"):
+        with self.conn.cursor() as cursor:
+            with open(file_path, "r", encoding="utf-8") as file:
+                sql = sqlparse.split(sqlparse.format(file.read(), strip_comments=True))
 
-            with self.conn.cursor() as cursor:
-                with open(file_path, "r", encoding="utf-8") as file:
-                    sql = sqlparse.split(
-                        sqlparse.format(file.read(), strip_comments=True)
-                    )
-
-                for statement in sql:
-                    try:
-                        cursor.execute(statement)
-                    except (
-                        DuplicateSchema,
-                        DuplicateTable,
-                        DuplicateObject,
-                        UniqueViolation,
-                        InvalidTableDefinition,
-                    ) as e:
-                        continue
+            for statement in sql:
+                try:
+                    cursor.execute(statement)
+                except (
+                    DuplicateSchema,
+                    DuplicateTable,
+                    DuplicateObject,
+                    UniqueViolation,
+                    InvalidTableDefinition,
+                ) as e:
+                    continue
 
     def get_data(self, sql: str):
         cur = self.conn.cursor()
@@ -79,11 +77,3 @@ class Database:
 
 
 database = Database()
-router = APIRouter()
-
-
-@router.get("/data")
-async def get_data(dependencies=Depends(TokenBearer())) -> dict:
-    schema_name = "geostore"
-    sql = f"select u.name, g.groupname from {schema_name}.gs_usergroup_members r join {schema_name}.gs_usergroup g on r.group_id = g.id join {schema_name}.gs_user u on r.user_id = u.id;"
-    return {"users": database.get_data(sql=sql)}

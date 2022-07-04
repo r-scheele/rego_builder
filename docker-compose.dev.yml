@@ -1,14 +1,6 @@
 version: "3"
 
 services:
-  web:
-    build: .
-    ports:
-      - "8080:8080"
-    volumes:
-      - .:/rego_builder:ro
-    env_file:
-      - .env
   datasource:
       image: postgres:alpine
       environment:
@@ -19,5 +11,14 @@ services:
         - '5433:5432'
       volumes:
         - ./sql/data/postgres:/var/lib/postgresql/data
+  web:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/rego_builder:ro
+    env_file:
+      - .env
+
         
  

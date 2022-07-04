@@ -5,7 +5,7 @@ from app.database.policy_database import PolicyDatabase, get_db
 from app.schemas.rules import RequestObject, UpdateRequestObject
 from app.server.auth.authorize import TokenBearer
 from app.utils.write_rego import WriteRego
-
+from app.database.datasource_database import database, GET_DATA_SQL_COMAND
 
 default_path = settings.BASE_PATH
 
@@ -96,3 +96,9 @@ async def remove_policy(
     WriteRego(dependencies["token"]).delete_policy(policies)
 
     return {"status": 200, "message": "Policy deleted successfully."}
+
+
+@router.get("/data")
+async def get_data() -> dict:
+    sql = GET_DATA_SQL_COMAND
+    return {"users": database.get_data(sql=sql)}
