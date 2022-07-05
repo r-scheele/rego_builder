@@ -5,5 +5,4 @@ __pycache__
 .pytest_cache
 .coverage
 .dev.env
-data
-postgres
+sql/data/**

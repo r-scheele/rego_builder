@@ -1,11 +1,12 @@
 from fastapi import Depends, HTTPException, APIRouter
+import requests as r
 
 from app.config.config import settings
 from app.database.policy_database import PolicyDatabase, get_db
 from app.schemas.rules import RequestObject, UpdateRequestObject
 from app.server.auth.authorize import TokenBearer
 from app.utils.write_rego import WriteRego
-from app.database.datasource_database import database, GET_DATA_SQL_COMAND
+from app.database.datasource_database import database
 
 default_path = settings.BASE_PATH
 
@@ -35,7 +36,10 @@ async def write_policy(
     policies.append(policy)
 
     # Write the policy to the database after successful push
-    WriteRego(dependencies["token"]).write_to_file(policies)
+    WriteRego(
+        access_token=dependencies["token"], github_repo_url=rego_rule.github_repo_url
+    ).write_to_file(policies)
+
     database.add_policy(policy, dependencies["login"])
 
     return {"status": 200, "message": "Policy created successfully"}
@@ -75,30 +79,56 @@ async def modify_policy(
     policies.append(updated_policy)
 
     # Rewrite rego file and update GitHub
-    WriteRego(dependencies["token"]).write_to_file(policies)
+    WriteRego(dependencies["token"], rego_rule["github_repo_url"]).write_to_file(
+        policies
+    )
 
     return {"status": 200, "message": "Updated successfully"}
 
 
 @router.delete("/policies/{policy_id}")
 async def remove_policy(
-    policy_id: str, database=Depends(get_db), dependencies=Depends(TokenBearer())
+    policy_id: str,
+    github_repo_url: str,
+    database=Depends(get_db),
+    dependencies=Depends(TokenBearer()),
 ) -> dict:
     if not database.exists(policy_id, dependencies["login"]):
         raise HTTPException(status_code=404, detail="Policy not found")
 
     user = dependencies["login"]
     # Remove policy from database
-    database.delete_policy(policy_id, user)
+    database.delete_policy(policy_id, user, github_repo_url)
 
     # Update the policy in the rego file
     policies = database.get_policies(owner=user)
-    WriteRego(dependencies["token"]).delete_policy(policies)
+    WriteRego(dependencies["token"], github_repo_url).write_to_file(policies)
 
     return {"status": 200, "message": "Policy deleted successfully."}
 
 
 @router.get("/data")
-async def get_data() -> dict:
-    sql = GET_DATA_SQL_COMAND
-    return {"users": database.get_data(sql=sql)}
+async def get_data(dependencies=Depends(TokenBearer())) -> dict:
+    return {"users": database.get_data()}
+
+
+@router.get("/user/repos")
+async def get_public_and_private_repo(
+    dependencies=Depends(TokenBearer()),
+) -> dict:
+
+    url = f"https://api.github.com/search/repositories?q=user:{dependencies['login']}"
+    repos = r.get(
+        url=url,
+        headers={"Authorization": f"token {dependencies['token']}"},
+    ).json()
+
+    return [
+        {
+            "name": repo["name"],
+            "url": repo["url"],
+            "html_url": repo["html_url"],
+            "owner": repo["owner"]["login"],
+        }
+        for repo in repos["items"]
+    ]

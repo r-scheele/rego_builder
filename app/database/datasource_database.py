@@ -24,6 +24,7 @@ GET_DATA_SQL_COMAND = f"select u.name, g.groupname from {schema_name}.gs_usergro
 class Database:
     def __init__(self):
         self.conn = self.connect()
+
         self.create_tables()
 
     def connect(self):
@@ -36,6 +37,7 @@ class Database:
                 database=settings.DATABASE,
                 user=settings.DB_USER,
                 password=settings.PASSWORD,
+                host=settings.HOST,
             )
             conn.autocommit = True
             return conn
@@ -70,8 +72,9 @@ class Database:
                 ) as e:
                     continue
 
-    def get_data(self, sql: str):
+    def get_data(self):
         cur = self.conn.cursor()
+        sql = GET_DATA_SQL_COMAND
         cur.execute(sql)
         return cur.fetchall()
 

@@ -1,16 +1,21 @@
-version: "3"
+version: "3.8"
 
 services:
   datasource:
       image: postgres:alpine
+      ports:
+        - '5432:5432'
+      restart: unless-stopped
       environment:
-        - POSTGRES_DB=datasource
         - POSTGRES_USER=postgres
         - POSTGRES_PASSWORD=postgres
-      ports:
-        - '5433:5432'
+        - POSTGRES_DB=postgres
       volumes:
         - ./sql/data/postgres:/var/lib/postgresql/data
+        - ./sql/create_database.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      networks:
+        - default
+
   web:
     build: .
     ports:
@@ -19,6 +24,10 @@ services:
       - .:/rego_builder:ro
     env_file:
       - .env
-
-        
+    restart: always
+    depends_on:
+      - datasource
+    links:
+      - datasource
+    
  

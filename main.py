@@ -15,7 +15,7 @@ def init_dir() -> None:
 
 if __name__ == "__main__":
     init_dir()
-    if settings.ENVIRONMENT == "development":
-        uvicorn.run("app.server.api:app", host="0.0.0.0", port=8080, reload=True)
-    else:
+    if settings.ENVIRONMENT == "production":
         uvicorn.run("app.server.api:app", host="0.0.0.0", port=8080)
+    else:
+        uvicorn.run("app.server.api:app", host="0.0.0.0", port=8080, reload=True)

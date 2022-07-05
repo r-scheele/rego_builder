@@ -39,9 +39,11 @@ class PolicyDatabase:
             return False
         return doc["name"] == policy_name
 
-    def delete_policy(self, policy_name: str, owner: str) -> None:
+    def delete_policy(self, policy_name: str, owner: str, github_repo_url: str) -> None:
         self.database.remove(
-            (self.store.name == policy_name) & (self.store.owner == owner)
+            (self.store.name == policy_name)
+            & (self.store.owner == owner)
+            & (self.store.github_repo_url == github_repo_url)
         )
 
     def get_policies(self, owner: str) -> list:

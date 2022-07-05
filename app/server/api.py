@@ -3,6 +3,7 @@ from starlette.middleware.cors import CORSMiddleware
 from app.server.auth.authenticate import router as auth_router
 from app.server.routes import router as api_router
 
+print("Starting server...")
 app = FastAPI(swagger_ui_parameters={"syntaxHighlight.theme": "obsidian"})
 
 

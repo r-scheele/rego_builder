@@ -8,9 +8,10 @@ initiate_rule = "package httpapi.authz\nimport input\ndefault allow = false\n\n\
 
 
 class WriteRego:
-    def __init__(self, access_token: str) -> None:
+    def __init__(self, access_token: str, github_repo_url: str) -> None:
         self.access_token = access_token
-        self.github = GitHubOperations(settings.GITHUB_URL, self.access_token)
+        self.github_repo_url = github_repo_url
+        self.github = GitHubOperations(self.github_repo_url, self.access_token)
 
     def write_to_file(self, policies: list) -> None:
         """
@@ -25,7 +26,7 @@ class WriteRego:
         # Initialize repository
         self.github.initialize()
 
-        result = initiate_rule
+        result = "" if not policies else initiate_rule
         for policy in policies:
             result += build_rego(policy["rules"])
 
@@ -39,5 +40,8 @@ class WriteRego:
 
         if not os.path.exists(file_path):
             raise FileNotFoundError
+
+        # check if there is no policy belonging to the user, in that repository, if so, initiate_rule = ""
+
         self.write_to_file(policies)
         return True

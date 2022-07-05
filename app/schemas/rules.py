@@ -12,11 +12,14 @@ class RequestObject(BaseModel):
     name: str
     rules: List[List[Rule]]
     owner: Optional[str] = ""
+    github_repo_url: Optional[str] = ""
 
     class Config:
         schema_extra = {
             "example": {
                 "name": "Example2",
+                "owner": "r-scheele",
+                "github_repo_url": "https://github.com/r-scheele/opal-policy-example",
                 "rules": [
                     [
                         {
@@ -119,11 +122,15 @@ class RequestObject(BaseModel):
 class UpdateRequestObject(BaseModel):
     name: Optional[str]
     rules: Optional[List[List[Rule]]]
+    owner: Optional[str] = ""
+    github_repo_url: Optional[str] = ""
 
     class Config:
         schema_extra = {
             "example": {
                 "name": "Example2",
+                "owner": "r-scheele",
+                "github_repo_url": "https://github.com/r-scheele/opal-policy-example",
                 "rules": [
                     [
                         {
