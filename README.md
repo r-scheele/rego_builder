@@ -29,9 +29,30 @@ GITHUB_ACCESS_TOKEN=`cat ~/.github_access_token`
 GITHUB_USERNAME=<your_github_username>
 GITHUB_URL=<your_github_url where the authorization code lives>
 ENVIRONMENT=<your_environment e.g. production|development>
+HOST=datasource
+PORT=5432
+DB_USER=postgres
+PASSWORD=postgres
+DATABASE=datasource
 ```
 
-- Run the application from the entry point
+Run the application from the entry point <br />
+
+Create a postgres database, called datasource <br />
+  
+  ```console
+  $ psql -U postgres
+  postgres=# CREATE DATABASE datasource
+    WITH
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'C'
+    LC_CTYPE = 'C'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1;
+  ```
+
+Run the application entry point:
 
 ```console
 $ python3 main.py
