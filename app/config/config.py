@@ -19,10 +19,9 @@ class Settings(BaseSettings):
 
     # POSTGRES CONNECTION
     HOST: Optional[str] = ""
-    PORT: Optional[int] = ""
-    DB_USER: Optional[str] = ""
     PASSWORD: Optional[str] = ""
     DATABASE: Optional[str] = ""
+    DB_USER: Optional[str] = ""
 
     class Config:
         env_file = ".env"

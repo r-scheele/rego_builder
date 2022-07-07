@@ -7,6 +7,7 @@ from psycopg2.errors import (
     UniqueViolation,
     InvalidTableDefinition,
 )
+
 import sqlparse
 import os, sys
 from pathlib import Path
