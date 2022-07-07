@@ -36,7 +36,11 @@ PASSWORD=postgres
 DATABASE=datasource
 ```
 
-Run the application from the entry point <br />
+Run the application:
+
+```console
+$ gunicorn -w 4 -k uvicorn.workers.UvicornWorker app.app:app --bind 0.0.0.0:8080
+```
 
 Create a postgres database, called datasource <br />
   
