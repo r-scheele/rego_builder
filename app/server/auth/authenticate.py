@@ -2,28 +2,24 @@ import json
 
 import requests as r
 from fastapi import APIRouter
-from starlette.responses import RedirectResponse
-
-from app.config.config import settings
 
 router = APIRouter()
 
 
-@router.get("/login")
-def authorize():
-    res = r.get(
-        url="https://github.com/login/oauth/authorize",
-        data={
-            "client_id": settings.CLIENT_ID,
-            "redirect_uri": "http://localhost:8080/token",
-        },
-    )
-    return RedirectResponse(url=res.url)
+# @router.get("/login")
+# def authorize():
+#     res = r.get(
+#         url="https://github.com/login/oauth/authorize",
+#         data={
+#             "client_id": settings.CLIENT_ID,
+#             "redirect_uri": "http://localhost:8080/token",
+#         },
+#     )
+#     return RedirectResponse(url=res.url)
 
 
 @router.get("/token")
-def get_token(code: str) -> dict:
-    client_id, client_secret = settings.CLIENT_ID, settings.CLIENT_SECRET
+def get_token(code: str, client_id: str, client_secret: str) -> dict:
     res = r.post(
         url="https://github.com/login/oauth/access_token",
         headers={"Accept": "application/json"},
