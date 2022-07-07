@@ -19,6 +19,7 @@ python-dotenv = "^0.20.0"
 tinydb = "^4.7.0"
 nox = "^2022.1.7"
 sqlparse = "^0.4.2"
+psycopg2 = "^2.9.3"
 gunicorn = "^20.1.0"
 
 [tool.poetry.dev-dependencies]
