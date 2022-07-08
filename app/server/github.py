@@ -5,7 +5,7 @@ from git import Repo
 
 from app.config.config import settings
 
-COMMIT_MESSAGE = "updates from from application"
+COMMIT_MESSAGE = "Policy update from from application"
 
 default_path = settings.BASE_PATH
 
@@ -13,7 +13,7 @@ default_path = settings.BASE_PATH
 @lru_cache(maxsize=1)
 class GitHubOperations:
     def __init__(
-        self, repo_url: str, access_token: str = settings.GITHUB_ACCESS_TOKEN
+        self, repo_url: str, access_token
     ) -> None:
         self.access_token = access_token
         self.repo_url = repo_url.lstrip("https://")

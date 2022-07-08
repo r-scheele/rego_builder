@@ -24,9 +24,7 @@ GET_DATA_SQL_COMAND = f"select u.name, g.groupname from {schema_name}.gs_usergro
 
 class Database:
     def __init__(self):
-        self.conn = self.connect()
-
-        self.create_tables()
+        pass
 
     def connect(self):
         """
@@ -41,15 +39,17 @@ class Database:
                 host=settings.HOST,
             )
             conn.autocommit = True
-            return conn
+            return conn.cursor()
         except pg.OperationalError as e:
+            print("Error connecting to the Postgres database: ", e)
             sys.exit(1)
 
     def role_exists(self, role: str):
         query = "SELECT 1 FROM pg_catalog.pg_roles WHERE rolname = '{}'".format(role)
-        cur = self.conn.cursor()
+        cur = self.connect()
         cur.execute(query)
         res = cur.fetchone()[0]
+        print("Result from role_exists: ", res)
         return res
 
     def create_tables(self):
@@ -57,10 +57,11 @@ class Database:
         Create tables in database
         """
 
-        with self.conn.cursor() as cursor:
-            with open(file_path, "r", encoding="utf-8") as file:
-                sql = sqlparse.split(sqlparse.format(file.read(), strip_comments=True))
+        cursor = self.connect()
 
+        with open(file_path, "r", encoding="utf-8") as file:
+            sql = sqlparse.split(sqlparse.format(file.read(), strip_comments=True))
+        with cursor:
             for statement in sql:
                 try:
                     cursor.execute(statement)
@@ -74,10 +75,15 @@ class Database:
                     continue
 
     def get_data(self):
-        cur = self.conn.cursor()
+        cur = self.connect()
         sql = GET_DATA_SQL_COMAND
         cur.execute(sql)
         return cur.fetchall()
 
 
 database = Database()
+database.connect()
+if not database.role_exists("geostore"):
+    database.create_tables()
+
+data = database.get_data()

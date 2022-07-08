@@ -1,12 +1,11 @@
 from fastapi import Depends, HTTPException, APIRouter
-import requests as r
 
 from app.config.config import settings
-from app.database.policy_database import PolicyDatabase, get_db
+from app.database.policy import PolicyDatabase, get_db
 from app.schemas.rules import RequestObject, UpdateRequestObject
 from app.server.auth.authorize import TokenBearer
 from app.utils.write_rego import WriteRego
-from app.database.datasource_database import database
+from app.database.datasource_database import data
 
 default_path = settings.BASE_PATH
 
@@ -37,7 +36,7 @@ async def write_policy(
 
     # Write the policy to the database after successful push
     WriteRego(
-        access_token=dependencies["token"], github_repo_url=rego_rule.github_repo_url
+        dependencies["token"], rego_rule.github_repo_url
     ).write_to_file(policies)
 
     database.add_policy(policy, dependencies["login"])
@@ -109,26 +108,4 @@ async def remove_policy(
 
 @router.get("/data")
 async def get_data(dependencies=Depends(TokenBearer())) -> dict:
-    return {"users": database.get_data()}
-
-
-@router.get("/user/repos")
-async def get_public_and_private_repo(
-    dependencies=Depends(TokenBearer()),
-) -> dict:
-
-    url = f"https://api.github.com/search/repositories?q=user:{dependencies['login']}"
-    repos = r.get(
-        url=url,
-        headers={"Authorization": f"token {dependencies['token']}"},
-    ).json()
-
-    return [
-        {
-            "name": repo["name"],
-            "url": repo["url"],
-            "html_url": repo["html_url"],
-            "owner": repo["owner"]["login"],
-        }
-        for repo in repos["items"]
-    ]
+    return {"users": data}

@@ -17,7 +17,7 @@ class RequestObject(BaseModel):
     class Config:
         schema_extra = {
             "example": {
-                "name": "Example2",
+                "name": "Example",
                 "owner": "r-scheele",
                 "github_repo_url": "https://github.com/r-scheele/opal-policy-example",
                 "rules": [
@@ -128,7 +128,7 @@ class UpdateRequestObject(BaseModel):
     class Config:
         schema_extra = {
             "example": {
-                "name": "Example2",
+                "name": "Example",
                 "owner": "r-scheele",
                 "github_repo_url": "https://github.com/r-scheele/opal-policy-example",
                 "rules": [
