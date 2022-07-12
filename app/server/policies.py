@@ -35,9 +35,7 @@ async def write_policy(
     policies.append(policy)
 
     # Write the policy to the database after successful push
-    WriteRego(
-        dependencies["token"], rego_rule.github_repo_url
-    ).write_to_file(policies)
+    WriteRego(dependencies["token"], rego_rule.github_repo_url).write_to_file(policies)
 
     database.add_policy(policy, dependencies["login"])
 

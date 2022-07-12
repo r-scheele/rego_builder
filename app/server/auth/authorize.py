@@ -26,8 +26,9 @@ class TokenBearer(HTTPBearer):
         else:
             raise HTTPException(status_code=403, detail="Invalid authorization code.")
 
-
-    def verify_token(self, token: str) -> tuple[bool, Any] | tuple[bool, dict[str, str]]:
+    def verify_token(
+        self, token: str
+    ) -> tuple[bool, Any] | tuple[bool, dict[str, str]]:
 
         """
         Authenticate a user.
