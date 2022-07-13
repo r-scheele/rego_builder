@@ -19,32 +19,32 @@ from app.config.config import settings
 #     return RedirectResponse(url=url)
 
 
-@router.get("/gitlab/login")
-async def login_gitlab():
-    APP_ID, REDIRECT_URI = (
-        settings.GITLAB_CLIENT_ID,
-        "http://localhost:8080/api/auth/callback/gitlab",
-    )
-    url = f"https://gitlab.com/oauth/authorize?client_id={APP_ID}&redirect_uri={REDIRECT_URI}&response_type=code"
-    return RedirectResponse(url=url)
+# @router.get("/gitlab/login")
+# async def login_gitlab():
+#     APP_ID, REDIRECT_URI = (
+#         settings.GITLAB_CLIENT_ID,
+#         "http://localhost:8080/api/auth/callback/gitlab",
+#     )
+#     url = f"https://gitlab.com/oauth/authorize?client_id={APP_ID}&redirect_uri={REDIRECT_URI}&response_type=code"
+#     return RedirectResponse(url=url)
 
 
 @router.get("/api/auth/callback/gitlab")
-async def get_token_from_gitlab(request: Request):
-    code = request.query_params.get("code", None)
-    APP_SECRET, APP_ID = settings.GITLAB_CLIENT_SECRET, settings.GITLAB_CLIENT_ID
+async def get_token_from_gitlab(
+    code: str, client_id: str, client_secret: str, redirect_uri: str
+):
     res = rest_client.post(
         f"https://gitlab.com/oauth/token",
         data={
-            "client_id": APP_ID,
-            "client_secret": APP_SECRET,
+            "client_id": client_id,
+            "client_secret": client_secret,
             "code": code,
             "grant_type": "authorization_code",
-            "redirect_uri": "http://localhost:8080/api/auth/callback/gitlab",
+            "redirect_uri": redirect_uri,
+            # "redirect_uri": "http://localhost:8080/api/auth/callback/gitlab",
         },
     )
     json_res = res.json()
-
     access_token, expires_in = json_res["access_token"], json_res["expires_in"]
     return {"access_token": access_token, "expires_in": expires_in}
 
