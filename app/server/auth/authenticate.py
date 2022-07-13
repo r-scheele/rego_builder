@@ -12,27 +12,10 @@ router = APIRouter()
 from app.config.config import settings
 
 
-# @router.get("/github/login")
-# async def login_github():
-#     APP_ID, REDIRECT_URI = (settings.GITHUB_CLIENT_ID, "http://localhost:8080/token")
-#     url = f"https://github.com/login/oauth/authorize?client_id={APP_ID}&redirect_uri={REDIRECT_URI}&response_type=code"
-#     return RedirectResponse(url=url)
-
-
-# @router.get("/gitlab/login")
-# async def login_gitlab():
-#     APP_ID, REDIRECT_URI = (
-#         settings.GITLAB_CLIENT_ID,
-#         "http://localhost:8080/api/auth/callback/gitlab",
-#     )
-#     url = f"https://gitlab.com/oauth/authorize?client_id={APP_ID}&redirect_uri={REDIRECT_URI}&response_type=code"
-#     return RedirectResponse(url=url)
-
-
 @router.get("/api/auth/callback/gitlab")
 async def get_token_from_gitlab(
     code: str, client_id: str, client_secret: str, redirect_uri: str
-):
+) -> dict:
     res = rest_client.post(
         f"https://gitlab.com/oauth/token",
         data={
