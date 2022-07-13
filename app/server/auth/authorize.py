@@ -1,4 +1,5 @@
 from typing import Any
+from urllib.parse import urljoin
 
 import requests as r
 from fastapi import HTTPException, Request
@@ -34,14 +35,19 @@ class TokenBearer(HTTPBearer):
         Authenticate a user.
         """
 
-        url = "https://api.github.com/user"
-        headers = {"Authorization": f"token {token}"}
-        res = r.get(url, headers=headers)
-        # If the user is valid, return the user's information.
-        if res.status_code == 200:
-
-            response = {"token": token, "login": res.json()["login"]}
-
+        gitlab_url = urljoin("https://gitlab.com", f"/api/v4/user?access_token={token}")
+        gitlab_res = r.get(gitlab_url)
+        if gitlab_res.status_code == 200:
+            response = {"token": token, "login": gitlab_res.json()["username"]}
             return True, response
+
+        github_url, github_headers = "https://api.github.com/user", {
+            "Authorization": f"token {token}"
+        }
+        github_res = r.get(github_url, headers=github_headers)
+        if github_res.status_code == 200:
+            response = {"token": token, "login": github_res.json()["login"]}
+            return True, response
+
         # If the user is not valid, return an error message.
         return False, {"error": "Invalid token."}
