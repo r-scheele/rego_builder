@@ -19,7 +19,8 @@ class RequestObject(BaseModel):
             "example": {
                 "name": "Example",
                 "owner": "r-scheele",
-                "github_repo_url": "https://github.com/r-scheele/opal-policy-example",
+                "repo_url": "https://github.com/r-scheele/opal-policy-example",
+                # "github_repo_url": "https://gitlab.com/r-scheele/opal-policy-example",
                 "rules": [
                     [
                         {
@@ -130,7 +131,8 @@ class UpdateRequestObject(BaseModel):
             "example": {
                 "name": "Example",
                 "owner": "r-scheele",
-                "github_repo_url": "https://github.com/r-scheele/opal-policy-example",
+                "repo_url": "https://github.com/r-scheele/opal-policy-example",
+                # "github_repo_url": "https://gitlab.com/r-scheele/opal-policy-example",
                 "rules": [
                     [
                         {
