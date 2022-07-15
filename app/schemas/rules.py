@@ -20,7 +20,6 @@ class RequestObject(BaseModel):
                 "name": "Example",
                 "owner": "r-scheele",
                 "repo_url": "https://github.com/r-scheele/opal-policy-example",
-                # "github_repo_url": "https://gitlab.com/r-scheele/opal-policy-example",
                 "rules": [
                     [
                         {
@@ -132,7 +131,6 @@ class UpdateRequestObject(BaseModel):
                 "name": "Example",
                 "owner": "r-scheele",
                 "repo_url": "https://github.com/r-scheele/opal-policy-example",
-                # "github_repo_url": "https://gitlab.com/r-scheele/opal-policy-example",
                 "rules": [
                     [
                         {
