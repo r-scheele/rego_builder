@@ -9,6 +9,8 @@ class Settings(BaseSettings):
     TEST_DATABASE_PATH: Optional[str] = ""
     OPAL_SERVER_DATA_URL: Optional[str] = ""
     ENVIRONMENT: Optional[str] = "production"
+    GITLAB_CLIENT_ID: Optional[str] = ""
+    GITLAB_CLIENT_SECRET: Optional[str] = ""
 
     # POSTGRES CONNECTION
     HOST: Optional[str] = ""

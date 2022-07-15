@@ -35,7 +35,7 @@ async def write_policy(
     policies.append(policy)
 
     # Write the policy to the database after successful push
-    WriteRego(dependencies["token"], rego_rule.github_repo_url).write_to_file(policies)
+    WriteRego(dependencies["token"], rego_rule.repo_url).write_to_file(policies)
 
     database.add_policy(policy, dependencies["login"])
 
@@ -76,9 +76,7 @@ async def modify_policy(
     policies.append(updated_policy)
 
     # Rewrite rego file and update GitHub
-    WriteRego(dependencies["token"], rego_rule["github_repo_url"]).write_to_file(
-        policies
-    )
+    WriteRego(dependencies["token"], rego_rule["repo_url"]).write_to_file(policies)
 
     return {"status": 200, "message": "Updated successfully"}
 
@@ -86,7 +84,7 @@ async def modify_policy(
 @router.delete("/policies/{policy_id}")
 async def remove_policy(
     policy_id: str,
-    github_repo_url: str,
+    repo_url: str,
     database=Depends(get_db),
     dependencies=Depends(TokenBearer()),
 ) -> dict:
@@ -95,11 +93,11 @@ async def remove_policy(
 
     user = dependencies["login"]
     # Remove policy from database
-    database.delete_policy(policy_id, user, github_repo_url)
+    database.delete_policy(policy_id, user, repo_url)
 
     # Update the policy in the rego file
     policies = database.get_policies(owner=user)
-    WriteRego(dependencies["token"], github_repo_url).write_to_file(policies)
+    WriteRego(dependencies["token"], repo_url).write_to_file(policies)
 
     return {"status": 200, "message": "Policy deleted successfully."}
 

@@ -56,9 +56,7 @@ class Database:
         """
         Create tables in database
         """
-
         cursor = self.connect()
-
         with open(file_path, "r", encoding="utf-8") as file:
             sql = sqlparse.split(sqlparse.format(file.read(), strip_comments=True))
         with cursor:

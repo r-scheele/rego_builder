@@ -33,6 +33,7 @@ class GitHubOperations:
 
         # Clone the repo to the server
         initialized_repo = Repo.clone_from(self.complete_repo_url, self.local_repo_path)
+
         self.repo_git_path = initialized_repo.git_dir
 
     def push(self) -> None:
@@ -52,6 +53,7 @@ class GitHubOperations:
                 repo.create_remote("origin", target_url)
             origin = repo.remote(name="origin")
             origin.fetch()
+
             origin.push()
         except Exception:
             raise Exception

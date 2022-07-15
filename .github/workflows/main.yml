@@ -22,8 +22,12 @@ jobs:
     #Task for setting up Python 3.10 using actions/setup-python@v2 Github action
       - name: Set up Python
         uses: actions/setup-python@v2.3.0
+        
         with:
           python-version: "3.10"
+
+      # - uses: isort/isort-action@master
+
       - run: pip install --upgrade pip
       - run: pip install black pytest
       - run: black .

@@ -29,14 +29,16 @@ GITHUB_ACCESS_TOKEN=`cat ~/.github_access_token`
 GITHUB_USERNAME=<your_github_username>
 GITHUB_URL=<your_github_url where the authorization code lives>
 ENVIRONMENT=<your_environment e.g. production|development>
-HOST=datasource
+HOST=datasource <production>, HOST=localhost <development>
 PORT=5432
 DB_USER=postgres
 PASSWORD=postgres
 DATABASE=datasource
 ```
 
-Run the application:
+Run the application - production mode:
+
+
 
 ```console
 $ gunicorn -w 4 -k uvicorn.workers.UvicornWorker app.server.api:app --bind 0.0.0.0:8080
@@ -56,11 +58,14 @@ Create a postgres database, called datasource <br />
     CONNECTION LIMIT = -1;
   ```
 
-Run the application entry point:
+Run the application entry point - development mode:
+
+
 
 ```console
-$ python3 main.py
+$ uvicorn app.server.api:app --port 8080 --reload
 ```
+
 
 Open [localhost:8000/docs](localhost:8000/docs) for API Documentation.
 
