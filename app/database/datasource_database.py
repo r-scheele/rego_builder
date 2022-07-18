@@ -49,7 +49,6 @@ class Database:
         cur = self.connect()
         cur.execute(query)
         res = cur.fetchone()[0]
-        print("Result from role_exists: ", res)
         return res
 
     def create_tables(self):

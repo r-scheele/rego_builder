@@ -5,21 +5,21 @@ from app.database.policy import PolicyDatabase, get_db
 from app.schemas.rules import RequestObject, UpdateRequestObject
 from app.server.auth.authorize import TokenBearer
 from app.utils.write_rego import WriteRego
-from app.database.datasource_database import data
+
 
 default_path = settings.BASE_PATH
 
-router = APIRouter()
+router = APIRouter(tags=["Policy Operations"], prefix="/policies")
 
 
-@router.get("/policies")
+@router.get("/")
 async def get_policies(
     database: PolicyDatabase = Depends(get_db), dependencies=Depends(TokenBearer())
 ) -> list:
     return database.get_policies(dependencies["login"])
 
 
-@router.post("/policies/")
+@router.post("/")
 async def write_policy(
     rego_rule: RequestObject,
     database=Depends(get_db),
@@ -42,7 +42,7 @@ async def write_policy(
     return {"status": 200, "message": "Policy created successfully"}
 
 
-@router.get("/policies/{policy_id}")
+@router.get("/{policy_id}")
 async def retrieve_policy(
     policy_id: str, database=Depends(get_db), dependencies=Depends(TokenBearer())
 ) -> dict:
@@ -53,7 +53,7 @@ async def retrieve_policy(
     return stored_policy
 
 
-@router.put("/policies/{policy_id}")
+@router.put("/{policy_id}")
 async def modify_policy(
     policy_id: str,
     rego_rule: UpdateRequestObject,
@@ -81,7 +81,7 @@ async def modify_policy(
     return {"status": 200, "message": "Updated successfully"}
 
 
-@router.delete("/policies/{policy_id}")
+@router.delete("/{policy_id}")
 async def remove_policy(
     policy_id: str,
     repo_url: str,
@@ -100,8 +100,3 @@ async def remove_policy(
     WriteRego(dependencies["token"], repo_url).write_to_file(policies)
 
     return {"status": 200, "message": "Policy deleted successfully."}
-
-
-@router.get("/data")
-async def get_data(dependencies=Depends(TokenBearer())) -> dict:
-    return {"users": data}
