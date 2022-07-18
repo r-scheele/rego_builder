@@ -3,10 +3,10 @@ import requests as r
 
 from app.server.auth.authorize import TokenBearer
 
-router = APIRouter()
+router = APIRouter(tags=["Repo Management"], prefix="/user/repos")
 
 
-@router.get("/user/repos")
+@router.get("/github")
 async def get_public_and_private_repo(
     dependencies=Depends(TokenBearer()),
 ) -> list:
@@ -17,7 +17,7 @@ async def get_public_and_private_repo(
         headers={"Authorization": f"token {dependencies['token']}"},
     ).json()
 
-    return [
+    repos = [
         {
             "name": repo["name"],
             "html_url": repo["html_url"],
@@ -25,9 +25,10 @@ async def get_public_and_private_repo(
         }
         for repo in repos["items"]
     ]
+    return repos
 
 
-@router.get("/user/repos/gitlab")
+@router.get("/gitlab")
 async def get_public_and_private_repo_gitlab(
     dependencies=Depends(TokenBearer()),
 ) -> list:
@@ -38,7 +39,7 @@ async def get_public_and_private_repo_gitlab(
         headers={"Authorization": f"Bearer {dependencies['token']}"},
     ).json()
 
-    return [
+    repos = [
         {
             "name": repo["name"],
             "html_url": repo["web_url"],
@@ -46,3 +47,4 @@ async def get_public_and_private_repo_gitlab(
         }
         for repo in repos
     ]
+    return repos
