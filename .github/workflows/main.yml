@@ -1,5 +1,5 @@
 # This workflow will install Python dependencies, lint using Black, run tests using Pytest 
-name: rego_builder github workflow
+name: Code quality check and endpoint test workflow
 
 on: 
   #Trigger the workflow on a push/pull_requests event to the main branch only
