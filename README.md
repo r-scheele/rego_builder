@@ -57,8 +57,6 @@ Create a postgres database, called datasource <br />
 
 Run the application entry point - development mode:
 
-
-
 ```console
 $ uvicorn app.server.api:app --port 8080 --reload
 ```
