@@ -192,11 +192,6 @@ allow {
 
 Test the GitHub actions workflow with the following command:
 
-- Change the `DOCKER_HUB_ACCESS_TOKEN` and `DOCKER_HUB_USERNAME` in the job file to your credentials.
-
-
-- Run the following command in the terminal:
-
 ```console
 act --container-architecture linux/amd64
 ```
