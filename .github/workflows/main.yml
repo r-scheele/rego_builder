@@ -35,10 +35,4 @@ jobs:
       - run: pip install --upgrade pip
       - run: pip install black pytest
       - run: black .
-
-      - name: Build and push image to Docker Hub
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          push: true
-          tags: rscheele3214/rego_builder:latest
+      - run pytest .
