@@ -1,5 +1,9 @@
-from fastapi import Depends, HTTPException, APIRouter
+import os
+import sys
+from pathlib import Path
+
 import psycopg2 as pg
+import sqlparse
 from psycopg2.errors import (
     DuplicateSchema,
     DuplicateTable,
@@ -8,12 +12,7 @@ from psycopg2.errors import (
     InvalidTableDefinition,
 )
 
-import sqlparse
-import os, sys
-from pathlib import Path
 from app.config.config import settings
-from app.server.auth.authorize import TokenBearer
-
 
 ROOT_DIR = Path(__file__).parent.parent.parent
 file_path = os.path.join(ROOT_DIR, "sql", "create_tables.sql")
@@ -23,7 +22,7 @@ GET_DATA_SQL_COMAND = f"select u.name, g.groupname from {schema_name}.gs_usergro
 
 
 class Database:
-    def __init__(self):
+    def __init__(self) -> None:
         pass
 
     def connect(self):
@@ -41,17 +40,16 @@ class Database:
             conn.autocommit = True
             return conn.cursor()
         except pg.OperationalError as e:
-            print("Error connecting to the Postgres database: ", e)
             sys.exit(1)
 
-    def role_exists(self, role: str):
+    def role_exists(self, role: str) -> bool:
         query = "SELECT 1 FROM pg_catalog.pg_roles WHERE rolname = '{}'".format(role)
         cur = self.connect()
         cur.execute(query)
         res = cur.fetchone()[0]
         return res
 
-    def create_tables(self):
+    def create_tables(self) -> None:
         """
         Create tables in database
         """
@@ -63,15 +61,15 @@ class Database:
                 try:
                     cursor.execute(statement)
                 except (
-                    DuplicateSchema,
-                    DuplicateTable,
-                    DuplicateObject,
-                    UniqueViolation,
-                    InvalidTableDefinition,
+                        DuplicateSchema,
+                        DuplicateTable,
+                        DuplicateObject,
+                        UniqueViolation,
+                        InvalidTableDefinition,
                 ) as e:
                     continue
 
-    def get_data(self):
+    def get_data(self) -> list:
         cur = self.connect()
         sql = GET_DATA_SQL_COMAND
         cur.execute(sql)

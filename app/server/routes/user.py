@@ -1,5 +1,5 @@
-from fastapi import APIRouter, Depends
 import requests as r
+from fastapi import APIRouter, Depends
 
 from app.server.auth.authorize import TokenBearer
 

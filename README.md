@@ -25,9 +25,6 @@ Next, Configure your environment variables:
 ```dotenv
 BASE_PATH = /tmp/fastgeoapi
 DATABASE_PATH = /tmp/fastgeoapi/database.json
-GITHUB_ACCESS_TOKEN=`cat ~/.github_access_token`
-GITHUB_USERNAME=<your_github_username>
-GITHUB_URL=<your_github_url where the authorization code lives>
 ENVIRONMENT=<your_environment e.g. production|development>
 HOST=datasource <production>, HOST=localhost <development>
 PORT=5432
