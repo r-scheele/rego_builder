@@ -1,4 +1,3 @@
-
 # This workflow will install Python dependencies, lint using Black, run tests using Pytest 
 name: rego_builder github workflow
 
@@ -15,18 +14,31 @@ jobs:
     # runs-on: defines The workflow runner
     runs-on: ubuntu-latest 
     # steps: defines a series of tasks executed by the Job
-    defaults:
-      run:
-        working-directory: ./
+    
     steps:
-    #Task for setting up Python 3.10 using actions/setup-python@v2 Github action
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
       - name: Set up Python
         uses: actions/setup-python@v2.3.0
+        
         with:
           python-version: "3.10"
+
+
       - run: pip install --upgrade pip
       - run: pip install black pytest
-      - run: black --diff --check .
+      - run: black .
 
-
-    
+      - name: Build and push image to Docker Hub
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: rscheele3214/rego_builder:latest
