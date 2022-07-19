@@ -6,7 +6,6 @@ from app.schemas.rules import RequestObject, UpdateRequestObject
 from app.server.auth.authorize import TokenBearer
 from app.utils.write_rego import WriteRego
 
-
 default_path = settings.BASE_PATH
 
 router = APIRouter(tags=["Policy Operations"], prefix="/policies")

@@ -12,7 +12,7 @@ class RequestObject(BaseModel):
     name: str
     rules: List[List[Rule]]
     owner: Optional[str] = ""
-    github_repo_url: Optional[str] = ""
+    repo_url: Optional[str] = ""
 
     class Config:
         schema_extra = {

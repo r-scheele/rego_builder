@@ -1,6 +1,5 @@
 import json
 
-from fastapi import APIRouter
 import requests as rest_client
 from fastapi import APIRouter
 

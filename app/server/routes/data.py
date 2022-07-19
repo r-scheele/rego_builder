@@ -1,10 +1,9 @@
-from fastapi import Depends, HTTPException, APIRouter
-from app.server.auth.authorize import TokenBearer
+from fastapi import Depends, APIRouter
 
+from app.server.auth.authorize import TokenBearer
+from app.database.datasource_database import data
 
 router = APIRouter(tags=["Data Operations"])
-
-from app.database.datasource_database import data
 
 
 @router.get("/data")
