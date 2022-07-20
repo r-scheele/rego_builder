@@ -10,6 +10,8 @@ class Settings(BaseSettings):
     OPAL_SERVER_DATA_URL: Optional[str] = ""
     ENVIRONMENT: Optional[str] = "production"
 
+    GITHUB_ACCESS_TOKEN: Optional[str] = ""
+
     # POSTGRES CONNECTION
     HOST: Optional[str] = ""
     PASSWORD: Optional[str] = ""
