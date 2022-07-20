@@ -73,7 +73,6 @@ async def modify_policy(
 
     policies = database.get_policies(dependencies["login"])
     policies.append(updated_policy)
-
     # Rewrite rego file and update GitHub
     WriteRego(dependencies["token"], rego_rule["repo_url"]).write_to_file(policies)
 

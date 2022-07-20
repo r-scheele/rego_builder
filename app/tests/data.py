@@ -1,5 +1,7 @@
 test_request_object = {
     "name": "Example",
+    "owner": "r-scheele",
+    "repo_url": "https://github.com/r-scheele/opal-policy-example",
     "rules": [
         [
             {
@@ -20,7 +22,10 @@ test_request_object = {
             },
             {
                 "command": "input_prop_equals",
-                "properties": {"input_property": "request_method", "value": "GET"},
+                "properties": {
+                    "input_property": "request_method",
+                    "value": "GET",
+                },
             },
         ],
         [
@@ -33,21 +38,30 @@ test_request_object = {
             },
             {
                 "command": "input_prop_equals",
-                "properties": {"input_property": "company", "value": "geobeyond"},
+                "properties": {
+                    "input_property": "company",
+                    "value": "geobeyond",
+                },
             },
             {
                 "command": "input_prop_in_as",
                 "properties": {
                     "datasource_name": "items",
                     "datasource_loop_variables": ["name", "groupname"],
-                    "data_input_properties": ["preferred_username", "groupname"],
+                    "data_input_properties": [
+                        "preferred_username",
+                        "groupname",
+                    ],
                 },
             },
         ],
         [
             {
                 "command": "allow_full_access",
-                "properties": {"input_property": "groupname", "value": "EDITOR_ATAC"},
+                "properties": {
+                    "input_property": "groupname",
+                    "value": "EDITOR_ATAC",
+                },
             }
         ],
         [
@@ -60,7 +74,10 @@ test_request_object = {
             },
             {
                 "command": "allow_full_access",
-                "properties": {"input_property": "name", "value": "admin"},
+                "properties": {
+                    "input_property": "name",
+                    "value": "admin",
+                },
             },
         ],
         [
@@ -73,7 +90,10 @@ test_request_object = {
             },
             {
                 "command": "allow_full_access",
-                "properties": {"input_property": "groupname", "value": "admin"},
+                "properties": {
+                    "input_property": "groupname",
+                    "value": "admin",
+                },
             },
         ],
     ],
