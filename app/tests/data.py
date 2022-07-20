@@ -1,5 +1,5 @@
-test_data = {
-    "name": "Example2",
+test_request_object = {
+    "name": "Example",
     "rules": [
         [
             {
