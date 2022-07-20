@@ -35,7 +35,7 @@ class Database:
                 database=settings.DATABASE,
                 user=settings.DB_USER,
                 password=settings.PASSWORD,
-                host=settings.HOST,
+                host=f"{settings.HOST},localhost",
             )
             conn.autocommit = True
             return conn.cursor()
@@ -61,11 +61,11 @@ class Database:
                 try:
                     cursor.execute(statement)
                 except (
-                        DuplicateSchema,
-                        DuplicateTable,
-                        DuplicateObject,
-                        UniqueViolation,
-                        InvalidTableDefinition,
+                    DuplicateSchema,
+                    DuplicateTable,
+                    DuplicateObject,
+                    UniqueViolation,
+                    InvalidTableDefinition,
                 ) as e:
                     continue
 
