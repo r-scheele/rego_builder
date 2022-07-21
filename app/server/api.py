@@ -8,15 +8,7 @@ from app.server.routes.policies import router as api_router
 from app.server.routes.user import router as user_router
 from app.config.config import settings
 
-default_path = settings.BASE_PATH
 
-
-def init_dir() -> None:
-    if not os.path.exists(default_path):
-        os.mkdir(default_path)
-
-
-init_dir()
 app = FastAPI(
     swagger_ui_parameters={"syntaxHighlight.theme": "obsidian"},
     title="Policy Management API",
