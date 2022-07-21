@@ -36,7 +36,9 @@ class Database:
                 user=settings.DB_USER,
                 password=settings.PASSWORD,
                 host=settings.HOST,
+                port=settings.PORT,
             )
+
             conn.autocommit = True
             return conn.cursor()
         except pg.OperationalError as e:
@@ -61,11 +63,11 @@ class Database:
                 try:
                     cursor.execute(statement)
                 except (
-                        DuplicateSchema,
-                        DuplicateTable,
-                        DuplicateObject,
-                        UniqueViolation,
-                        InvalidTableDefinition,
+                    DuplicateSchema,
+                    DuplicateTable,
+                    DuplicateObject,
+                    UniqueViolation,
+                    InvalidTableDefinition,
                 ) as e:
                     continue
 

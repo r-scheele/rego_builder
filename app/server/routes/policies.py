@@ -34,7 +34,9 @@ async def write_policy(
     policies.append(policy)
 
     # Write the policy to the database after successful push
-    WriteRego(dependencies["token"], rego_rule.repo_url).write_to_file(policies)
+    WriteRego(
+        dependencies["token"], policy["repo_url"], dependencies["login"]
+    ).write_to_file(policies)
 
     database.add_policy(policy, dependencies["login"])
 
@@ -73,9 +75,10 @@ async def modify_policy(
 
     policies = database.get_policies(dependencies["login"])
     policies.append(updated_policy)
-
     # Rewrite rego file and update GitHub
-    WriteRego(dependencies["token"], rego_rule["repo_url"]).write_to_file(policies)
+    WriteRego(
+        dependencies["token"], rego_rule["repo_url"], dependencies["login"]
+    ).write_to_file(policies)
 
     return {"status": 200, "message": "Updated successfully"}
 
@@ -96,6 +99,6 @@ async def remove_policy(
 
     # Update the policy in the rego file
     policies = database.get_policies(owner=user)
-    WriteRego(dependencies["token"], repo_url).write_to_file(policies)
+    WriteRego(dependencies["token"], repo_url, user).write_to_file(policies)
 
     return {"status": 200, "message": "Policy deleted successfully."}
