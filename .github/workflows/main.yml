@@ -37,8 +37,8 @@ jobs:
       - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
-          username: rscheele3214
-          password: f2dee634-babc-492b-9583-32fe86f3c569
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
       - name: Set up Python
         uses: actions/setup-python@v2.3.0

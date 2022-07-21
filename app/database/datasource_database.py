@@ -35,8 +35,11 @@ class Database:
                 database=settings.DATABASE,
                 user=settings.DB_USER,
                 password=settings.PASSWORD,
-                host=f"{settings.HOST},localhost",
+                host=settings.HOST,
+                port=settings.PORT,
             )
+            return conn
+
             conn.autocommit = True
             return conn.cursor()
         except pg.OperationalError as e:
