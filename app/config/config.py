@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     PASSWORD: Optional[str] = ""
     DATABASE: Optional[str] = ""
     DB_USER: Optional[str] = ""
-    PORT: Optional[str] = ""
+    PORT: Optional[int] = 5432
 
     class Config:
         env_file = ".env"

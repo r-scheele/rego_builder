@@ -38,7 +38,6 @@ class Database:
                 host=settings.HOST,
                 port=settings.PORT,
             )
-            return conn
 
             conn.autocommit = True
             return conn.cursor()

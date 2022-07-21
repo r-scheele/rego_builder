@@ -7,10 +7,13 @@ initiate_rule = "package httpapi.authz\nimport input\ndefault allow = false\n\n\
 
 
 class WriteRego:
-    def __init__(self, access_token: str, github_repo_url: str) -> None:
+    def __init__(self, access_token: str, github_repo_url: str, username: str) -> None:
+        self.username = username
         self.access_token = access_token
         self.github_repo_url = github_repo_url
-        self.github = GitHubOperations(self.github_repo_url, self.access_token)
+        self.github = GitHubOperations(
+            self.github_repo_url, self.access_token, self.username
+        )
 
     def write_to_file(self, policies: list) -> None:
         """

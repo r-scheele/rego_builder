@@ -26,7 +26,7 @@ jobs:
           POSTGRES_DB: datasource
         ports:
           # Maps tcp port 5432 on service container to the host
-          - 5432/tcp
+          - 5432:5432
         # Set health checks to wait until postgres has started
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
           
@@ -84,11 +84,10 @@ jobs:
         run: poetry run pytest .
         # Environment variables used by the `client.js` script to create a new PostgreSQL table.
         env:
-          DB_USER: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_PORT: 5432
           HOST: localhost
-          DATABASE: datasource
-          PASSWORD: postgres
-          PORT: ${{ job.services.datasource.ports[5432] }}
       
 
       - run: poetry run black .
