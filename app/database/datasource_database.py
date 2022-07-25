@@ -75,7 +75,8 @@ class Database:
         cur = self.connect()
         sql = GET_DATA_SQL_COMAND
         cur.execute(sql)
-        return cur.fetchall()
+        data = [{"name": user[0], "groupname": user[1]} for user in cur.fetchall()]
+        return data
 
 
 database = Database()
