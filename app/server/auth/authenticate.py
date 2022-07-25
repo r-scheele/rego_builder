@@ -1,30 +1,33 @@
 import json
 
-import requests as r
+import requests as rest_client
 from fastapi import APIRouter
-from starlette.responses import RedirectResponse
 
-from app.config.config import settings
-
-router = APIRouter()
+router = APIRouter(tags=["Token"])
 
 
-@router.get("/login")
-def authorize():
-    res = r.get(
-        url="https://github.com/login/oauth/authorize",
+@router.get("/gitlab/token")
+async def get_token_from_gitlab(
+    code: str, client_id: str, client_secret: str, redirect_uri: str
+) -> dict:
+    res = rest_client.post(
+        f"https://gitlab.com/oauth/token",
         data={
-            "client_id": settings.CLIENT_ID,
-            "redirect_uri": "http://localhost:8080/token",
+            "client_id": client_id,
+            "client_secret": client_secret,
+            "code": code,
+            "grant_type": "authorization_code",
+            "redirect_uri": redirect_uri,
         },
     )
-    return RedirectResponse(url=res.url)
+    json_res = res.json()
+    access_token, expires_in = json_res["access_token"], json_res["expires_in"]
+    return {"access_token": access_token, "expires_in": expires_in}
 
 
-@router.get("/token")
-def get_token(code: str) -> dict:
-    client_id, client_secret = settings.CLIENT_ID, settings.CLIENT_SECRET
-    res = r.post(
+@router.get("/github/token")
+def get_token_from_github(code: str, client_id: str, client_secret: str) -> dict:
+    res = rest_client.post(
         url="https://github.com/login/oauth/access_token",
         headers={"Accept": "application/json"},
         data={

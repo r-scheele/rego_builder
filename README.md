@@ -25,17 +25,42 @@ Next, Configure your environment variables:
 ```dotenv
 BASE_PATH = /tmp/fastgeoapi
 DATABASE_PATH = /tmp/fastgeoapi/database.json
-GITHUB_ACCESS_TOKEN=`cat ~/.github_access_token`
-GITHUB_USERNAME=<your_github_username>
-GITHUB_URL=<your_github_url where the authorization code lives>
 ENVIRONMENT=<your_environment e.g. production|development>
+HOST=datasource <production>, HOST=localhost <development>
+PORT=5432
+DB_USER=postgres
+PASSWORD=postgres
+DATABASE=datasource
 ```
 
-- Run the application from the entry point
+Run the application - production mode:
+
+
 
 ```console
-$ python3 main.py
+$ gunicorn -w 4 -k uvicorn.workers.UvicornWorker app.server.api:app --bind 0.0.0.0:8080
 ```
+
+Create a postgres database, called datasource <br />
+  
+  ```console
+  $ psql -U postgres
+  postgres=# CREATE DATABASE datasource
+    WITH
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'C'
+    LC_CTYPE = 'C'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1;
+  ```
+
+Run the application entry point - development mode:
+
+```console
+$ uvicorn app.server.api:app --port 8080 --reload
+```
+
 
 Open [localhost:8000/docs](localhost:8000/docs) for API Documentation.
 
@@ -161,6 +186,11 @@ allow {
 ## Test
 
 Test the GitHub actions workflow with the following command:
+
+- Change the `DOCKER_HUB_ACCESS_TOKEN` and `DOCKER_HUB_USERNAME` in the job file to your credentials.
+
+
+- Run the following command in the terminal:
 
 ```console
 act --container-architecture linux/amd64

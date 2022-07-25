@@ -1,11 +1,27 @@
 version: "3"
 
 services:
+  datasource:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=datasource
+    volumes:
+      - ./sql/data/postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
   web:
     build: .
+    depends_on:
+      - datasource
     ports:
       - "8080:8080"
     volumes:
       - .:/rego_builder:ro
     env_file:
       - .env
+
+
+    
+ 
