@@ -12,7 +12,7 @@ default_path = settings.BASE_PATH
 
 @lru_cache(maxsize=1)
 class GitHubOperations:
-    def __init__(self, repo_url: str, access_token, username: str) -> None:
+    def __init__(self, repo_url: str, access_token: str, username: str) -> None:
         self.username = username
         self.access_token = access_token
         self.repo_url = repo_url.lstrip("https://")
