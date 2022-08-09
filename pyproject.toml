@@ -25,6 +25,7 @@ python-gitlab = "^3.8.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
+pytest_postgresql = "^4.1.1"
 requests = "^2.27.1"
 coverage = { version = "5.0.3", extras = ["toml"]}
 black = "^22.3.0"

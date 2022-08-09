@@ -17,9 +17,6 @@ from app.config.config import settings
 ROOT_DIR = Path(__file__).parent.parent.parent
 file_path = os.path.join(ROOT_DIR, "sql", "create_tables.sql")
 
-schema_name = "geostore"
-GET_DATA_SQL_COMAND = f"select u.name, g.groupname from {schema_name}.gs_usergroup_members r join {schema_name}.gs_usergroup g on r.group_id = g.id join {schema_name}.gs_user u on r.user_id = u.id;"
-
 
 class Database:
     def __init__(self) -> None:
@@ -71,11 +68,26 @@ class Database:
                 ) as e:
                     continue
 
-    def get_data(self) -> list:
+    def get_data(self, sql: dict) -> dict:
+        """
+        param: {
+            "groups": "SELECT DISTINCT groupname AS value FROM geostore.gs_usergroup;",
+            "users": "SELECT DISTINCT name AS value FROM geostore.gs_user;",
+        }
+
+        return: {
+            "groups": [],
+            "users": [],
+        }
+        """
         cur = self.connect()
-        sql = GET_DATA_SQL_COMAND
-        cur.execute(sql)
-        data = [{"name": user[0], "groupname": user[1]} for user in cur.fetchall()]
+
+        data = {}
+        for key, value in sql.items():
+            cur.execute(value)
+            res = [{"value": r[0]} for r in cur.fetchall()]
+            data[key] = res
+
         return data
 
 
@@ -84,4 +96,6 @@ database.connect()
 if not database.role_exists("geostore"):
     database.create_tables()
 
-data = database.get_data()
+
+def get_database() -> Database:
+    return database
