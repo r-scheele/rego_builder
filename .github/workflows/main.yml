@@ -14,21 +14,6 @@ jobs:
     # runs-on: defines The workflow runner
     runs-on: ubuntu-latest 
     # steps: defines a series of tasks executed by the Job
-    services:
-      # Label used to access the service container
-      datasource:
-        # Docker Hub image
-        image: postgres
-        # Provide the password for postgres
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: datasource
-        ports:
-          # Maps tcp port 5432 on service container to the host
-          - 5432:5432
-        # Set health checks to wait until postgres has started
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
           
     steps:
       - name: Checkout
@@ -77,8 +62,5 @@ jobs:
         # the table with data, and then retrieves the data.
         run: poetry run pytest .
         # Environment variables used by the `client.js` script to create a new PostgreSQL table.
-      
-      - run: pip install --upgrade pip
-      - run: pip install black pytest
-      - run: black .
-      - run: pytest .
+      - name: Format code with black
+        run: poetry run black . 
