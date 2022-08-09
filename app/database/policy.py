@@ -27,6 +27,8 @@ class PolicyDatabase:
         return policy
 
     def update_policy(self, policy_name: str, policy: dict, owner: str) -> None:
+        policy = self.get_policy(policy_name, owner)
+
         self.database.update(
             policy, (self.store.name == policy_name) & (self.store.owner == owner)
         )
@@ -35,9 +37,8 @@ class PolicyDatabase:
         doc = self.database.get(
             (self.store.name == policy_name) & (self.store.owner == owner)
         )
-        if not doc:
-            return False
-        return doc["name"] == policy_name
+        is_exist = True if doc else False
+        return is_exist
 
     def delete_policy(self, policy_name: str, owner: str, repo_url: str) -> None:
         self.database.remove(
@@ -47,7 +48,8 @@ class PolicyDatabase:
         )
 
     def get_policies(self, owner: str) -> list:
-        return self.database.search(self.store.owner == owner)
+        policies = self.database.search(self.store.owner == owner)
+        return policies
 
 
 def get_db() -> PolicyDatabase:

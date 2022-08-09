@@ -1,7 +1,7 @@
 test_request_object = {
-    "name": "Example1",
-    "owner": "r-scheele",
+    "name": "Example",
     "repo_url": "https://github.com/r-scheele/opal-policy-example",
+    "repo_id": 12345,
     "rules": [
         [
             {
@@ -98,7 +98,6 @@ test_request_object = {
         ],
     ],
 }
-
 
 test_object_request = {
     "name": "Example",
