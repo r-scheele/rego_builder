@@ -43,17 +43,6 @@ test_request_object = {
                     "value": "geobeyond",
                 },
             },
-            {
-                "command": "input_prop_in_as",
-                "properties": {
-                    "datasource_name": "items",
-                    "datasource_loop_variables": ["name", "groupname"],
-                    "data_input_properties": [
-                        "preferred_username",
-                        "groupname",
-                    ],
-                },
-            },
         ],
         [
             {
@@ -142,17 +131,6 @@ test_object_request = {
                 "properties": {
                     "input_property": "company",
                     "value": "geobeyond",
-                },
-            },
-            {
-                "command": "input_prop_in_as",
-                "properties": {
-                    "datasource_name": "items",
-                    "datasource_loop_variables": ["name", "groupname"],
-                    "data_input_properties": [
-                        "preferred_username",
-                        "groupname",
-                    ],
                 },
             },
         ],
