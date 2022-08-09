@@ -84,4 +84,6 @@ database.connect()
 if not database.role_exists("geostore"):
     database.create_tables()
 
-data = database.get_data()
+
+def get_database() -> Database:
+    return database
