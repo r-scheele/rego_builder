@@ -29,7 +29,7 @@ async def get_public_and_private_repo(
     repos = [
         {
             "name": repo["name"],
-            "html_url": repo["html_url"],
+            "id": repo["html_url"],
             "owner": repo["owner"]["login"],
         }
         for repo in repos["items"]
