@@ -1,7 +1,7 @@
 import json
 
 
-def input_prop_equals(properties) -> str:
+def input_prop_equals(properties: dict) -> str:
     """
     Allow if the 'key on the request' equals the 'value assigned' to it
 
@@ -38,7 +38,7 @@ def input_prop_equals(properties) -> str:
         return f"input.{properties['input_property']} == {json.dumps(paths)}"
 
 
-def input_prop_in(properties) -> str:
+def input_prop_in(properties: dict) -> str:
     """
     Allow if the 'key on the request' is present as a 'key in any of the objects' in the database(data)
 
@@ -46,21 +46,9 @@ def input_prop_in(properties) -> str:
     :param value: request value
     :return:
     """
-    # Single check in the database
-    return f"input.{properties['input_property']} == data.{properties['datasource_name']}[i].{properties['datasource_loop_variable']}"
 
-
-def input_prop_in_as(properties) -> str:
-    """
-    Allow if the 'key on the request' is present as a 'key in any of the objects' in the database(data)
-    as a particular value
-
-    :param key: request key
-    :param value: request value
-    :return:
-    """
-    # Multiple checks in the database
-    return f"some i \n  data.{properties['datasource_name']}[i].{properties['datasource_loop_variables'][0]} == input.{properties['data_input_properties'][0]} \n  data.{properties['datasource_name']}[i].{properties['datasource_loop_variables'][1]} == input.{properties['data_input_properties'][1]}"
+    # Comparison with value in the database
+    return f"input.{properties['input_property']} == data.{properties['datasource_name']}[i].value"
 
 
 def allow_full_access(properties) -> str:
