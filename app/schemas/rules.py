@@ -24,6 +24,13 @@ class RequestObject(BaseModel):
                 "rules": [
                     [
                         {
+                            "command": "allow_if_object_in_database",
+                            "properties": {
+                                "datasource_name": "usergroups",
+                                "datasource_variables": ["name", "groupname"],
+                            },
+                        },
+                        {
                             "command": "input_prop_equals",
                             "properties": {
                                 "input_property": "request_path",

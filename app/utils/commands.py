@@ -48,7 +48,7 @@ def input_prop_in(properties: dict) -> str:
     """
 
     # Comparison with value in the database
-    return f"input.{properties['input_property']} == data.{properties['datasource_name']}[i].value"
+    return f"input.{properties['input_property']} == data.{properties['datasource_name']}[_].{properties['input_property']}"
 
 
 def allow_full_access(properties) -> str:
@@ -60,3 +60,27 @@ def allow_full_access(properties) -> str:
     }
     """
     return f"input.{properties['input_property']} == " + f'"{properties["value"]}"'
+
+
+def allow_if_object_in_database(properties) -> str:
+    # Rule object example for this command
+    # rule = {
+    #     "command": "allow_if_object_in_database",
+    #     "properties": {
+    #         "datasource_name": "usergroups",
+    #         "datasource_variables": ["name", "groupname"],
+    #     },
+    # }
+
+    """
+    Allow if two properties on the input object matches an object in the database
+    """
+    user = {
+        variable: f"input.{variable}" for variable in properties["datasource_variables"]
+    }
+    obj = "{"
+    for key, value in user.items():
+        obj += f'"{key}": {value},'
+    obj = obj[:-1] + "}"
+
+    return f"{obj} == data.{properties['datasource_name']}[_]"
