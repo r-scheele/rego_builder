@@ -68,26 +68,11 @@ class Database:
                 ) as e:
                     continue
 
-    def get_data(self, sql: dict) -> dict:
-        """
-        param: {
-            "groups": "SELECT DISTINCT groupname AS value FROM geostore.gs_usergroup;",
-            "users": "SELECT DISTINCT name AS value FROM geostore.gs_user;",
-        }
+    def get_data(self, sql: str) -> dict:
 
-        return: {
-            "groups": [],
-            "users": [],
-        }
-        """
         cur = self.connect()
-
-        data = {}
-        for key, value in sql.items():
-            cur.execute(value)
-            res = [{"value": r[0]} for r in cur.fetchall()]
-            data[key] = res
-
+        cur.execute(sql)
+        data = [value[0] for value in cur.fetchall()]
         return data
 
 

@@ -7,13 +7,11 @@ from app.server.auth.authorize import TokenBearer
 router = APIRouter(tags=["Data Operations"])
 
 
-@router.post("/data")
-async def get_data(data: DataRequest, dependencies=Depends(TokenBearer())) -> dict:
+@router.get("/data")
+async def get_data(dependencies=Depends(TokenBearer())) -> dict:
     from app.database.datasource_database import get_database
 
-    res = {}
-    for data_query in data.queries:
-        sql = {}
-        sql[data_query.data_list_name] = data_query.sql_query
-        res.update(get_database().get_data(sql))
-    return {"data": res}
+    data = {
+        "sql_query": "SELECT DISTINCT groupname AS value FROM geostore.gs_usergroup;",
+    }
+    return {"usergroups": get_database().get_data(data["sql_query"])}
