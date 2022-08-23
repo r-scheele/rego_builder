@@ -57,7 +57,7 @@ jobs:
         run: poetry run pytest .
 
         env:
-          BASE_PATH: /tmp/fastgeoapi/
+          BASE_PATH: /tmp/fastgeoapi
           GITHUB_ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Format code with black
