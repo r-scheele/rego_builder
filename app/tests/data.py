@@ -1,7 +1,7 @@
 test_request_object = {
-    "name": "Example1",
-    "owner": "r-scheele",
+    "name": "Example",
     "repo_url": "https://github.com/r-scheele/opal-policy-example",
+    "repo_id": 12345,
     "rules": [
         [
             {
@@ -41,17 +41,6 @@ test_request_object = {
                 "properties": {
                     "input_property": "company",
                     "value": "geobeyond",
-                },
-            },
-            {
-                "command": "input_prop_in_as",
-                "properties": {
-                    "datasource_name": "items",
-                    "datasource_loop_variables": ["name", "groupname"],
-                    "data_input_properties": [
-                        "preferred_username",
-                        "groupname",
-                    ],
                 },
             },
         ],
@@ -99,7 +88,6 @@ test_request_object = {
     ],
 }
 
-
 test_object_request = {
     "name": "Example",
     "owner": "r-scheele",
@@ -143,17 +131,6 @@ test_object_request = {
                 "properties": {
                     "input_property": "company",
                     "value": "geobeyond",
-                },
-            },
-            {
-                "command": "input_prop_in_as",
-                "properties": {
-                    "datasource_name": "items",
-                    "datasource_loop_variables": ["name", "groupname"],
-                    "data_input_properties": [
-                        "preferred_username",
-                        "groupname",
-                    ],
                 },
             },
         ],

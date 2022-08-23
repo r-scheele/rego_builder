@@ -13,15 +13,23 @@ class RequestObject(BaseModel):
     rules: List[List[Rule]]
     owner: Optional[str] = ""
     repo_url: Optional[str] = ""
+    repo_id: Optional[int] = None
 
     class Config:
         schema_extra = {
             "example": {
                 "name": "Example",
-                "owner": "r-scheele",
                 "repo_url": "https://github.com/r-scheele/opal-policy-example",
+                "repo_id": 12345,
                 "rules": [
                     [
+                        {
+                            "command": "allow_if_object_in_database",
+                            "properties": {
+                                "datasource_name": "usergroups",
+                                "datasource_variables": ["name", "groupname"],
+                            },
+                        },
                         {
                             "command": "input_prop_equals",
                             "properties": {
@@ -59,17 +67,6 @@ class RequestObject(BaseModel):
                             "properties": {
                                 "input_property": "company",
                                 "value": "geobeyond",
-                            },
-                        },
-                        {
-                            "command": "input_prop_in_as",
-                            "properties": {
-                                "datasource_name": "items",
-                                "datasource_loop_variables": ["name", "groupname"],
-                                "data_input_properties": [
-                                    "preferred_username",
-                                    "groupname",
-                                ],
                             },
                         },
                     ],
@@ -131,6 +128,7 @@ class UpdateRequestObject(BaseModel):
                 "name": "Example",
                 "owner": "r-scheele",
                 "repo_url": "https://github.com/r-scheele/opal-policy-example",
+                "repo_id": 23456,
                 "rules": [
                     [
                         {
@@ -185,17 +183,6 @@ class UpdateRequestObject(BaseModel):
                             "properties": {
                                 "input_property": "company",
                                 "value": "geobeyond",
-                            },
-                        },
-                        {
-                            "command": "input_prop_in_as",
-                            "properties": {
-                                "datasource_name": "items",
-                                "datasource_loop_variables": ["name", "everyone"],
-                                "data_input_properties": [
-                                    "preferred_username",
-                                    "groupname",
-                                ],
                             },
                         },
                     ],
