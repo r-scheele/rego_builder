@@ -17,7 +17,7 @@ default_path = settings.BASE_PATH
 
 def init_dir() -> None:
     if not os.path.exists(default_path):
-        os.mkdir(default_path)
+        os.makedirs(default_path)
     if not os.path.exists(f"{default_path}/test.json"):
         with open(f"{default_path}/test.json", "w") as f:
             f.write("{}")
