@@ -63,17 +63,9 @@ def allow_full_access(properties) -> str:
 
 
 def allow_if_object_in_database(properties) -> str:
-    # Rule object example for this command
-    # rule = {
-    #     "command": "allow_if_object_in_database",
-    #     "properties": {
-    #         "datasource_name": "usergroups",
-    #         "datasource_variables": ["name", "groupname"],
-    #     },
-    # }
 
     """
-    Allow if two properties on the input object matches an object in the database
+    Allow if the two properties on the input object matches an object in the database
     """
     user = {
         variable: f"input.{variable}" for variable in properties["datasource_variables"]
