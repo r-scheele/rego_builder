@@ -69,7 +69,6 @@ class Database:
                     continue
 
     def get_data(self, sql: str) -> dict:
-
         cur = self.connect()
         cur.execute(sql)
         data = [value[0] for value in cur.fetchall()]
