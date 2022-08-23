@@ -252,8 +252,8 @@ Example:
 {
 "command": "input_prop_in",
 "properties": {
-   "input_property": "company",
-   "datasource_name": "items",
+   "input_property": "groupname",
+   "datasource_name": "usergroups",
    "datasource_loop_variable": "name"
 }
 }
@@ -267,28 +267,25 @@ The REGO equivalent of the above rule object is: <br />
 input.company == data.items[i].name
 ```
 
-### input_props_in_as
+### allow_if_object_in_database
 This logic checks if the value of two properties on the input object is present on one object in the database <br />
 
 Example:
 ```json
-{
-   "command": "input_prop_in_as",
-   "properties": {
-      "datasource_name": "items",
-      "datasource_loop_variables": ["name", "everyone"],
-      "input_properties": ["preferred_username", "groupname"]
-   }
-}
+     {
+         "command": "allow_if_object_in_database",
+         "properties": {
+            "datasource_name": "usergroups",
+            "datasource_variables": ["name", "groupname"],
+         }
+     }
 ```
 
 In the JSON above, the resulting REGO code loops over the datasource twice, checking for equality between the values of the input properties, and the values of the datasource loop variables.
 
 The REGO equivalent of the above rule object is: <br />
 ```rego
-some i
-data.items[i].name == input.preferred_username
-data.items[i].everyone == input.groupname
+{ name: input.groupname, groupname: input.name} == data.usergroups[_]
 ```
 
 
