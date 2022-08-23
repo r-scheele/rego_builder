@@ -1,9 +1,10 @@
+from dataclasses import dataclass
+
 import gitlab
 import requests as r
 from fastapi import APIRouter, Depends
 
 from app.server.auth.authorize import TokenBearer
-from dataclasses import dataclass
 
 router = APIRouter(tags=["Repo Management"], prefix="/user/repos")
 

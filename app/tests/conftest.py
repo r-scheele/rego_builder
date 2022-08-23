@@ -1,16 +1,14 @@
 import json
 import os
-from app.server.auth.authorize import TokenBearer
+
 import pytest
-from starlette.testclient import TestClient
 from fastapi.responses import RedirectResponse
+from starlette.testclient import TestClient
 
 from app.config.config import settings
 from app.database.policy import PolicyDatabase, get_db
 from app.server.api import app
-
-
-from app.config.config import settings
+from app.server.auth.authorize import TokenBearer
 
 default_path = settings.BASE_PATH
 

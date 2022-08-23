@@ -1,4 +1,4 @@
-from fastapi import Depends, HTTPException, APIRouter
+from fastapi import APIRouter, Depends, HTTPException
 
 from app.config.config import settings
 from app.database.policy import PolicyDatabase, get_db
