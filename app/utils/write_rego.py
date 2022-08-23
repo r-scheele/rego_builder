@@ -1,6 +1,7 @@
 from app.server.services.github import GitHubOperations
-from .build_rego_file import build_rego
+
 from ..server.services.gitlab import GitLabOperations
+from .build_rego_file import build_rego
 
 initiate_rule = "package httpapi.authz\nimport input\ndefault allow = false\n\n\n\n"
 

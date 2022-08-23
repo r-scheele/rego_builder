@@ -1,8 +1,7 @@
+from fastapi import APIRouter, Depends
+
 from app.schemas.data import DataRequest
-from fastapi import Depends, APIRouter
-
 from app.server.auth.authorize import TokenBearer
-
 
 router = APIRouter(tags=["Data Operations"])
 

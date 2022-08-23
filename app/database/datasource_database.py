@@ -5,11 +5,11 @@ from pathlib import Path
 import psycopg2 as pg
 import sqlparse
 from psycopg2.errors import (
+    DuplicateObject,
     DuplicateSchema,
     DuplicateTable,
-    DuplicateObject,
-    UniqueViolation,
     InvalidTableDefinition,
+    UniqueViolation,
 )
 
 from app.config.config import settings
