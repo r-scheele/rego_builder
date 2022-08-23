@@ -61,6 +61,9 @@ jobs:
         # Runs a script that creates a PostgreSQL table, populates
         # the table with data, and then retrieves the data.
         run: poetry run pytest .
+
+        env:
+          BASE_PATH: /tmp/fastgeoapi/
         # Environment variables used by the `client.js` script to create a new PostgreSQL table.
       - name: Format code with black
         run: poetry run black . 
