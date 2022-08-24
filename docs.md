@@ -19,7 +19,7 @@ Table of Contents
    * [ Handling equality check between a particular property on the request object and a valueHandling * as the wildcard flag](#Handling-'*'-as-the-wildcard-flag)
    * [Allow access to a particular path](#allow-access-to-a-particular-path)
 2. [Input_props_in](#input_props_in)
-3. [Input_props_in_as](#input_props_in_as)
+3. [allow_if_object_in_database](#allow_if_object_in_database)
 4. [allow_full_access](#allow_full_access)
 * [API CRUD operations](#api-crud-operations)
 
