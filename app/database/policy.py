@@ -23,7 +23,7 @@ class PolicyDatabase:
 
         :param policy_name: the name to identify the policy
         :param owner: the user that writes the policy
-        :return: the policy with the given name and owner
+        :returns: the policy with the given name and owner
         """
         policy = self.database.get(
             (self.store.name == policy_name) & (self.store.owner == owner)
