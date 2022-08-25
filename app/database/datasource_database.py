@@ -51,7 +51,7 @@ class Database:
         Check for table existence in database
 
         :params role: role to be checked
-        :return: True if role exists, False otherwise
+        :returns: True if the role exists, False otherwise
         """
 
         query = "SELECT 1 FROM pg_catalog.pg_roles WHERE rolname = '{}'".format(role)
