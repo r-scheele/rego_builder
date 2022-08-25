@@ -37,7 +37,7 @@ class PolicyDatabase:
 
         :param policy: the policy to add to the database
         :param owner: the user that writes the policy
-        :return: the policy that was added to the database
+        :returns: the policy that was added to the database
         """
         if self.exists(policy["name"], owner):
             raise HTTPException(
