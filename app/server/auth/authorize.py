@@ -37,7 +37,7 @@ class TokenBearer(HTTPBearer):
         Authenticate a user.
 
         :param token: the access token to authenticate the user
-        :return: a tuple with the authentication status and the user data
+        :returns: a tuple with the authentication status and the user data
         """
 
         gitlab_url = urljoin("https://gitlab.com", f"/api/v4/user?access_token={token}")
