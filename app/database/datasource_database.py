@@ -85,7 +85,7 @@ class Database:
         Get user data from database
 
         :params sql: sql query
-        :return: List of user group names
+        :returns: List of user group names
         """
 
         cur = self.connect()
