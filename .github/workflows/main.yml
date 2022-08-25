@@ -54,11 +54,17 @@ jobs:
 
       - name: Connect to PostgreSQL and run pytest
 
-        run: poetry run pytest .
+        run: poetry run coverage run -m pytest .
+
+        run: poetry run coverage report
 
         env:
           BASE_PATH: /tmp/fastgeoapi
           GITHUB_ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
+
+      - name: Sort all imports according to PEP8 and Flake8
+        run: poetry run isort .
 
       - name: Format code with black
         run: poetry run black . 
