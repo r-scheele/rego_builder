@@ -33,7 +33,7 @@ class GitLabOperations:
         :param policy: - policy string to be written to the file
         :param action: - action to be performed on the policy
 
-        :return: True if commit was successful, False otherwise
+        :returns: True if a commit was successful, False otherwise
         """
         data = {
             # Once this works, enable user set the branch or use default branch instead.
