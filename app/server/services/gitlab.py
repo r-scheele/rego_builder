@@ -9,9 +9,10 @@ class GitLabOperations:
     """Performs all operations needed to push the changes to the remote repository on the gitlab server"""
 
     def __init__(self, repo_id: int, access_token: str) -> None:
-        """Initialize the class with base arguments
-        params: repo_id: the id of the remote repository.
-                access_token: the gitlab access token to authorize access to the remote repository.
+        """Initializes the class with base arguments
+
+        :param repo_id: the id of the remote repository.
+        :param access_token: the gitlab access token to authorize access to the remote repository.
         """
 
         self.access_token = access_token
@@ -29,10 +30,10 @@ class GitLabOperations:
         """
         prepare policy for commit and commit it
 
-        params: policy: str - policy to be committed
-                action: str - action to be performed on the policy
+        :param policy: - policy string to be written to the file
+        :param action: - action to be performed on the policy
 
-        return: True if commit was successful, False otherwise
+        :return: True if commit was successful, False otherwise
         """
         data = {
             # Once this works, enable user set the branch or use default branch instead.
@@ -76,7 +77,10 @@ class GitLabOperations:
         return self.repo.web_url
 
     def retrieve_repos(self):
-        """Retrieve the list of repositories that belongs to the user"""
+        """Retrieve the list of repositories that belongs to the user
+
+        params: None
+        :return: list of repositories"""
 
         unfiltered_repos = self.gitlab.projects(owned=True).list()
         repos = []

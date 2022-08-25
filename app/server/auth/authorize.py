@@ -7,6 +7,8 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 
 class TokenBearer(HTTPBearer):
+    """This class is used to authenticate a user with a token in the Authorization header."""
+
     def __init__(self, auto_error: bool = True):
         super(TokenBearer, self).__init__(auto_error=auto_error)
 
@@ -33,6 +35,9 @@ class TokenBearer(HTTPBearer):
 
         """
         Authenticate a user.
+
+        :param token: the access token to authenticate the user
+        :return: a tuple with the authentication status and the user data
         """
 
         gitlab_url = urljoin("https://gitlab.com", f"/api/v4/user?access_token={token}")

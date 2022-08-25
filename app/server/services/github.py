@@ -17,9 +17,11 @@ class GitHubOperations:
     def __init__(self, repo_url: str, access_token: str, username: str) -> None:
         """Initialize the class with the base arguments
 
-        params: repo_url: the url of the remote repository.
-                access_token: the github access token to authorize access to the remote repository.
-                username: the username of the github user.
+        :param repo_url: the url of the remote repository.
+        :param access_token: the github access token to authorize access to the remote repository.
+        :param username: the username of the github user.
+
+        :return: None
         """
 
         self.username = username
@@ -33,7 +35,11 @@ class GitHubOperations:
         self.repo_git_path = ""
 
     def initialize(self) -> None:
-        """clones the remote repository if it doesn't exist, sets the local repository path for writing the changes."""
+        """clones the remote repository if it doesn't exist, sets the local repository path for writing the changes.
+
+        :param: None
+        :return: None
+        """
 
         # Check if the repo already exists
         if os.path.exists(self.local_repo_path):
@@ -48,9 +54,14 @@ class GitHubOperations:
         self.repo_git_path = initialized_repo.git_dir
 
     def push(self) -> None:
-        """Initialize the rego file as a git repository, add the rego file,
+        """
+        Initialize the rego file as a git repository, add the rego file,
         commit changes to the rego file, create a remote if it doesn't exist,
-        pull commit history and push the changes to the remote repository."""
+        pull commit history and push the changes to the remote repository.
+
+        :param: None
+        :return: None
+        """
         try:
             target_url = self.complete_repo_url
             repo = Repo(self.repo_git_path)

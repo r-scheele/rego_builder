@@ -29,7 +29,7 @@ class Database:
         Connect to database and return connection object
 
         params: None
-        return: connection object
+        return: connection cursor object
         """
 
         try:
@@ -50,8 +50,8 @@ class Database:
         """
         Check for table existence in database
 
-        params: role: str - role to be checked
-        return: True if role exists, False otherwise
+        :params role: - role to be checked
+        :return: True if role exists, False otherwise
         """
 
         query = "SELECT 1 FROM pg_catalog.pg_roles WHERE rolname = '{}'".format(role)
@@ -84,8 +84,8 @@ class Database:
         """
         Get user data from database
 
-        params: sql: str - sql query
-        return: List of groupnames
+        :params sql: sql query
+        :return: List of user group names
         """
 
         cur = self.connect()
