@@ -10,9 +10,7 @@ router = APIRouter(tags=["Token"])
 async def get_token_from_gitlab(
     code: str, client_id: str, client_secret: str, redirect_uri: str
 ) -> dict:
-    """
-    Get the token from GitLab, and authorize request to the OPA Manager
-    """
+    """Get the token from GitLab, and authorize the request to the OPA Manager"""
 
     res = rest_client.post(
         f"https://gitlab.com/oauth/token",
@@ -31,9 +29,7 @@ async def get_token_from_gitlab(
 
 @router.get("/github/token")
 def get_token_from_github(code: str, client_id: str, client_secret: str) -> dict:
-    """
-    Get the token from GitHub, and authorize request to the OPA Manager
-    """
+    """Get the token from GitHub, and authorize the request to the OPA Manager"""
     res = rest_client.post(
         url="https://github.com/login/oauth/access_token",
         headers={"Accept": "application/json"},
