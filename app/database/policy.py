@@ -53,7 +53,7 @@ class PolicyDatabase:
         :param policy: the new policy to update the old one with
         :param owner: the user that writes the policy
 
-        :return: None
+        :returns: None
         """
         policy = self.get_policy(policy_name, owner)
 
