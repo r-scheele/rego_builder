@@ -21,7 +21,7 @@ class GitHubOperations:
         :param access_token: the github access token to authorize access to the remote repository.
         :param username: the username of the github user.
 
-        :return: None
+        :returns: None
         """
 
         self.username = username
