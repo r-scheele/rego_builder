@@ -50,7 +50,7 @@ class Database:
         """
         Check for table existence in database
 
-        :params role: - role to be checked
+        :params role: role to be checked
         :return: True if role exists, False otherwise
         """
 
