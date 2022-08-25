@@ -60,7 +60,7 @@ class GitHubOperations:
         pull commit history and push the changes to the remote repository.
 
         :param: None
-        :return: None
+        :returns: None
         """
         try:
             target_url = self.complete_repo_url
