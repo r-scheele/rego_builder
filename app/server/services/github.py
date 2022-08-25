@@ -38,7 +38,7 @@ class GitHubOperations:
         """clones the remote repository if it doesn't exist, sets the local repository path for writing the changes.
 
         :param: None
-        :return: None
+        :returns: None
         """
 
         # Check if the repo already exists
