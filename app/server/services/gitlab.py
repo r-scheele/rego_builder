@@ -80,7 +80,7 @@ class GitLabOperations:
         """Retrieve the list of repositories that belongs to the user
 
         params: None
-        :return: list of repositories"""
+        :returns: list of repositories"""
 
         unfiltered_repos = self.gitlab.projects(owned=True).list()
         repos = []
