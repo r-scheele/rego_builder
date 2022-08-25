@@ -12,10 +12,15 @@ default_path = settings.BASE_PATH
 
 @lru_cache(maxsize=1)
 class GitHubOperations:
-    """GitHub operations, clone, commit and push"""
+    """Performs all operations needed to push the changes to the remote repository on the github server"""
 
     def __init__(self, repo_url: str, access_token: str, username: str) -> None:
-        """Initialize the class with repo_url, access_token and username"""
+        """Initialize the class with the base arguments
+
+        params: repo_url: the url of the remote repository.
+                access_token: the github access token to authorize access to the remote repository.
+                username: the username of the github user.
+        """
 
         self.username = username
         self.access_token = access_token
@@ -28,7 +33,7 @@ class GitHubOperations:
         self.repo_git_path = ""
 
     def initialize(self) -> None:
-        """clones the remote repository"""
+        """clones the remote repository if it doesn't exist, sets the local repository path for writing the changes."""
 
         # Check if the repo already exists
         if os.path.exists(self.local_repo_path):
@@ -43,7 +48,9 @@ class GitHubOperations:
         self.repo_git_path = initialized_repo.git_dir
 
     def push(self) -> None:
-        """Commit, and push the changes to the remote repository"""
+        """Initialize the rego file as a git repository, add the rego file,
+        commit changes to the rego file, create a remote if it doesn't exist,
+        pull commit history and push the changes to the remote repository."""
         try:
             target_url = self.complete_repo_url
             repo = Repo(self.repo_git_path)

@@ -6,10 +6,13 @@ from gitlab import Gitlab
 
 @lru_cache(maxsize=1)
 class GitLabOperations:
-    """GitLab operations, clone, commit, push and return user repository list"""
+    """Performs all operations needed to push the changes to the remote repository on the gitlab server"""
 
     def __init__(self, repo_id: int, access_token: str) -> None:
-        """Initialize the class with repo_id and access_token"""
+        """Initialize the class with base arguments
+        params: repo_id: the id of the remote repository.
+                access_token: the gitlab access token to authorize access to the remote repository.
+        """
 
         self.access_token = access_token
         self.repo_id = repo_id
