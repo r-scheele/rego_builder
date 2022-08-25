@@ -5,9 +5,8 @@ def input_prop_equals(properties: dict) -> str:
     """
     Allow if the 'key on the request' equals the 'value assigned' to it
 
-    :param key: request key
-    :param value: request value
-    :return:
+    param key: rule object
+    return string: input.request_path == ['v1', 'collections', 'obs', '']
     """
     paths = properties["value"]
     if "*" in paths and type(paths) == list:
@@ -42,9 +41,8 @@ def input_prop_in(properties: dict) -> str:
     """
     Allow if the 'key on the request' is present as a 'key in any of the objects' in the database(data)
 
-    :param key: request key
-    :param value: request value
-    :return:
+    param properties: rule object
+    return: string: input.groupname == data.usergroups[_].groupname
     """
 
     # Comparison with value in the database
@@ -55,7 +53,8 @@ def allow_full_access(properties) -> str:
     """
     Allow full access to the API, if a property is present on the request
 
-    :return: allow {
+    params properties: rule object
+    return string: allow {
         input.preferred_username == "admin"
     }
     """
@@ -66,6 +65,9 @@ def allow_if_object_in_database(properties) -> str:
 
     """
     Allow if the two properties on the input object matches an object in the database
+
+    param properties: rule object
+    return string: { name: input.name, groupname: input.groupname } == data.groups[_]
     """
     user = {
         variable: f"input.{variable}" for variable in properties["datasource_variables"]

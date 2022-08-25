@@ -19,12 +19,17 @@ file_path = os.path.join(ROOT_DIR, "sql", "create_tables.sql")
 
 
 class Database:
+    """Postgres database functions"""
+
     def __init__(self) -> None:
         pass
 
     def connect(self):
         """
-        Connect to database and return connection
+        Connect to database and return connection object
+
+        params: None
+        return: connection object
         """
 
         try:
@@ -42,6 +47,13 @@ class Database:
             sys.exit(1)
 
     def role_exists(self, role: str) -> bool:
+        """
+        Check for table existence in database
+
+        params: role: str - role to be checked
+        return: True if role exists, False otherwise
+        """
+
         query = "SELECT 1 FROM pg_catalog.pg_roles WHERE rolname = '{}'".format(role)
         cur = self.connect()
         cur.execute(query)
@@ -69,6 +81,13 @@ class Database:
                     continue
 
     def get_data(self, sql: str) -> dict:
+        """
+        Get user data from database
+
+        params: sql: str - sql query
+        return: List of groupnames
+        """
+
         cur = self.connect()
         cur.execute(sql)
         data = [value[0] for value in cur.fetchall()]
@@ -82,4 +101,5 @@ if not database.role_exists("geostore"):
 
 
 def get_database() -> Database:
+    """Return database object for dependency injection"""
     return database

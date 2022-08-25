@@ -6,7 +6,11 @@ from gitlab import Gitlab
 
 @lru_cache(maxsize=1)
 class GitLabOperations:
+    """GitLab operations, clone, commit, push and return user repository list"""
+
     def __init__(self, repo_id: int, access_token: str) -> None:
+        """Initialize the class with repo_id and access_token"""
+
         self.access_token = access_token
         self.repo_id = repo_id
 
@@ -19,17 +23,25 @@ class GitLabOperations:
         self.repo = self.gitlab.projects.get(self.repo_id)
 
     def prepare_data_and_commit(self, policy: str, action: str) -> bool:
+        """
+        prepare policy for commit and commit it
+
+        params: policy: str - policy to be committed
+                action: str - action to be performed on the policy
+
+        return: True if commit was successful, False otherwise
+        """
         data = {
             # Once this works, enable user set the branch or use default branch instead.
-            'branch': 'master',
-            'commit_message': 'Policy update from the OPA Manager',
-            'actions': [
+            "branch": "master",
+            "commit_message": "Policy update from the OPA Manager",
+            "actions": [
                 {
-                    'action': action,
-                    'file_path': 'auth.rego',
-                    'content': policy,
+                    "action": action,
+                    "file_path": "auth.rego",
+                    "content": policy,
                 },
-            ]
+            ],
         }
 
         # Commit the changes
@@ -48,7 +60,7 @@ class GitLabOperations:
                     "action": "delete",
                     "file_path": "auth.rego",
                 }
-            ]
+            ],
         }
 
         try:
@@ -61,15 +73,19 @@ class GitLabOperations:
         return self.repo.web_url
 
     def retrieve_repos(self):
+        """Retrieve the list of repositories that belongs to the user"""
+
         unfiltered_repos = self.gitlab.projects(owned=True).list()
         repos = []
 
         for repo in unfiltered_repos:
-            repos.append(RepoStructure(
-                name=repo["name"],
-                id=repo["id"],
-                url=repo["http_url_to_repo"],
-                owner=repo["owner"]["username"],
-            ))
+            repos.append(
+                RepoStructure(
+                    name=repo["name"],
+                    id=repo["id"],
+                    url=repo["http_url_to_repo"],
+                    owner=repo["owner"]["username"],
+                )
+            )
 
         return repos

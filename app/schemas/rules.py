@@ -9,6 +9,8 @@ class Rule(BaseModel):
 
 
 class RequestObject(BaseModel):
+    """Request object for the OPA Manager, containing the policy and the action to be performed on the policy"""
+
     name: str
     rules: List[List[Rule]]
     owner: Optional[str] = ""
