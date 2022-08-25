@@ -67,7 +67,7 @@ class PolicyDatabase:
         :param policy_name: the name to identify the policy
         :param owner: the user that writes the policy
 
-        :return: True if the policy exists, False otherwise
+        :returns: True if the policy exists, False otherwise
         """
         doc = self.database.get(
             (self.store.name == policy_name) & (self.store.owner == owner)
