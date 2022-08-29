@@ -4,7 +4,7 @@ import pytest
 from starlette.testclient import TestClient
 
 from app.config.config import settings
-from app.database.policy import PolicyDatabase, get_db
+from app.database.policy_database import PolicyDatabase, get_db
 from app.server.api import app
 
 default_path = settings.BASE_PATH

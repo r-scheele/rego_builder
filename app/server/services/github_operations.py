@@ -3,7 +3,7 @@ from functools import lru_cache
 
 from git import Repo
 
-from app.config.config import settings
+from app.config.settings_config import settings
 
 COMMIT_MESSAGE = "Policy update from from application"
 

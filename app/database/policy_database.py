@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 from tinydb import Query, TinyDB
 
-from app.config.config import settings
+from app.config.settings_config import settings
 
 
 class PolicyDatabase:

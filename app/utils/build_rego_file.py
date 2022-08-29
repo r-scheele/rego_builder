@@ -1,4 +1,4 @@
-from .commands_map import commands_map
+from .map_commands import commands_map
 
 
 def build_rego(data) -> str:
