@@ -37,23 +37,30 @@ class GitLabOperations:
         """
         data = {
             # Once this works, enable user set the branch or use default branch instead.
-            "branch": "master",
-            "commit_message": "Policy update from the OPA Manager",
-            "actions": [
+            'branch': 'main',
+            'commit_message': 'Policy update from the OPA Manager',
+            'actions': [
                 {
-                    "action": action,
-                    "file_path": "auth.rego",
-                    "content": policy,
+                    'action': action,
+                    'file_path': 'auth.rego',
+                    'content': policy,
                 },
-            ],
+            ]
         }
 
-        # Commit the changes
-        changes = self.repo.commits.create(data)
+        try:
+            # Commit the changes
+            self.repo.commits.create(data)
 
-        if not changes.id:
+        except gitlab.exceptions.GitlabCreateError:
+            data['actions'][0]['action'] = 'create'
+
+            # Commit the changes
+            self.repo.commits.create(data)
+            return True
+
+        except gitlab.exceptions.GitlabError:
             return False
-        return True
 
     def delete_policy(self) -> bool:
         data = {
@@ -75,24 +82,3 @@ class GitLabOperations:
 
     def repo_url_from_id(self) -> str:
         return self.repo.web_url
-
-    def retrieve_repos(self):
-        """Retrieve the list of repositories that belongs to the user
-
-        params: None
-        :returns: list of repositories"""
-
-        unfiltered_repos = self.gitlab.projects(owned=True).list()
-        repos = []
-
-        for repo in unfiltered_repos:
-            repos.append(
-                RepoStructure(
-                    name=repo["name"],
-                    id=repo["id"],
-                    url=repo["http_url_to_repo"],
-                    owner=repo["owner"]["username"],
-                )
-            )
-
-        return repos
