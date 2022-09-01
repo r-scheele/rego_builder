@@ -1,3 +1,4 @@
+from functools import lru_cache
 from typing import Optional
 
 from pydantic import BaseSettings
@@ -5,6 +6,7 @@ from pydantic import BaseSettings
 
 class Settings(BaseSettings):
     BASE_PATH: Optional[str] = ""
+    ORG_NAME: Optional[str] = ""
     DATABASE_PATH: Optional[str] = ""
     TEST_DATABASE_PATH: Optional[str] = ""
     OPAL_SERVER_DATA_URL: Optional[str] = ""
