@@ -1,6 +1,6 @@
 from app.server.services.github import GitHubOperations
 
-from ..server.services.gitlab import GitLabOperations
+from app.server.services.gitlab import GitLabOperations
 from .build_rego_file import build_rego
 
 initiate_rule = "package httpapi.authz\nimport input\ndefault allow = false\n\n\n\n"
@@ -64,11 +64,11 @@ class WriteRego:
             file_path = f"{self.github.local_repo_path}/auth.rego"
 
             # Initialize repository
-            self.github.initialize()
+            self.github.initialize_github()
 
             with open(file_path, "w+") as file:
                 file.write(result)
             # Update GitHub
-            self.github.push()
+            self.github.github_push()
 
         return

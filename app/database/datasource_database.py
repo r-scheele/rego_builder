@@ -18,13 +18,13 @@ ROOT_DIR = Path(__file__).parent.parent.parent
 file_path = os.path.join(ROOT_DIR, "sql", "create_tables.sql")
 
 
-class Database:
+class DatasourceDatabase:
     """Postgres database functions"""
 
     def __init__(self) -> None:
         pass
 
-    def connect(self):
+    def connect_database(self):
         """
         Connect to database and return connection object
 
@@ -55,7 +55,7 @@ class Database:
         """
 
         query = "SELECT 1 FROM pg_catalog.pg_roles WHERE rolname = '{}'".format(role)
-        cur = self.connect()
+        cur = self.connect_database()
         cur.execute(query)
         res = cur.fetchone()[0]
         return res
@@ -64,7 +64,7 @@ class Database:
         """
         Create tables in database
         """
-        cursor = self.connect()
+        cursor = self.connect_database()
         with open(file_path, "r", encoding="utf-8") as file:
             sql = sqlparse.split(sqlparse.format(file.read(), strip_comments=True))
         with cursor:
@@ -88,18 +88,18 @@ class Database:
         :returns: List of user group names
         """
 
-        cur = self.connect()
+        cur = self.connect_database()
         cur.execute(sql)
         data = [value[0] for value in cur.fetchall()]
         return data
 
 
-database = Database()
-database.connect()
+database = DatasourceDatabase()
+database.connect_database()
 if not database.role_exists("geostore"):
     database.create_tables()
 
 
-def get_database() -> Database:
+def get_database() -> DatasourceDatabase:
     """Return database object for dependency injection"""
     return database

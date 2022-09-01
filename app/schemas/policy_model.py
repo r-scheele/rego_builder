@@ -3,7 +3,7 @@ from typing import Dict, List, Optional, Union
 from pydantic import BaseModel
 
 
-class Rule(BaseModel):
+class RuleObject(BaseModel):
     command: str
     properties: Dict[str, Union[str, List[str], Dict[str, Union[str, List[str]]]]]
 
@@ -12,7 +12,7 @@ class RequestObject(BaseModel):
     """Request object for the OPA Manager, containing the policy and the action to be performed on the policy"""
 
     name: str
-    rules: List[List[Rule]]
+    rules: List[List[RuleObject]]
     owner: Optional[str] = ""
     repo_url: Optional[str] = ""
     repo_id: Optional[int] = None
@@ -120,7 +120,7 @@ class RequestObject(BaseModel):
 
 class UpdateRequestObject(BaseModel):
     name: Optional[str]
-    rules: Optional[List[List[Rule]]]
+    rules: Optional[List[List[RuleObject]]]
     owner: Optional[str] = ""
     repo_url: Optional[str] = ""
 

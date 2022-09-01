@@ -4,7 +4,7 @@ import gitlab
 import requests as r
 from fastapi import APIRouter, Depends
 
-from app.server.auth.authorize import TokenBearer
+from app.server.auth.authorize_token import TokenBearer
 
 router = APIRouter(tags=["Repo Management"], prefix="/user/repos")
 
@@ -19,7 +19,7 @@ class RepoStructure:
 
 @router.get("/github")
 async def get_public_and_private_repo(
-        dependencies=Depends(TokenBearer()),
+    dependencies=Depends(TokenBearer()),
 ) -> list:
     url = f"https://api.github.com/search/repositories?q=user:{dependencies['login']}"
     repos = r.get(
@@ -40,7 +40,7 @@ async def get_public_and_private_repo(
 
 @router.get("/gitlab")
 async def get_public_and_private_repo_gitlab(
-        dependencies=Depends(TokenBearer()),
+    dependencies=Depends(TokenBearer()),
 ) -> list:
     gl = gitlab.Gitlab("https://gitlab.com", oauth_token=dependencies["token"])
     gl.auth()
@@ -50,11 +50,13 @@ async def get_public_and_private_repo_gitlab(
 
     for repo in unfiltered_repos:
         r = repo.asdict()
-        repos.append(RepoStructure(
-            name=r["name"],
-            id=r["id"],
-            url=r["web_url"],
-            owner=r["namespace"]["full_path"],
-        ))
+        repos.append(
+            RepoStructure(
+                name=r["name"],
+                id=r["id"],
+                url=r["web_url"],
+                owner=r["namespace"]["full_path"],
+            )
+        )
 
     return repos

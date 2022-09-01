@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
 
 from app.config.config import settings
-from app.database.policy import PolicyDatabase, get_db
-from app.schemas.rules import RequestObject, UpdateRequestObject
-from app.server.auth.authorize import TokenBearer
+from app.database.policy_database import PolicyDatabase, get_db
+from app.schemas.policy_model import RequestObject, UpdateRequestObject
+from app.server.auth.authorize_token import TokenBearer
 from app.server.services.gitlab import GitLabOperations
 from app.utils.write_rego import WriteRego
 
