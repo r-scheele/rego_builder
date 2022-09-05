@@ -1,13 +1,29 @@
 from app.server.services.github import GitHubOperations
 
-from ..server.services.gitlab import GitLabOperations
+from app.server.services.gitlab import GitLabOperations
 from .build_rego_file import build_rego
 
 initiate_rule = "package httpapi.authz\nimport input\ndefault allow = false\n\n\n\n"
 
 
 class WriteRego:
-    def __init__(self, access_token: str, repo_url: str, username: str, provider: str = "github", repo_id: int = None) -> None:
+    """Writes policy definition"""
+
+    def __init__(
+        self,
+        access_token: str,
+        repo_url: str,
+        username: str,
+        provider: str = "github",
+        repo_id: int = None,
+    ) -> None:
+        """
+        Initializes the class
+
+        params: access token, repo url, username, repo provider, repo id
+        return: None
+        """
+
         self.username = username
         self.access_token = access_token
         self.repo_url = repo_url
@@ -20,16 +36,16 @@ class WriteRego:
             )
 
         if self.provider == "gitlab":
-            self.gitlab = GitLabOperations(
-                self.repo_id, self.access_token
-            )
+            self.gitlab = GitLabOperations(self.repo_id, self.access_token)
 
     def write_to_file(self, policies: list) -> None:
         """
         Write the rego file to the local git repository
-        :param policies: list of policies
-        :return: response dict to show the status of the request
+
+        param list: list of policies
+        return: None
         """
+
         result = "" if not policies else initiate_rule
         for policy in policies:
             if not policy:

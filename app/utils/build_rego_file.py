@@ -1,11 +1,12 @@
-from .commands_map import commands_map
+from .map_commands import commands_map
 
 
 def build_rego(data) -> str:
     """
-    Builds the rego file from the data.
+    Maps each rule object to the corresponding function and builds the rego file
 
-    :return: long rego string to write to file
+    param: policy object
+    return string: rules, to be written to the rego file
     """
     output = ""
     for rule in data:

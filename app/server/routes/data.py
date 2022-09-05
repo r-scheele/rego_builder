@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 
-from app.schemas.data import DataRequest
-from app.server.auth.authorize import TokenBearer
+
+from app.server.auth.authorize_token import TokenBearer
 
 router = APIRouter(tags=["Data Operations"])
 
@@ -11,6 +11,9 @@ async def get_data(dependencies=Depends(TokenBearer())) -> dict:
     from app.database.datasource_database import get_database
 
     data = {
-        "sql_query": "SELECT DISTINCT groupname AS value FROM geostore.gs_usergroup;",
+        "sql_query": "SELECT DISTINCT groupname AS value FROM geostore.gs_usergroup",
     }
-    return {"usergroups": get_database().get_data(data["sql_query"])}
+    query = data["sql_query"]
+    res_key = query.split(" ")[-1].replace("gs_", "")
+
+    return {res_key: get_database().get_data(query)}

@@ -10,6 +10,8 @@ router = APIRouter(tags=["Token"])
 async def get_token_from_gitlab(
     code: str, client_id: str, client_secret: str, redirect_uri: str
 ) -> dict:
+    """Get the authorization token from GitLab."""
+
     res = rest_client.post(
         f"https://gitlab.com/oauth/token",
         data={
@@ -27,6 +29,7 @@ async def get_token_from_gitlab(
 
 @router.get("/github/token")
 def get_token_from_github(code: str, client_id: str, client_secret: str) -> dict:
+    """Get the authorization token from GitHub"""
     res = rest_client.post(
         url="https://github.com/login/oauth/access_token",
         headers={"Accept": "application/json"},

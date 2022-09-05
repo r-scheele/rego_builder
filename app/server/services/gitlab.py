@@ -6,7 +6,15 @@ from gitlab import Gitlab
 
 @lru_cache(maxsize=1)
 class GitLabOperations:
+    """Performs all operations needed to push the changes to the remote repository on the gitlab server"""
+
     def __init__(self, repo_id: int, access_token: str) -> None:
+        """Initializes the class with base arguments
+
+        :param repo_id: the id of the remote repository.
+        :param access_token: the gitlab access token to authorize access to the remote repository.
+        """
+
         self.access_token = access_token
         self.repo_id = repo_id
 
@@ -19,9 +27,17 @@ class GitLabOperations:
         self.repo = self.gitlab.projects.get(self.repo_id)
 
     def prepare_data_and_commit(self, policy: str, action: str) -> bool:
+        """
+        prepare policy for commit and commit it
+
+        :param policy: - policy string to be written to the file
+        :param action: - action to be performed on the policy
+
+        :returns: True if a commit was successful, False otherwise
+        """
         data = {
             # Once this works, enable user set the branch or use default branch instead.
-            'branch': 'master',
+            'branch': 'main',
             'commit_message': 'Policy update from the OPA Manager',
             'actions': [
                 {
@@ -32,12 +48,19 @@ class GitLabOperations:
             ]
         }
 
-        # Commit the changes
-        changes = self.repo.commits.create(data)
+        try:
+            # Commit the changes
+            self.repo.commits.create(data)
 
-        if not changes.id:
+        except gitlab.exceptions.GitlabCreateError:
+            data['actions'][0]['action'] = 'create'
+
+            # Commit the changes
+            self.repo.commits.create(data)
+            return True
+
+        except gitlab.exceptions.GitlabError:
             return False
-        return True
 
     def delete_policy(self) -> bool:
         data = {
@@ -48,7 +71,7 @@ class GitLabOperations:
                     "action": "delete",
                     "file_path": "auth.rego",
                 }
-            ]
+            ],
         }
 
         try:
@@ -59,17 +82,3 @@ class GitLabOperations:
 
     def repo_url_from_id(self) -> str:
         return self.repo.web_url
-
-    def retrieve_repos(self):
-        unfiltered_repos = self.gitlab.projects(owned=True).list()
-        repos = []
-
-        for repo in unfiltered_repos:
-            repos.append(RepoStructure(
-                name=repo["name"],
-                id=repo["id"],
-                url=repo["http_url_to_repo"],
-                owner=repo["owner"]["username"],
-            ))
-
-        return repos

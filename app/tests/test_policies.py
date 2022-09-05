@@ -1,4 +1,4 @@
-from .data import test_request_object
+from .test_data import test_request_object
 
 
 def test_write_policy(authorized_client):

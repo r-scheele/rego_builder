@@ -1390,4 +1390,3 @@ ALTER TABLE ONLY geostore_test.gs_usergroup_members
 ALTER TABLE ONLY geostore_test.gs_usergroup_members
     ADD CONSTRAINT fkfde460db9ec981b7 FOREIGN KEY (group_id) REFERENCES geostore.gs_usergroup(id);
 
-

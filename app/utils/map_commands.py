@@ -1,4 +1,4 @@
-from .commands import (
+from .command_functions import (
     allow_full_access,
     allow_if_object_in_database,
     input_prop_equals,
