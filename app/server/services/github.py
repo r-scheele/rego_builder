@@ -34,7 +34,7 @@ class GitHubOperations:
         self.local_repo_path = f"{default_path}/{self.repo_name}"
         self.repo_git_path = ""
 
-    def initialize_github(self) -> None:
+    def initialize(self) -> None:
         """clones the remote repository if it doesn't exist, sets the local repository path for writing the changes.
 
         :param: None
@@ -53,7 +53,7 @@ class GitHubOperations:
 
         self.repo_git_path = initialized_repo.git_dir
 
-    def github_push(self) -> None:
+    def push(self) -> None:
         """
         Initialize the rego file as a git repository, add the rego file,
         commit changes to the rego file, create a remote if it doesn't exist,
